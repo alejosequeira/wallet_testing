@@ -1,0 +1,22 @@
+.boton{
+    background-color: var(--darkGray);
+    border: 2px solid white;
+    color: white;
+    padding: 0 15px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    font-family: 'Courier New', Courier, monospace;
+    cursor: pointer;
+    border-radius: 5%;
+    box-shadow: 5px 5px 10px var(--black);
+    transition: 0.5s;
+    margin-right: 15px;
+}
+.boton:hover{
+    background-color: var(--lighterGray);
+    color: var(--black);
+    box-shadow: 5px 5px 10px var(--darkGray);
+    transition: 0.5s;
+}

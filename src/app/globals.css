@@ -1,4 +1,29 @@
 :root {
+  /* coinspec */
+  --black: #000000;
+  --white: #ffffff;
+  --brand: #e5b136;
+  --label: #46bd82;
+  --info: #d68292;
+  --warn: #f1c252;
+  --error: #ad0424;
+  --gray: #666666;
+  --blue: #1155cc;
+  --darkBlue: #0d3a58;
+  --lightBlue: #1a7dd8;
+  --darkGray: #434343;
+  --lightGray: #999999;
+  --ligtherGray: #e8e6e6;
+  --medium: #d7667b;
+  --low: #e4abb6;
+
+  --default-font-family: 'Nunito', sans-serif;
+  --default-font: normal normal normal 24px / 1.5 var(--default-font-family);
+  --monospace-font: normal normal normal 24px / 1.5 'Roboto Mono', monospace;
+  --heading-font: normal 900 normal 36px / 1.5 'Roboto', sans-serif;
+  --heading-font-family: 'Roboto', sans-serif;
+  /* coinspec */
+
   --max-width: 1100px;
   --border-radius: 12px;
   --font-mono: ui-monospace, Menlo, Monaco, 'Cascadia Mono', 'Segoe UI Mono',
@@ -9,35 +34,67 @@
   --background-start-rgb: 214, 219, 220;
   --background-end-rgb: 255, 255, 255;
 
-  --primary-glow: conic-gradient(
-    from 180deg at 50% 50%,
-    #16abff33 0deg,
-    #0885ff33 55deg,
-    #54d6ff33 120deg,
-    #0071ff33 160deg,
-    transparent 360deg
-  );
-  --secondary-glow: radial-gradient(
-    rgba(255, 255, 255, 1),
-    rgba(255, 255, 255, 0)
-  );
+  /* botones ON-OFF */
+  --hue: 223;
+  --hue-success: 103;
+  --bg: hsl(var(--hue), 10%, 80%);
+  --fg: hsl(var(--hue), 10%, 10%);
+  --primary: hsl(var(--hue), 90%, 50%);
+  --primary-t: hsla(var(--hue), 90%, 50%, 0);
+  --trans-dur: 0.3s;
+  --trans-timing: cubic-bezier(0.65, 0, 0.35, 1);
+  font-size: calc(16px + (32 - 16) * (100vw - 320px) / (2560 - 320));
+
+
+
+  --primary-glow: conic-gradient(from 180deg at 50% 50%,
+      #16abff33 0deg,
+      #0885ff33 55deg,
+      #54d6ff33 120deg,
+      #0071ff33 160deg,
+      transparent 360deg);
+  --secondary-glow: radial-gradient(rgba(255, 255, 255, 1),
+      rgba(255, 255, 255, 0));
 
   --tile-start-rgb: 239, 245, 249;
   --tile-end-rgb: 228, 232, 233;
-  --tile-border: conic-gradient(
-    #00000080,
-    #00000040,
-    #00000030,
-    #00000020,
-    #00000010,
-    #00000010,
-    #00000080
-  );
+  --tile-border: conic-gradient(#00000080,
+      #00000040,
+      #00000030,
+      #00000020,
+      #00000010,
+      #00000010,
+      #00000080);
 
   --callout-rgb: 238, 240, 241;
   --callout-border-rgb: 172, 175, 176;
   --card-rgb: 180, 185, 188;
   --card-border-rgb: 131, 134, 135;
+}
+
+.MuiInputBase-input.MuiOutlinedInput-input {
+  
+  padding: 0;
+  margin: 0;
+  
+}
+.bouton {
+  font: var(--default-font);
+  font-size: 0.7rem;
+  padding: 0px 5px;
+  margin: 0 10px;
+  border: 1px solid var(--black);
+  border-radius: 5px;
+  background-color: var(--lightBlue);
+  color: var(--ligtherGray);
+  cursor: pointer;
+  transition: all 0.8s ease;
+  box-shadow: black 0px 1px 5px;    
+  width: 13rem;
+  gap: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;    
 }
 
 @media (prefers-color-scheme: dark) {
@@ -47,24 +104,20 @@
     --background-end-rgb: 0, 0, 0;
 
     --primary-glow: radial-gradient(rgba(1, 65, 255, 0.4), rgba(1, 65, 255, 0));
-    --secondary-glow: linear-gradient(
-      to bottom right,
-      rgba(1, 65, 255, 0),
-      rgba(1, 65, 255, 0),
-      rgba(1, 65, 255, 0.3)
-    );
+    --secondary-glow: linear-gradient(to bottom right,
+        rgba(1, 65, 255, 0),
+        rgba(1, 65, 255, 0),
+        rgba(1, 65, 255, 0.3));
 
     --tile-start-rgb: 2, 13, 46;
     --tile-end-rgb: 2, 5, 19;
-    --tile-border: conic-gradient(
-      #ffffff80,
-      #ffffff40,
-      #ffffff30,
-      #ffffff20,
-      #ffffff10,
-      #ffffff10,
-      #ffffff80
-    );
+    --tile-border: conic-gradient(#ffffff80,
+        #ffffff40,
+        #ffffff30,
+        #ffffff20,
+        #ffffff10,
+        #ffffff10,
+        #ffffff80);
 
     --callout-rgb: 20, 20, 20;
     --callout-border-rgb: 108, 108, 108;
@@ -87,12 +140,7 @@ body {
 
 body {
   color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+  background: var(--white);
 }
 
 a {

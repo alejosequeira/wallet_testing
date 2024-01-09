@@ -1,0 +1,66 @@
+
+  
+  .stickyNav {
+    position: fixed;
+    width: 100%;
+    top: 0;
+    background-color: black;
+    z-index: 1150;
+  }
+  
+
+.nava{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: linear-gradient(to right, var(--black) 0%, var(--ligtherGray) 100%);
+    color: var(--white);
+    padding: 5px;
+    font-family: var(--default-font);
+    
+}
+.portadatitle{
+    font-family: var(--default-font);
+    font-size: 1.2em;
+    font-weight: bold;
+    color: var(--white);
+}
+.nava2{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;    
+    color: var(--white);
+    font-family: var(--default-font);
+}
+.nav_bar{
+    display: flex;
+    margin: auto;
+}
+.lista{
+    list-style: none;
+    margin: 0 30px;
+}
+.lista a{    
+    color: var(--black);
+    font-family: var(--monospace-font);
+    text-decoration: none;    
+    padding:0px 10px;
+}
+.lista a:hover{
+    color: var(--brand);    
+}
+
+.scrolled {
+    background-color: rgba(0, 0, 0, 0.7);
+    position: fixed; 
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000; 
+    transition: background-color 0.3s; 
+    display: flex;
+    justify-content: space-between; 
+    align-items: center; 
+    padding: 0 20px; 
+    
+}
