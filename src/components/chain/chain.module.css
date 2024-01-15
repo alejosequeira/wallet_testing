@@ -60,7 +60,7 @@
     display: block; 
     color: var(--darkGray); 
     font: var(--default-font);
-    font-size: 0.8rem;
+    font-size: 0.75rem;
     margin: -5px;
 }
 

@@ -1,6 +1,21 @@
 .body_firstMethod{
-    margin-top: 2.5rem;
+    margin-top: 2.5rem;    
 }
+
+.pageContainer {
+    position: relative;
+    margin-top: 2.5rem;    
+}
+
+/* Existing styles for .content */
+.content {
+    transition: margin-left 0.3s ease;
+}
+
+.contentShift {
+    margin-left: 9rem; /* Same as the width of the sidebar */
+}
+
 .header{
     margin-top: 10px;
     text-align: right;
@@ -64,8 +79,5 @@
     gap: 15px;
     padding: 10px 0;
     margin-bottom: 25px;
-}
-
-.clipboard {
-    width: 10px;
+    height: 100%;
 }

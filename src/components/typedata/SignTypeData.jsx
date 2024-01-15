@@ -6,7 +6,9 @@ import { Alert, Button } from '@mui/material';
 const SignTypeData = ({ address }) => {
     const [signTypedDataV3, setSignTypedDataV3] = useState('');
     const [signTypedDataV4, setSignTypedDataV4] = useState('');
+
     const handleSignTypedDataV3 = async () => {
+        if (!window.ethereum) return alert("MetaMask is required!");
         const chainIdInt = 137;
 
         const msgParams = {
@@ -54,10 +56,12 @@ const SignTypeData = ({ address }) => {
                 params: [address, JSON.stringify(msgParams)],
             });
             setSignTypedDataV3(sign);
-        } catch (err) {
-            console.error(err);
-            setSignTypedDataV3(`Error: ${err.message}`);
+        } catch (error) {
+            console.log('Error signing typed data V3: ', error);
+            console.error(error);
+            setSignTypedDataV3(`Error: ${error.message}`);
         }
+        console.log("ejecutando")
     };
     const handleSignTypedDataV4 = async () => {
         const chainIdInt = 137;

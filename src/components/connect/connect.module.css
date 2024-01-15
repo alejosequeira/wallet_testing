@@ -15,7 +15,7 @@
     margin-right: 15px;
 }
 .boton:hover{
-    background-color: var(--lighterGray);
+    background-color: var(--brand);
     color: var(--black);
     box-shadow: 5px 5px 10px var(--darkGray);
     transition: 0.5s;

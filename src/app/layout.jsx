@@ -23,14 +23,11 @@ export default function RootLayout({ children }) {
         <title>{metadata.title}</title>
         <meta name="description" content={metadata.description} />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="shortcut icon" href='/faviconWT.png' type="image/x-icon" />
         <link
           href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;900&family=Roboto+Mono:wght@400;900&family=Roboto:wght@400;900&display=swap"
           rel="stylesheet"
         />
-
       </head>
-
       <body className={inter.className}>
           <NavBar />
         {children}

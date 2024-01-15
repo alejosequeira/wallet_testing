@@ -1,0 +1,5 @@
+.title{
+    color: var(--black);
+    font-family: var(--heading-font);
+    margin: 20px auto;
+}

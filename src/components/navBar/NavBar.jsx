@@ -1,18 +1,10 @@
 'use client'
 
 import React, { useState, useEffect } from 'react';
-import Link from 'next/link';
 import ConnectMetaMaskButton from '../connect/ConnectMetaMaskButton';
 import style from './navbar.module.css';
-import BurgerMenu from '../burguer/BurguerMenu';
 
-const links = [
-  { route: '/', label: 'Home' },
-  { route: '/firstMethod', label: 'First Method' },
-  { route: '/secondMethod', label: 'Second Method' },
-];
-
-export default function NavBar() {
+export default function NavBar({ isOpen, toggleSidebar }) {
   const [hasScrolled, setHasScrolled] = useState(false);
 
   const handleScroll = () => {
@@ -37,7 +29,11 @@ export default function NavBar() {
       <nav className={style.stickyNav}>
         <div className={style.nava}>
           <div className={style.nava2}>
-            <BurgerMenu />
+          <div className={style.burgerIcon} onClick={toggleSidebar}>
+                    <div className={isOpen ? `${style.line} ${style.open}` : style.line}></div>
+                    <div className={isOpen ? `${style.line} ${style.open}` : style.line}></div>
+                    <div className={isOpen ? `${style.line} ${style.open}` : style.line}></div>
+                </div>          
             <h3 className={style.portadatitle}>WALLET TESTING</h3>
           </div>
           <ConnectMetaMaskButton />
@@ -46,13 +42,3 @@ export default function NavBar() {
     </div>
   );
 }
-
-{/* <nav className={style.nav_bar}>
-
-        {links.map(({ label, route }) => (
-          <li className={style.lista} key={route}>
-            <Link href={route}>{label}</Link>
-          </li>
-        ))}
-
-      </nav> */}
