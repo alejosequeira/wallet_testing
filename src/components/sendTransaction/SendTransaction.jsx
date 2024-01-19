@@ -19,6 +19,15 @@ const SendTransaction = ({ address }) => {
                         gasLimit: '0x5208',
                         gasPrice: '0x2540be400',
                         type: '0x0',
+                        data: '0x',
+                        nonce: '0x0',
+                        accessList: [
+                            {
+                                address: '0x0c54FcCd2e384b4BB6f2E405Bf5Cbc15a017AaFb',
+                                storageKeys: [],
+                            },
+                        ],
+                        chainId: '0x89',                
                     },
                 ],
             });
@@ -40,16 +49,17 @@ const SendTransaction = ({ address }) => {
             {sendTransactionResult && (
                 <div>
                     <Alert severity="" sx={{
-                        width: "10rem",
-                        maxWidth: "10rem",
+                        width: "14.5rem",
+                        maxWidth: "14.5rem",
                         fontSize: '13px',
                         color: 'black',
                         backgroundColor: 'lightgray',
                         border: '3px solid gray',
-                        borderRadius: '10px',
+                        borderRadius: '5px',
                         padding: '0 10px 0px 0px',
                         textAlign: 'center',
                         margin: '0 5px',
+                        marginTop: '5px',
                         boxShadow: 'white 3px 3px 3px 0px inset, white -3px -3px 3px 0px inset',
                         display: 'flex',
                         justifyContent: 'center'

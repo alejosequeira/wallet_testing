@@ -60,8 +60,7 @@ function Chain() {
         return;
       }
 
-      await new Promise((resolve) => setTimeout(resolve, 1000)); // Wait for 1 second
-
+      await new Promise((resolve) => setTimeout(resolve, 1000));
       await provider.request({
         method: 'wallet_switchEthereumChain',
         params: [
@@ -94,16 +93,17 @@ function Chain() {
               <Alert
                 severity=""
                 sx={{
-                  width: "10rem",
-                  maxWidth: "10rem",
+                  width: "14.5rem",
+                  maxWidth: "14.5rem",
                   fontSize: '13px',
                   color: 'black',
                   backgroundColor: 'lightgray',
                   border: '3px solid gray',
-                  borderRadius: '10px',
+                  borderRadius: '5px',
                   padding: '0 10px 0px 0px',
                   textAlign: 'center',
                   margin: '0 5px',
+                  marginTop: '5px',
                   boxShadow: 'white 3px 3px 3px 0px inset, white -3px -3px 3px 0px inset',
                   display: 'flex',
                   justifyContent: 'center'
@@ -118,22 +118,23 @@ function Chain() {
             className={style.bouton}
             onClick={handleSwitchChain}
           >
-            
+
             SWITCH CHAIN
           </button>
           {executionMessageChainS && (
             <div className={style.formu}>
               <Alert severity="" sx={{
-                width: "10rem",
-                maxWidth: "10rem",
+                width: "14.5rem",
+                maxWidth: "14.5rem",
                 fontSize: '13px',
                 color: 'black',
                 backgroundColor: 'lightgray',
                 border: '3px solid gray',
-                borderRadius: '10px',
+                borderRadius: '5px',
                 padding: '0 10px 0px 0px',
                 textAlign: 'center',
                 margin: '0 5px',
+                marginTop: '5px',
                 boxShadow: 'white 3px 3px 3px 0px inset, white -3px -3px 3px 0px inset',
                 display: 'flex',
                 justifyContent: 'center'

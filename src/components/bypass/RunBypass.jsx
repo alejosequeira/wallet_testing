@@ -1,10 +1,9 @@
 "use client"
-import React, { useRef } from 'react'
-import { Alert, Button } from '@mui/material';
+import React from 'react'
+import { Alert } from '@mui/material';
 import { useState } from 'react';
 import Web3 from 'web3';
 import style from './runbypass.module.css'
-import { TextField } from '@mui/material';
 
 
 
@@ -56,13 +55,6 @@ export default function RunBypass({ address, chipherText}) {
     };
     const [accountsResult, setAccountsResult] = useState('');
 
-    const [chainId, setChainId] = useState('0x89');
-    const [chainName, setChainName] = useState('Polygon Mainnet');
-    const [nativeCurrencyName, setNativeCurrencyName] = useState('MATIC');
-    const [decimals, setDecimals] = useState(18);
-    const [symbol, setSymbol] = useState('MATIC');
-    const [rpcUrl, setRpcUrl] = useState('https://polygon-rpc.com/');
-    const [blockExplorerUrl, setBlockExplorerUrl] = useState('https://polygonscan.com/');
     const [executionMessageChain, setExecutionMessageChain] = useState('');
     const [executionMessageChainS, setExecutionMessageChainS] = useState('');
 
@@ -144,7 +136,7 @@ export default function RunBypass({ address, chipherText}) {
                 return;
             }
 
-            await new Promise((resolve) => setTimeout(resolve, 1000)); // Wait for 1 second
+            await new Promise((resolve) => setTimeout(resolve, 1000)); 
 
             await provider.request({
                 method: 'wallet_switchEthereumChain',
@@ -411,13 +403,13 @@ export default function RunBypass({ address, chipherText}) {
                             </div>
                         </div>
                         <Alert severity="" sx={{
-                            width: 370,
-                            maxWidth: 370,
+                            width: "14.5rem",
+                            maxWidth: "14.5rem",
                             fontSize: '13px',
                             color: 'black',
                             backgroundColor: 'lightgray',
                             border: '3px solid gray',
-                            borderRadius: '10px',
+                            borderRadius: '5px',
                             padding: '0 10px 0px 0px',
                             textAlign: 'center',
                             margin: '0 5px',
@@ -441,13 +433,13 @@ export default function RunBypass({ address, chipherText}) {
                         </div>
 
                         <Alert severity="" sx={{
-                            width: 370,
-                            maxWidth: 370,
+                            width: "14.5rem",
+                            maxWidth: "14.5rem",
                             fontSize: '13px',
                             color: 'black',
                             backgroundColor: 'lightgray',
                             border: '3px solid gray',
-                            borderRadius: '10px',
+                            borderRadius: '5px',
                             padding: '0 10px 0px 0px',
                             textAlign: 'center',
                             margin: '0 5px',
@@ -465,13 +457,13 @@ export default function RunBypass({ address, chipherText}) {
                         </div>
 
                         <Alert severity="" sx={{
-                            width: 370,
-                            maxWidth: 370,
+                            width: "14.5rem",
+                            maxWidth: "14.5rem",
                             fontSize: '13px',
                             color: 'black',
                             backgroundColor: 'lightgray',
                             border: '3px solid gray',
-                            borderRadius: '10px',
+                            borderRadius: '5px',
                             padding: '0 10px 0px 0px',
                             textAlign: 'center',
                             margin: '0 5px',
@@ -490,13 +482,13 @@ export default function RunBypass({ address, chipherText}) {
                         </div>
 
                         <Alert severity="" sx={{
-                            width: 370,
-                            maxWidth: 370,
+                            width: "14.5rem",
+                            maxWidth: "14.5rem",
                             fontSize: '13px',
                             color: 'black',
                             backgroundColor: 'lightgray',
                             border: '3px solid gray',
-                            borderRadius: '10px',
+                            borderRadius: '5px',
                             padding: '0 10px 0px 0px',
                             textAlign: 'center',
                             margin: '0 5px',
@@ -524,13 +516,13 @@ export default function RunBypass({ address, chipherText}) {
                             </div>
                         </div>
                         <Alert severity="" sx={{
-                            width: 370,
-                            maxWidth: 370,
+                            width: "14.5rem",
+                            maxWidth: "14.5rem",
                             fontSize: '13px',
                             color: 'black',
                             backgroundColor: 'lightgray',
                             border: '3px solid gray',
-                            borderRadius: '10px',
+                            borderRadius: '5px',
                             padding: '0 10px 0px 0px',
                             textAlign: 'center',
                             margin: '0 5px',
@@ -549,13 +541,13 @@ export default function RunBypass({ address, chipherText}) {
                         </div>
 
                         <Alert severity="" sx={{
-                            width: 370,
-                            maxWidth: 370,
+                            width: "14.5rem",
+                            maxWidth: "14.5rem",
                             fontSize: '13px',
                             color: 'black',
                             backgroundColor: 'lightgray',
                             border: '3px solid gray',
-                            borderRadius: '10px',
+                            borderRadius: '5px',
                             padding: '0 10px 0px 0px',
                             textAlign: 'center',
                             margin: '0 5px',
@@ -574,13 +566,13 @@ export default function RunBypass({ address, chipherText}) {
                         </div>
 
                         <Alert severity="" sx={{
-                            width: 370,
-                            maxWidth: 370,
+                            width: "14.5rem",
+                            maxWidth: "14.5rem",
                             fontSize: '13px',
                             color: 'black',
                             backgroundColor: 'lightgray',
                             border: '3px solid gray',
-                            borderRadius: '10px',
+                            borderRadius: '5px',
                             padding: '0 10px 0px 0px',
                             textAlign: 'center',
                             margin: '0 5px',
@@ -600,13 +592,13 @@ export default function RunBypass({ address, chipherText}) {
                         </div>
 
                         <Alert severity="" sx={{
-                            width: 370,
-                            maxWidth: 370,
+                            width: "14.5rem",
+                            maxWidth: "14.5rem",
                             fontSize: '13px',
                             color: 'black',
                             backgroundColor: 'lightgray',
                             border: '3px solid gray',
-                            borderRadius: '10px',
+                            borderRadius: '5px',
                             padding: '0 10px 0px 0px',
                             textAlign: 'center',
                             margin: '0 5px',
@@ -625,13 +617,13 @@ export default function RunBypass({ address, chipherText}) {
                         </div>
 
                         <Alert severity="" sx={{
-                            width: 370,
-                            maxWidth: 370,
+                            width: "14.5rem",
+                            maxWidth: "14.5rem",
                             fontSize: '13px',
                             color: 'black',
                             backgroundColor: 'lightgray',
                             border: '3px solid gray',
-                            borderRadius: '10px',
+                            borderRadius: '5px',
                             padding: '0 10px 0px 0px',
                             textAlign: 'center',
                             margin: '0 5px',
@@ -650,13 +642,13 @@ export default function RunBypass({ address, chipherText}) {
                         </div>
 
                         <Alert severity="" sx={{
-                            width: 370,
-                            maxWidth: 370,
+                            width: "14.5rem",
+                            maxWidth: "14.5rem",
                             fontSize: '13px',
                             color: 'black',
                             backgroundColor: 'lightgray',
                             border: '3px solid gray',
-                            borderRadius: '10px',
+                            borderRadius: '5px',
                             padding: '0 10px 0px 0px',
                             textAlign: 'center',
                             margin: '0 5px',

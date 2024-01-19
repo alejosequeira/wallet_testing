@@ -1,36 +1,40 @@
 "use client"
 import React, { useState } from 'react';
 import { Alert, Button } from '@mui/material';
-import style from './personalsign.module.css';
+import style from './sign.module.css';
+import Web3 from 'web3';
 
-const PersonalSign = ({ address }) => {
-  const [personalSignResult, setPersonalSignResult] = useState('');
 
-  const handlePersonalSign = async () => {
-    const exampleCHALLENGE = 'Example `personal_sign` message';
 
+const Sign = ({ address, challenge }) => {
+  const [SignResult, setSignResult] = useState('');
+
+  const handleSign = async () => {
     try {
+      const web3 = new Web3(window.ethereum);
       const provider = window.ethereum;
-      const msg = `0x${Buffer.from(exampleCHALLENGE, 'utf8').toString('hex')}`;
+      const hash = web3.utils.sha3(challenge);
+  
       const sign = await provider.request({
-        method: 'personal_sign',
-        params: [msg, address],
+        method: 'eth_sign',
+        params: [address, hash],
       });
-      setPersonalSignResult(sign);
+      setSignResult(sign);
     } catch (err) {
       console.error(err);
-      setPersonalSignResult(`Error: ${err.message}`);
+      setSignResult(`Error: ${err.message}`);
     }
   };
+  
 
   return (
     <div className={style.formu}>
       <button
         className={style.bouton}
-        onClick={handlePersonalSign}
-      > PERSONAL SIGN
+        onClick={handleSign}
+      >  SIGN
       </button>
-      {personalSignResult && (
+      {SignResult && (
         <div>
           <Alert severity="" sx={{
             width: "14.5rem",
@@ -46,13 +50,15 @@ const PersonalSign = ({ address }) => {
             marginTop: '5px',
             boxShadow: 'white 3px 3px 3px 0px inset, white -3px -3px 3px 0px inset',
             display: 'flex',
-            justifyContent: 'center'
+            justifyContent: 'center',           
+            alignItems: 'center',
+          overflow:'hidden'
 
-          }}>{personalSignResult}</Alert>
+          }}>{SignResult}</Alert>
         </div>
       )}
     </div>
   );
 };
 
-export default PersonalSign;
+export default Sign;

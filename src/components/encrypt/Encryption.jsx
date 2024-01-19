@@ -79,16 +79,17 @@ const Encryption = ({ decryptionAddress, chipherText }) => {
       {encryptionKey && (
         <div>
           <Alert severity="" sx={{
-                width:"10rem",
-                maxWidth: "10rem",
+                width: "14.5rem",
+                maxWidth: "14.5rem",
                 fontSize: '13px',
                 color: 'black',
                 backgroundColor: 'lightgray',
                 border: '3px solid gray',
-                borderRadius: '10px',
+                borderRadius: '5px',
                 padding: '0 10px 0px 0px',
                 textAlign: 'center',
                 margin: '0 5px',
+                marginTop: '5px',
                 boxShadow: 'white 3px 3px 3px 0px inset, white -3px -3px 3px 0px inset',
                 display: 'flex',
                 justifyContent:'center'
@@ -109,16 +110,17 @@ const Encryption = ({ decryptionAddress, chipherText }) => {
       {decryptedText && (
         <div className={style.form}>
           <Alert severity="" sx={{
-                width:"10rem",
-                maxWidth: "10rem",
+                width: "14.5rem",
+                maxWidth: "14.5rem",
                 fontSize: '13px',
                 color: 'black',
                 backgroundColor: 'lightgray',
                 border: '3px solid gray',
-                borderRadius: '10px',
+                borderRadius: '5px',
                 padding: '0 10px 0px 0px',
                 textAlign: 'center',
                 margin: '0 5px',
+                marginTop: '5px',
                 boxShadow: 'white 3px 3px 3px 0px inset, white -3px -3px 3px 0px inset',
                 display: 'flex',
                 justifyContent:'center'

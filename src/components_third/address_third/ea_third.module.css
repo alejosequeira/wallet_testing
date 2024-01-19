@@ -1,10 +1,10 @@
-.body_firstMethod {
-    margin-top: 2.5rem;
+.body_firstMethod{
+    margin-top: 2.5rem;    
 }
 
 .pageContainer {
     position: relative;
-    margin-top: 2.5rem;
+    margin-top: 2.5rem;    
 }
 
 /* Existing styles for .content */
@@ -16,7 +16,7 @@
     margin-left: 9rem;
 }
 
-.header {
+.header{
     margin-top: 10px;
     text-align: right;
     color: var(--black);
@@ -24,8 +24,15 @@
     gap: 15px;
     text-decoration: 1px underline gray;
 }
-
 .header_one {
+   display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    flex-direction: column;
+    gap: 10px;
+} 
+
+.header_two{
     display: flex;
     justify-content: center;
     align-items: flex-end;
@@ -33,50 +40,44 @@
     gap: 10px;
 }
 
-.header_two {
+.header_gral{
     display: flex;
     justify-content: center;
-    align-items: flex-end;
-    flex-direction: column;
+    align-items: center;
     gap: 10px;
-}
+    margin:10px 0;
 
-.header_gral {
-    display: flex;
-    justify-content: center;
-    align-items: baseline;
-    gap: 10px;
-    margin: 10px 0;
 }
 
 .card_title {
     font-weight: 600;
     color: var(--gray);
-    font-family: var(--default-font);
+    font-family: var(--heading-font);
     margin: 0;
     padding: 0;
-    font-size: 0.5em;
+    font-size: 0.6em;
     text-align: right;
 }
-
-.title_params {
+.title_params{
     color: var(--gray);
-    font-family: var(--default-font);
+    font-family: var(--heading-font);
     margin: 0;
-    margin-right: -10px;
-    padding: 0;
-    font-size: 0.7em;
-    font-weight: bold;
+    margin-right: 20px;
+    padding: 0 ;
+    font-size: 0.9em;
+    text-align: left;
+    text-decoration:2px var(--lightBlue) underline;
+    
 }
-
+  
 
 .form_test {
-    margin-top: 30px;
+    margin-top: 50px;
     display: flex;
     justify-content: space-around;
     align-items: flex-start;
+    
 }
-
 .block {
     border: 1px solid black;
     font-family: var(--default-font);
@@ -87,9 +88,10 @@
     justify-content: center;
     align-items: center;
     border-radius: 1%;
-    box-sizing: border-box;
+    box-sizing: border-box;    
     gap: 15px;
     padding: 10px 0;
     margin-bottom: 25px;
     height: 100%;
+    margin-top: 1rem;
 }

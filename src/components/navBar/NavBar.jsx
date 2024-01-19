@@ -5,23 +5,7 @@ import ConnectMetaMaskButton from '../connect/ConnectMetaMaskButton';
 import style from './navbar.module.css';
 
 export default function NavBar({ isOpen, toggleSidebar }) {
-  const [hasScrolled, setHasScrolled] = useState(false);
 
-  const handleScroll = () => {
-    const offset = window.scrollY;
-    if (offset > 30) {
-      setHasScrolled(true);
-    } else {
-      setHasScrolled(false);
-    }
-  };
-
-  useEffect(() => {
-    window.addEventListener('scroll', handleScroll);
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
-  }, []);
 
   return (   
 

@@ -57,7 +57,11 @@
     transition: all 0.5s ease;
     box-shadow: black 0px 1px 5px;        
     width: 13rem;
-}
+}  .bouton:hover {
+    background-color: var(--lightBlue);
+    color: var(--white);
+    box-shadow: black 0px 1px 10px;    
+  }
 
 .clipboard {
     width: 15px;

@@ -22,4 +22,8 @@
     box-sizing: border-box;
     margin-bottom: 10px;
     
+}  .bouton:hover {
+  background-color: var(--lightBlue);
+  color: var(--white);
+  box-shadow: black 0px 1px 10px;    
 }
