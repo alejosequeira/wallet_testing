@@ -9,6 +9,8 @@ const links = [
     { route: '/firstMethod', label: 'Auth Test' },
     { route: '/secondMethod', label: 'Eth_sign' },
     { route: '/thirdMethod', label: 'Send Transaction' },
+    { route: '/fourMethod', label: 'testing testing' },
+
 ];
 
 const BurgerMenu = ({ isOpen, toggleSidebar }) => {

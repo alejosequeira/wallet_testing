@@ -44,10 +44,10 @@ export default function EthAccountsComponent() {
 
                 <div className={`${style.content} ${sidebarOpen ? style.contentShift : ''}`}>
                     <div className={style.header_gral}>
-                        <h1 className={style.title_params}>Test Params : </h1>
+                        <h1 className={style.title_params}>Test Params: </h1>
                         <div className={style.header_one}>
-                            <h4 className={style.card_title}>address: </h4>
-                            <h4 className={style.card_title}>ciphertext: </h4>
+                            <h4 className={style.card_title}>Address </h4>
+                            <h4 className={style.card_title}>Ciphertext </h4>
                         </div>
                         <div className={style.header_two}>
                             <TextField

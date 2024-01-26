@@ -2,40 +2,37 @@
 import React, { useState, useEffect } from 'react';
 import style from '../sign_typedData/sign_typedData.module.css'
 import { Alert, TextField } from '@mui/material';
+import testParams from './msgParams.json';
 
-export default function Sign_typedData({ userAddress }) {
+export default function Sign_typedData({ address }) {
     const [signTypedDataV3, setSignTypedDataV3] = useState('');
     const [signTypedDataV4, setSignTypedDataV4] = useState('');
-    const [msgParams, setMsgParams] = useState(null);
-    const [editableJson, setEditableJson] = useState(''); // Initialize with an empty string
+    const [editedJson, setEditedJson] = useState(JSON.stringify(testParams, null, 2));
 
-    useEffect(() => {
-        async function fetchData() {
-            try {
-                const response = await import('../sign_typedData/msgParams.json');
-                const data = response.default;
-                setMsgParams(data);
-                setEditableJson(JSON.stringify(data, null, 2)); // Initialize with JSON data
-            } catch (error) {
-                console.error('Error loading msgParams.json:', error);
-            }
+
+    const handleSignTypedDataV3 = async () => {
+        if (!window.ethereum) return alert("MetaMask is required!");
+        try {
+            const provider = window.ethereum;
+            const sign = await provider.request({
+                method: 'eth_signTypedData_v3',
+                params: [address, editedJson],
+            });
+            setSignTypedDataV3(sign);
+            console.log(JSON.stringify(editedJson))
+        } catch (err) {
+            console.error(err);
+            setSignTypedDataV3(`Error: ${err.message}`);
         }
-
-        fetchData();
-    }, []);
-
-    const handleEditableJsonChange = (event) => {
-        setEditableJson(event.target.value);
     }
-
     const handleSignTypedDataV4 = async () => {
-        if (!window.ethereum) return alert('MetaMask is required!');
+        if (!window.ethereum) return alert("MetaMask is required!");
 
         try {
             const provider = window.ethereum;
             const sign = await provider.request({
                 method: 'eth_signTypedData_v4',
-                params: [userAddress, JSON.stringify(msgParams)],
+                params: [address, editedJson],
             });
             setSignTypedDataV4(sign);
         } catch (err) {
@@ -44,11 +41,44 @@ export default function Sign_typedData({ userAddress }) {
         }
     }
 
+    const handleEditableJsonChange = (e) => {
+        const editedData = e.target.value;
+        setEditedJson(editedData);     
+      };
+      
+
+    const handleFileUpload = (e) => {
+        const file = e.target.files[0];
+        if (file && file.type === "application/json") {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                const fileContent = e.target.result;
+                setEditedJson(fileContent);                
+            };
+            reader.readAsText(file);
+        }
+    };
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(editedJson);
+        const downloadAnchorNode = document.createElement('a');
+        downloadAnchorNode.setAttribute("href", dataStr);
+        downloadAnchorNode.setAttribute("download", "testParams.json");
+        document.body.appendChild(downloadAnchorNode);
+        downloadAnchorNode.click();
+        downloadAnchorNode.remove();
+    };
+
+
     return (
         <div className={style.container}>
+
+
             <div className={style.formu}>
                 <button
                     className={style.bouton}
+                    onClick={handleSignTypedDataV3}
                 >SIGN TYPED DATA V3
                 </button>
                 {signTypedDataV3 && (
@@ -102,101 +132,25 @@ export default function Sign_typedData({ userAddress }) {
                 )}
             </div>
             <div className={style.formulario}>
-                <TextField
-                    multiline
-                    rows={10}
-                    variant="outlined"
-                    fullWidth
-                    value={editableJson}
+                <div className={style.formulario_input}>
+                    <input
+                        type="file"
+                        id="fileInput"
+                        accept=".json"
+                        onChange={handleFileUpload}
+                        className={style.input_file}
+                    />
+                    <button
+                        onClick={handleSubmit}
+                        className={style.bouton_download}
+                    >Download Sample File</button>
+                </div>
+                <textarea
+                    className={style.textarea_json}
+                    value={editedJson}
                     onChange={handleEditableJsonChange}
                 />
-            </div>
-
-            {/* <div className={style.formulario}>
-
-                <label htmlFor="chainId">Chain ID:</label>
-                <input
-                    id="chainId"
-                    type="text"
-                    value={chainId}
-                    onChange={(e) => setChainId(e.target.value)}
-                    className={style.formulario_input}
-                />
-
-                <label htmlFor="domainName">Domain Name:</label>
-                <input
-                    id="domainName"
-                    type="text"
-                    value={domainName}
-                    onChange={(e) => setDomainName(e.target.value)}
-                    className={style.formulario_input}
-                />
-
-                <label htmlFor="verifyingContract">Verifying Contract:</label>
-                <input
-                    id="verifyingContract"
-                    type="text"
-                    value={verifyingContract}
-                    onChange={(e) => setVerifyingContract(e.target.value)}
-                    className={style.formulario_input}
-                />
-
-                <label htmlFor="version">Version:</label>
-                <input
-                    id="version"
-                    type="text"
-                    value={version}
-                    onChange={(e) => setVersion(e.target.value)}
-                    className={style.formulario_input}
-                />
-
-                <label htmlFor="messageContents">Message Contents:</label>
-                <input
-                    id="messageContents"
-                    type="text"
-                    value={messageContents}
-                    onChange={(e) => setMessageContents(e.target.value)}
-                    className={style.formulario_input}
-                />
-
-                <label htmlFor="messageFromName">Message From Name:</label>
-                <input
-                    id="messageFromName"
-                    type="text"
-                    value={messageFromName}
-                    onChange={(e) => setMessageFromName(e.target.value)}
-                    className={style.formulario_input}
-                />
-
-                <label htmlFor="messageToName">Message To Name:</label>
-                <input
-                    id="messageToName"
-                    type="text"
-                    value={messageToName}
-                    onChange={(e) => setMessageToName(e.target.value)}
-                    className={style.formulario_input}
-                />
-
-                <label htmlFor="messageFromWallet">Message From Wallet:</label>
-                <input
-                    id="messageFromWallet"
-                    type="text"
-                    value={messageFromWallet}
-                    onChange={(e) => setMessageFromWallet(e.target.value)}
-
-                    className={style.formulario_input}
-                />
-
-                <label htmlFor="messageToWallet">Message To Wallet:</label>
-                <input
-                    id="messageToWallet"
-                    type="text"
-                    value={messageToWallet}
-                    onChange={(e) => setMessageToWallet(e.target.value)}
-                    className={style.formulario_input}
-                />
-
-            </div> */}
+            </div>           
         </div>
     );
 }

@@ -5,7 +5,6 @@ import Link from 'next/link'
 import NavBar from '@/components/navBar/NavBar'
 import ConnectMetaMaskButton from '@/components/connect/ConnectMetaMaskButton'
 import Image from 'next/image'
-import Atropos from 'atropos/react'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -23,6 +22,7 @@ export default function RootLayout({ children }) {
         <title>{metadata.title}</title>
         <meta name="description" content={metadata.description} />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/"></link>
         <link
           href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;900&family=Roboto+Mono:wght@400;900&family=Roboto:wght@400;900&display=swap"
           rel="stylesheet"
