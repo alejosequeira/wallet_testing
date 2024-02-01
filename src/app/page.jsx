@@ -1,12 +1,14 @@
 import Image from 'next/image'
 import styles from './page.module.css'
 import NavBar from '@/components/navBar/NavBar'
+import EthAccountsComponent from '@/components/address/EnteredAddress'
 
 export default function Home() {
   return (
-    <div>      
-      <NavBar/>
-    <main className={styles.main}>
+    <div>    
+       <EthAccountsComponent />  
+      {/* <NavBar/> */}
+    {/* <main className={styles.main}>
       <div className={styles.description}>
         <p>
           Get started by editing&nbsp;
@@ -93,7 +95,7 @@ export default function Home() {
           </p>
         </a>
       </div>
-    </main>
+    </main> */}
     </div>
   )
 }

@@ -128,7 +128,7 @@
   background-color: var(--lightGray);
   max-width: 8rem;
   font: var(--default-font);
-  font-size: 0.4rem;
+  font-size: 0.45rem;
   cursor: pointer;
   transition: all 0.3s ease;
   box-shadow: inset black 0px 0.09px 5px;    
@@ -151,7 +151,7 @@
 }
 .bouton_download{
   font: var(--default-font);
-  font-size: 0.4rem;
+  font-size: 0.45rem;
   margin: 0 auto;
   background-color: var(--gray);
   color: var(--ligtherGray);
@@ -168,4 +168,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
+}
+.bouton_download_span{
+  margin: auto;
 }

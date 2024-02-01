@@ -6,6 +6,10 @@ import style from './ea_third.module.css'
 import BurgerMenu from '../../components/burguer/BurguerMenu';
 import NavBar from '../../components/navBar/NavBar';
 import Send_thirdd from '../send_transaction_third/Send_thirdd';
+import Juan2pepito from '../juan_pepito/Juan2pepito';
+
+
+
 
 export default function EnteredAddress_third() {
     const [address, setAddress] = useState('');
@@ -33,6 +37,10 @@ export default function EnteredAddress_third() {
                         <div className={style.block}>
 
                             <Send_thirdd address={address} />
+                        </div>
+                        <div className={style.block}>
+
+                            <Juan2pepito />
                         </div>
 
                     </div>

@@ -8,6 +8,7 @@ export default function Sign_typedData({ address }) {
     const [signTypedDataV3, setSignTypedDataV3] = useState('');
     const [signTypedDataV4, setSignTypedDataV4] = useState('');
     const [editedJson, setEditedJson] = useState(JSON.stringify(testParams, null, 2));
+    
 
 
     const handleSignTypedDataV3 = async () => {
@@ -21,7 +22,7 @@ export default function Sign_typedData({ address }) {
             setSignTypedDataV3(sign);
             console.log(JSON.stringify(editedJson))
         } catch (err) {
-            console.error(err);
+            console.error("Error este: "+err);
             setSignTypedDataV3(`Error: ${err.message}`);
         }
     }
@@ -143,7 +144,9 @@ export default function Sign_typedData({ address }) {
                     <button
                         onClick={handleSubmit}
                         className={style.bouton_download}
-                    >Download Sample File</button>
+                    >
+                        <span className={style.bouton_download_span}> Download Sample File</span>
+                       </button>
                 </div>
                 <textarea
                     className={style.textarea_json}

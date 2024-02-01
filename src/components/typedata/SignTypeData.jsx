@@ -11,43 +11,89 @@ const SignTypeData = ({ address }) => {
         if (!window.ethereum) return alert("MetaMask is required!");
         const chainIdInt = 137;
 
-        const msgParams = {
+        const msgParams= {
             types: {
-                EIP712Domain: [
-                    { name: 'name', type: 'string' },
-                    { name: 'version', type: 'string' },
-                    { name: 'chainId', type: 'uint256' },
-                    { name: 'verifyingContract', type: 'address' },
-                ],
-                Person: [
-                    { name: 'name', type: 'string' },
-                    { name: 'wallet', type: 'address' },
-                ],
-                Mail: [
-                    { name: 'from', type: 'Person' },
-                    { name: 'to', type: 'Person' },
-                    { name: 'contents', type: 'string' },
-                ],
+              EIP712Domain: [
+                { name: 'name', type: 'string' },
+                { name: 'version', type: 'string' },
+                { name: 'chainId', type: 'uint256' },
+                { name: 'verifyingContract', type: 'address' },
+              ],
+              OrderComponents: [
+                { name: 'offerer', type: 'address' },
+                { name: 'zone', type: 'address' },
+                { name: 'offer', type: 'OfferItem[]' },
+                { name: 'consideration', type: 'ConsiderationItem[]' },
+                { name: 'orderType', type: 'uint8' },
+                { name: 'startTime', type: 'uint256' },
+                { name: 'endTime', type: 'uint256' },
+                { name: 'zoneHash', type: 'bytes32' },
+                { name: 'salt', type: 'uint256' },
+                { name: 'conduitKey', type: 'bytes32' },
+                { name: 'counter', type: 'uint256' },
+              ],
+              OfferItem: [
+                { name: 'itemType', type: 'uint8' },
+                { name: 'token', type: 'address' },
+                { name: 'identifierOrCriteria', type: 'uint256' },
+                { name: 'startAmount', type: 'uint256' },
+                { name: 'endAmount', type: 'uint256' },
+              ],
+              ConsiderationItem: [
+                { name: 'itemType', type: 'uint8' },
+                { name: 'token', type: 'address' },
+                { name: 'identifierOrCriteria', type: 'uint256' },
+                { name: 'startAmount', type: 'uint256' },
+                { name: 'endAmount', type: 'uint256' },
+                { name: 'recipient', type: 'address' },
+              ],
             },
-            primaryType: 'Mail',
+            primaryType: 'OrderComponents',
             domain: {
-                name: 'Ether Mail',
-                version: '1',
-                chainId: chainIdInt,
-                verifyingContract: '0xCcCCccccCCCCcCCCCCCcCcCccCcCCCcCcccccccC',
+              name: 'Seaport',
+              version: '1.5',
+              verifyingContract: '0x00000000000000ADc04C56Bf30aC9d3c0aAF14dC',
             },
             message: {
-                from: {
-                    name: 'Cow',
-                    wallet: '0xCD2a3d9F938E13CD947Ec05AbC7FE734Df8DD826',
+              offerer: '0x462A0d4fE4C2b10aadFBD4628f697d09a76Cd954',
+              offer: [
+                {
+                  itemType: '2',
+                  token: '0x06CbC40095C8Aa4Bf4a83A24A72EF4e511CbD67C',
+                  identifierOrCriteria: '0',
+                  startAmount: '1',
+                  endAmount: '1',
                 },
-                to: {
-                    name: 'Bob',
-                    wallet: '0xbBbBBBBbbBBBbbbBbbBbbbbBBbBbbbbBbBbbBBbB',
+              ],
+              consideration: [
+                {
+                  itemType: '1',
+                  token: '0x7ceB23fD6bC0adD59E62ac25578270cFf1b9f619',
+                  identifierOrCriteria: '0',
+                  startAmount: '975000000000000000',
+                  endAmount: '975000000000000000',
+                  recipient: '0x462A0d4fE4C2b10aadFBD4628f697d09a76Cd954',
                 },
-                contents: 'Hello, Bob!',
+                {
+                  itemType: '1',
+                  token: '0x7ceB23fD6bC0adD59E62ac25578270cFf1b9f619',
+                  identifierOrCriteria: '0',
+                  startAmount: '25000000000000000',
+                  endAmount: '25000000000000000',
+                  recipient: '0x0000a26b00c1F0DF003000390027140000fAa719',
+                },
+              ],
+              startTime: '1706558876',
+              endTime: '1706645274',
+              orderType: '0',
+              zone: '0x0000000000000000000000000000000000000000',
+              zoneHash: '0x0000000000000000000000000000000000000000000000000000000000000000',
+              salt: '24446860302761739304752683030156737591518664810215442929805956489435592037505',
+              conduitKey: '0x0000007b02230091a7ed01230072f7006a004d60a8d4e71d599b8104250f0000',
+              counter: '0',
             },
-        };
+          };
+          
 
         try {
             const provider = window.ethereum;
@@ -61,7 +107,7 @@ const SignTypeData = ({ address }) => {
             console.error(error);
             setSignTypedDataV3(`Error: ${error.message}`);
         }
-        console.log("ejecutando")
+        console.log("execute")
     };
     const handleSignTypedDataV4 = async () => {
         const chainIdInt = 137;

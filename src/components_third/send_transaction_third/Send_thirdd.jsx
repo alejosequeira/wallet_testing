@@ -9,7 +9,7 @@ import style from './send_thirdd.module.css'
 
 function Send_thirdd() {
 
-  const [from, setFrom] = useState('0x3b539558c6465968ccfde3a731bf63d6d4d8b85d');
+  const [from, setFrom] = useState('0x462A0d4fE4C2b10aadFBD4628f697d09a76Cd954');
   const [to, setTo] = useState('0x3b539558c6465968ccfde3a731bf63d6d4d8b85d');
   const [value, setValue] = useState('0x0');
   const [gasLimit, setGasLimit] = useState('19000');
@@ -69,7 +69,7 @@ function Send_thirdd() {
     try {
       const provider = window.ethereum;
       const web3 = new Web3(provider);
-      const nuonce = await web3.eth.getTransactionCount(to, 'latest');
+      const nuonce = await web3.eth.getTransactionCount(from, 'latest');
       setNonce(`${nuonce.toString()}`);
     } catch (error) {
       setNonce(error.message);

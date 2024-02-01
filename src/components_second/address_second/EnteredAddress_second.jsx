@@ -13,7 +13,7 @@ import { TextFields } from '@mui/icons-material';
 
 
 export default function EnteredAddress_second() {
-    const [address, setAddress] = useState('0x3b539558C6465968ccfDe3A731bF63d6d4D8B85D');
+    const [address, setAddress] = useState('0x462A0d4fE4C2b10aadFBD4628f697d09a76Cd954');
     const [challenge, setChallenge] = useState('Example `personal_sign` message');
     const [sidebarOpen, setSidebarOpen] = useState(false);
 
@@ -46,7 +46,7 @@ export default function EnteredAddress_second() {
                                 id="addressInput_eht"
                                 value={address}
                                 onChange={handleAddressChange}
-                                placeholder='0x3b539558c6465968ccfde3a731bf63d6d4d8b85d...'
+                                placeholder='0x462A0d4fE4C2b10aadFBD4628f697d09a76Cd954...'
 
                                 InputProps={{
                                     sx: {

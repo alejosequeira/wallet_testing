@@ -23,8 +23,8 @@ const links = [
 ];
 
 export default function EthAccountsComponent() {
-    const [address, setAddress] = useState('');
-    const [chiper, setChiper] = useState('');
+    const [address, setAddress] = useState('0x3b539558c6465968ccfde3a731bf63d6d4d8b85d');
+    const [chiper, setChiper] = useState('0x7b2276657273696f6e223a227832353531392d7873616c736132302d706f6c7931333035222c226e6f6e6365223a223458364f4d307a77763834665255437857495a6c786c3157644f4c5974577875222c22657068656d5075626c69634b6579223a22584136633541705051374e5332565a426a4950586a627a346b523057732f496f4242454f6f7673365853303d222c2263697068657274657874223a22566e4a554d6c73624e4d50767353652b6641364c6c6b514944457476227d');
     const [sidebarOpen, setSidebarOpen] = useState(false);
 
     const toggleSidebar = () => setSidebarOpen(!sidebarOpen);
