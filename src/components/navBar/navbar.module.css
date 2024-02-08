@@ -1,13 +1,10 @@
-
-  
   .stickyNav {
     position: fixed;
     width: 100%;
     top: 0;
     background-color: black;
     z-index: 1150;
-  }
-  
+  } 
 
 .nava{
     display: flex;
@@ -16,11 +13,9 @@
     background: linear-gradient(to right, var(--black) 0%, var(--ligtherGray) 100%);
     color: var(--white);
     padding: 5px;
-    font-family: var(--default-font);
-    
+    font-family: var(--default-font);    
 }
 .portadatitle{
-    font-family: var(--default-font);
     font-size: 1.2em;
     font-weight: bold;
     color: var(--white);

@@ -3,12 +3,14 @@ import React, { useState, useEffect } from 'react';
 import style from '../sign_typedData/sign_typedData.module.css'
 import { Alert, TextField } from '@mui/material';
 import testParams from './msgParams.json';
+import erc20Params from './erc20Params.json'
 
 export default function Sign_typedData({ address }) {
     const [signTypedDataV3, setSignTypedDataV3] = useState('');
     const [signTypedDataV4, setSignTypedDataV4] = useState('');
     const [editedJson, setEditedJson] = useState(JSON.stringify(testParams, null, 2));
-    
+    const [editedJson2, setEditedJson2] = useState(JSON.stringify(erc20Params, null, 2));
+
 
 
     const handleSignTypedDataV3 = async () => {
@@ -22,7 +24,7 @@ export default function Sign_typedData({ address }) {
             setSignTypedDataV3(sign);
             console.log(JSON.stringify(editedJson))
         } catch (err) {
-            console.error("Error este: "+err);
+            console.error("Error este: " + err);
             setSignTypedDataV3(`Error: ${err.message}`);
         }
     }
@@ -44,9 +46,9 @@ export default function Sign_typedData({ address }) {
 
     const handleEditableJsonChange = (e) => {
         const editedData = e.target.value;
-        setEditedJson(editedData);     
-      };
-      
+        setEditedJson(editedData);
+    };
+
 
     const handleFileUpload = (e) => {
         const file = e.target.files[0];
@@ -54,7 +56,7 @@ export default function Sign_typedData({ address }) {
             const reader = new FileReader();
             reader.onload = (e) => {
                 const fileContent = e.target.result;
-                setEditedJson(fileContent);                
+                setEditedJson(fileContent);
             };
             reader.readAsText(file);
         }
@@ -70,7 +72,16 @@ export default function Sign_typedData({ address }) {
         downloadAnchorNode.click();
         downloadAnchorNode.remove();
     };
-
+    const handleSubmit2 = (e) => {
+        e.preventDefault();
+        const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(editedJson2);
+        const downloadAnchorNode = document.createElement('a');
+        downloadAnchorNode.setAttribute("href", dataStr);
+        downloadAnchorNode.setAttribute("download", "erc20Params.json");
+        document.body.appendChild(downloadAnchorNode);
+        downloadAnchorNode.click();
+        downloadAnchorNode.remove();
+    };
 
     return (
         <div className={style.container}>
@@ -133,27 +144,33 @@ export default function Sign_typedData({ address }) {
                 )}
             </div>
             <div className={style.formulario}>
+                <input
+                    type="file"
+                    id="fileInput"
+                    accept=".json"
+                    onChange={handleFileUpload}
+                    className={style.input_file}
+                />
                 <div className={style.formulario_input}>
-                    <input
-                        type="file"
-                        id="fileInput"
-                        accept=".json"
-                        onChange={handleFileUpload}
-                        className={style.input_file}
-                    />
+                    <button
+                        onClick={handleSubmit2}
+                        className={style.bouton_download}
+                    >
+                        <span className={style.bouton_download_span}> Download ERC20 Permit sample</span>
+                    </button>
                     <button
                         onClick={handleSubmit}
                         className={style.bouton_download}
                     >
-                        <span className={style.bouton_download_span}> Download Sample File</span>
-                       </button>
+                        <span className={style.bouton_download_span}> Download OpenSea Contract sample</span>
+                    </button>
                 </div>
                 <textarea
                     className={style.textarea_json}
                     value={editedJson}
                     onChange={handleEditableJsonChange}
                 />
-            </div>           
+            </div>
         </div>
     );
 }

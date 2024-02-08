@@ -106,7 +106,7 @@
   justify-content: space-between;
   align-items: center;
 
-  width: 15.5rem;
+  width: 17rem;
   /* background-color: var(--darkGray); */
   font: var(--default-font);
   font-size: 0.6rem;
@@ -115,7 +115,7 @@
   padding: 5px 10px;
   box-sizing: border-box;
   color: var(--white);
-  gap: 1rem;
+  gap: 0.5rem;
 }
 
 
@@ -126,13 +126,13 @@
 }
 .input_file{
   background-color: var(--lightGray);
-  max-width: 8rem;
+  max-width: 9rem;
   font: var(--default-font);
   font-size: 0.45rem;
   cursor: pointer;
   transition: all 0.3s ease;
   box-shadow: inset black 0px 0.09px 5px;    
-  height: 0.75rem;
+  height: 0.85rem;
   border: 0.1rem  solid var(--darkGray);
   text-align: center;
   text-decoration: none;
@@ -157,9 +157,8 @@
   color: var(--ligtherGray);
   cursor: pointer;
   transition: all 0.3s ease;
-  /* box-shadow: inset black 0px 0.09px 5px;     */
   border-radius: 1px;
-  width: 5.5rem;    
+  width: 10rem;    
   height: 0.75rem;
   color: white;
   border: 0.1rem solid var(--darkGray);

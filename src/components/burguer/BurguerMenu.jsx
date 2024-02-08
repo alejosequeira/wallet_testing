@@ -6,11 +6,10 @@ import PlayArrowOutlinedIcon from '@mui/icons-material/PlayArrowOutlined';
 
 const links = [
     // { route: '/', label: 'Home' },
-    { route: '/firstMethod', label: 'Auth Test' },
-    { route: '/secondMethod', label: 'Eth_sign' },
-    { route: '/thirdMethod', label: 'Send Transaction' },
-    { route: '/fourMethod', label: 'testing testing' },
-
+    { route: '/auth', label: 'Auth Test' },
+    { route: '/signing', label: 'Signing' },
+    { route: '/sending', label: 'Send Transaction' },
+    { route: '/fourMethod', label: 'ADD testing method' },
 ];
 
 const BurgerMenu = ({ isOpen, toggleSidebar }) => {

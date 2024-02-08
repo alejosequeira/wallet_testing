@@ -14,7 +14,6 @@ function Send_thirdd() {
   const [value, setValue] = useState('0x0');
   const [gasLimit, setGasLimit] = useState('19000');
   const [gasPrice, setGasPrice] = useState('6876489100');
-  const [type, setType] = useState('0x0');
   const [data, setData] = useState('0x');
   const [nonce, setNonce] = useState('0x0');
   const [chainId, setChainId] = useState('1');
@@ -183,11 +182,11 @@ function Send_thirdd() {
       const web3 = new Web3(provider);
       const latestBlock = await web3.eth.getBlock('latest');
       const baseFeePerGas = latestBlock.baseFeePerGas;
-  
+
       const baseFeeBigInt = BigInt(baseFeePerGas);
-  
-      const estimatedMaxFeePerGas = baseFeeBigInt * BigInt(2);  
-  
+
+      const estimatedMaxFeePerGas = baseFeeBigInt * BigInt(2);
+
       setMaxFeePerGas(estimatedMaxFeePerGas.toString());
     } catch (error) {
       console.error('Error fetching max fees:', error);
@@ -209,9 +208,9 @@ function Send_thirdd() {
             onClick={handleSend_standard}
           >SEND TRANSACTION
           </button>
-        )}        
+        )}
       </div>
-      
+
       <div className={style.formulario}>
         <label htmlFor="fromInput">From:</label>
         <input
@@ -255,12 +254,12 @@ function Send_thirdd() {
         <div className={style.type_check} >
 
           <div className={style.type_checkk}>
-          <input className={style.input_check} type="checkbox" checked={selectedOption === '0x2'} onChange={toggleOption} />
-          <span className={style.labelText}> EIP-1559</span></div>
+            <input className={style.input_check} type="checkbox" checked={selectedOption === '0x2'} onChange={toggleOption} />
+            <span className={style.labelText}> EIP-1559</span></div>
 
           <div className={style.type_checkk}>
-          <input className={style.input_check} type="checkbox" checked={selectedOption === '0x0'} onChange={toggleOption} />
-          <span className={style.labelText}> Standard</span></div>
+            <input className={style.input_check} type="checkbox" checked={selectedOption === '0x0'} onChange={toggleOption} />
+            <span className={style.labelText}> Standard</span></div>
         </div>
 
         {selectedOption === '0x2' ? (
@@ -271,7 +270,7 @@ function Send_thirdd() {
           <label htmlFor="gasLimitInput">Gas Limit:</label>
         )}
         {selectedOption === '0x2' ? (
-           <div className={style.botton_toggle}>
+          <div className={style.botton_toggle}>
             <input
               type="text"
               id="MaxFeePerGasInput"
@@ -303,16 +302,16 @@ function Send_thirdd() {
           </div>
         )}
         {selectedOption === '0x2' ? (
-            <label htmlFor="setMaxPriorityFeePerGas">Priority: </label>            
+          <label htmlFor="setMaxPriorityFeePerGas">Priority: </label>
         ) : ("")}
         {selectedOption === '0x2' ? (
-            <input
-              type="text"
-              id="MaxPriorityFeePerGasInput"
-              value={maxPriorityFeePerGas}
-              onChange={(e) => setMaxPriorityFeePerGas(e.target.value)}
-              className={style.formulario_input}
-            />       
+          <input
+            type="text"
+            id="MaxPriorityFeePerGasInput"
+            value={maxPriorityFeePerGas}
+            onChange={(e) => setMaxPriorityFeePerGas(e.target.value)}
+            className={style.formulario_input}
+          />
         ) : ("")}
 
         <label htmlFor="gasPriceInput">Gas Price: </label>
@@ -370,59 +369,59 @@ function Send_thirdd() {
         />
 
 
-        
+
 
       </div>
       {send_thirdResult && (
-          <div className={style.formu}>
-            <Alert
+        <div className={style.formu}>
+          <Alert
 
-              severity=""
+            severity=""
 
-              sx={{
-                width: "20rem",
-                maxWidth: "19.5rem",
-                fontSize: '13px',
-                color: 'black',
-                backgroundColor: 'lightgray',
-                border: '3px solid gray',
-                borderRadius: '5px',
-                padding: '0 10px 0px 0px',
-                textAlign: 'center',
-                margin: '0 5px',
-                marginTop: '5px',
-                boxShadow: 'white 3px 3px 3px 0px inset, white -3px -3px 3px 0px inset',
-                display: 'flex',
-                justifyContent: 'center'
-              }}
+            sx={{
+              width: "20rem",
+              maxWidth: "19.5rem",
+              fontSize: '13px',
+              color: 'black',
+              backgroundColor: 'lightgray',
+              border: '3px solid gray',
+              borderRadius: '5px',
+              padding: '0 10px 0px 0px',
+              textAlign: 'center',
+              margin: '0 5px',
+              marginTop: '5px',
+              boxShadow: 'white 3px 3px 3px 0px inset, white -3px -3px 3px 0px inset',
+              display: 'flex',
+              justifyContent: 'center'
+            }}
 
-            >
-              {toggleHash ? (
-                <AlertTitle
-                  sx={{
-                    fontSize: '13px',
-                    fontWeight: '600',
-                    margin: '0',
-                    color: 'blue',
-                    textAlign: 'start',
-                  }}>
-                  Tnx Hash: </AlertTitle>
+          >
+            {toggleHash ? (
+              <AlertTitle
+                sx={{
+                  fontSize: '13px',
+                  fontWeight: '600',
+                  margin: '0',
+                  color: 'blue',
+                  textAlign: 'start',
+                }}>
+                Tnx Hash: </AlertTitle>
 
-              ) : (
-                <AlertTitle
-                  sx={{
-                    fontSize: '13px',
-                    fontWeight: '600',
-                    margin: '0',
-                    color: '#ad0424',
-                    textAlign: 'center',
-                  }}>
-                  Error: </AlertTitle>)}
+            ) : (
+              <AlertTitle
+                sx={{
+                  fontSize: '13px',
+                  fontWeight: '600',
+                  margin: '0',
+                  color: '#ad0424',
+                  textAlign: 'center',
+                }}>
+                Error: </AlertTitle>)}
 
 
-              {send_thirdResult}</Alert>
-          </div>
-        )}
+            {send_thirdResult}</Alert>
+        </div>
+      )}
 
     </div>
   );

@@ -1,6 +1,6 @@
 'use client';
 import React from 'react'
-import { Alert, Button } from '@mui/material';
+import { Alert} from '@mui/material';
 import { useState } from 'react';
 import Web3 from 'web3';
 import style from './ethaccount.module.css'

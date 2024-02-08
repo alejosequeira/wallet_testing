@@ -1,6 +1,5 @@
-'use client'
 
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import ConnectMetaMaskButton from '../connect/ConnectMetaMaskButton';
 import style from './navbar.module.css';
 

@@ -20,3 +20,55 @@
     box-shadow: 5px 5px 10px var(--darkGray);
     transition: 0.5s;
 }
+.container_connected{
+    /* background-color: var(--darkGray); */
+    /* border: 2px solid white; */
+    color:  var(--darkGray);
+    padding: 0 15px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    font-family: var(--default-font);
+    margin-right: 15px;
+}
+.container_connected:hover{
+    color: var(--black);
+}
+.container_connected h6{
+    color: var(--black);   
+}
+
+
+
+
+.text_copied {
+    display: none;
+    position: absolute;
+    top: -23px;
+    left: -15px;
+    background-color: var(--darkGray);
+    color: white;
+    padding: 5px;
+    border-radius: 5px;
+    font: var(--default-font);
+    font-size: 0.5rem;
+}
+
+.container:hover .text_copied {
+    display: block;
+}
+
+.clipboard {
+    width: 15px;
+    padding: 0;
+    margin: 0;
+    margin-left: 5px;
+    cursor: pointer;
+    z-index: 10;
+}
+
+.clipboard:hover {
+    color: black;
+    transform: scale(1.1);
+}
