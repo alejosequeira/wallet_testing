@@ -210,6 +210,56 @@ function Send_thirdd() {
           </button>
         )}
       </div>
+      {send_thirdResult && (
+        <div className={style.formu}>
+          <Alert
+
+            severity=""
+
+            sx={{
+              width: "20rem",
+              maxWidth: "19.5rem",
+              fontSize: '13px',
+              color: 'black',
+              backgroundColor: 'lightgray',
+              border: '3px solid gray',
+              borderRadius: '5px',
+              padding: '0 10px 0px 0px',
+              textAlign: 'center',
+              margin: '0 5px',
+              marginTop: '5px',
+              boxShadow: 'white 3px 3px 3px 0px inset, white -3px -3px 3px 0px inset',
+              display: 'flex',
+              justifyContent: 'center'
+            }}
+
+          >
+            {toggleHash ? (
+              <AlertTitle
+                sx={{
+                  fontSize: '13px',
+                  fontWeight: '600',
+                  margin: '0',
+                  color: 'blue',
+                  textAlign: 'center',
+                }}>
+                Tnx Hash: </AlertTitle>
+
+            ) : (
+              <AlertTitle
+                sx={{
+                  fontSize: '13px',
+                  fontWeight: '600',
+                  margin: '0',
+                  color: '#ad0424',
+                  textAlign: 'center',
+                }}>
+                Error: </AlertTitle>)}
+
+
+            {send_thirdResult}</Alert>
+        </div>
+      )}
 
       <div className={style.formulario}>
         <label htmlFor="fromInput">From:</label>
@@ -372,56 +422,7 @@ function Send_thirdd() {
 
 
       </div>
-      {send_thirdResult && (
-        <div className={style.formu}>
-          <Alert
-
-            severity=""
-
-            sx={{
-              width: "20rem",
-              maxWidth: "19.5rem",
-              fontSize: '13px',
-              color: 'black',
-              backgroundColor: 'lightgray',
-              border: '3px solid gray',
-              borderRadius: '5px',
-              padding: '0 10px 0px 0px',
-              textAlign: 'center',
-              margin: '0 5px',
-              marginTop: '5px',
-              boxShadow: 'white 3px 3px 3px 0px inset, white -3px -3px 3px 0px inset',
-              display: 'flex',
-              justifyContent: 'center'
-            }}
-
-          >
-            {toggleHash ? (
-              <AlertTitle
-                sx={{
-                  fontSize: '13px',
-                  fontWeight: '600',
-                  margin: '0',
-                  color: 'blue',
-                  textAlign: 'start',
-                }}>
-                Tnx Hash: </AlertTitle>
-
-            ) : (
-              <AlertTitle
-                sx={{
-                  fontSize: '13px',
-                  fontWeight: '600',
-                  margin: '0',
-                  color: '#ad0424',
-                  textAlign: 'center',
-                }}>
-                Error: </AlertTitle>)}
-
-
-            {send_thirdResult}</Alert>
-        </div>
-      )}
+      
 
     </div>
   );
