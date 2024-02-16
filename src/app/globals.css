@@ -1,5 +1,5 @@
 :root {
-  /* coinspec */
+  /* coinspect */
   --black: #000000;
   --white: #ffffff;
   --brand: #e5b136;
@@ -23,7 +23,7 @@
   --monospace-font: normal normal normal 24px / 1.5 'Roboto Mono', monospace;
   --heading-font: normal 900 normal 36px / 1.5 'Roboto', sans-serif;
   --heading-font-family: 'Roboto', sans-serif;
-  /* coinspec */
+  /* coinspect */
 
   --max-width: 1100px;
   --border-radius: 12px;

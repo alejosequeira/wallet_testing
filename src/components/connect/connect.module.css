@@ -38,10 +38,6 @@
 .container_connected h6{
     color: var(--black);   
 }
-
-
-
-
 .text_copied {
     display: none;
     position: absolute;

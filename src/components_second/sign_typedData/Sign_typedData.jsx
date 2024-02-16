@@ -1,5 +1,5 @@
 "use client"
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import style from '../sign_typedData/sign_typedData.module.css'
 import { Alert, TextField } from '@mui/material';
 import testParams from './msgParams.json';
@@ -11,7 +11,17 @@ export default function Sign_typedData({ address }) {
     const [editedJson, setEditedJson] = useState(JSON.stringify(testParams, null, 2));
     const [editedJson2, setEditedJson2] = useState(JSON.stringify(erc20Params, null, 2));
 
+    const [displayJson, setDisplayJson] = useState(editedJson);
+    const [displayContract, setDisplayContract] = useState(false);
 
+    const toggleDisplay = () => {
+        setDisplayContract(!displayContract);
+        if (displayContract) {
+            setDisplayJson(editedJson);
+        } else {
+            setDisplayJson(editedJson2);
+        }
+    };
 
     const handleSignTypedDataV3 = async () => {
         if (!window.ethereum) return alert("MetaMask is required!");
@@ -19,7 +29,7 @@ export default function Sign_typedData({ address }) {
             const provider = window.ethereum;
             const sign = await provider.request({
                 method: 'eth_signTypedData_v3',
-                params: [address, editedJson],
+                params: [address, displayJson],
             });
             setSignTypedDataV3(sign);
             console.log(JSON.stringify(editedJson))
@@ -35,7 +45,7 @@ export default function Sign_typedData({ address }) {
             const provider = window.ethereum;
             const sign = await provider.request({
                 method: 'eth_signTypedData_v4',
-                params: [address, editedJson],
+                params: [address, displayJson],
             });
             setSignTypedDataV4(sign);
         } catch (err) {
@@ -46,7 +56,11 @@ export default function Sign_typedData({ address }) {
 
     const handleEditableJsonChange = (e) => {
         const editedData = e.target.value;
-        setEditedJson(editedData);
+        if (displayContract) {
+            setEditedJson(editedData);
+        } else {
+            setEditedJson2(editedData);
+        }
     };
 
 
@@ -151,6 +165,9 @@ export default function Sign_typedData({ address }) {
                     onChange={handleFileUpload}
                     className={style.input_file}
                 />
+               
+
+
                 <div className={style.formulario_input}>
                     <button
                         onClick={handleSubmit2}
@@ -165,11 +182,17 @@ export default function Sign_typedData({ address }) {
                         <span className={style.bouton_download_span}> Download OpenSea Contract sample</span>
                     </button>
                 </div>
-                <textarea
-                    className={style.textarea_json}
-                    value={editedJson}
-                    onChange={handleEditableJsonChange}
-                />
+                <div className={style.textareaContainer}>
+                    <button className={style.toggleButton} onClick={toggleDisplay}>
+                        {displayContract ? 'ERC20' : 'OpenSea'}
+                    </button>
+                    <textarea
+                        className={style.textarea_json}
+                        value={displayJson}
+                        onChange={handleEditableJsonChange}
+                    ></textarea>
+                </div>
+
             </div>
         </div>
     );

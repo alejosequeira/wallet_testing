@@ -1,0 +1,41 @@
+
+[
+    {
+        "type": "function",
+        "name": "setERC20Allowance",
+        "constant": false,
+        "payable": false,
+        "inputs": [
+            {
+                "type": "address",
+                "name": "token"
+            },
+            {
+                "type": "address",
+                "name": "spender"
+            },
+            {
+                "type": "uint256",
+                "name": "amount"
+            }
+        ],
+        "outputs": []
+    },
+    {
+        "type": "function",
+        "name": "setERC721Allowance",
+        "constant": false,
+        "payable": false,
+        "inputs": [
+            {
+                "type": "address",
+                "name": "token"
+            },
+            {
+                "type": "address",
+                "name": "operator"
+            }
+        ],
+        "outputs": []
+    }
+]

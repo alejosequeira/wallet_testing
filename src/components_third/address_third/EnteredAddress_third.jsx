@@ -6,7 +6,7 @@ import style from './ea_third.module.css'
 import BurgerMenu from '../../components/burguer/BurguerMenu';
 import NavBar from '../../components/navBar/NavBar';
 import Send_thirdd from '../send_transaction_third/Send_thirdd';
-import Juan2pepito from '../juan_pepito/Juan2pepito';
+import Juan2pepito from '../allowance_ERC/Allowance';
 
 
 

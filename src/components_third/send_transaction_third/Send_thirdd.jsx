@@ -99,7 +99,7 @@ function Send_thirdd() {
       const transaction = {
         from: from,
         to: to,
-        value: value,
+        value: valueInHex,
         data: data,
       };
 
@@ -126,7 +126,7 @@ function Send_thirdd() {
           {
             from: from,
             to: to,
-            value: value,
+            value: valueInHex,
             gasLimit: gasLimit,
             gasPrice: gasPrice,
             type: selectedOption,
@@ -154,7 +154,7 @@ function Send_thirdd() {
           {
             from: from,
             to: to,
-            value: value,
+            value: valueInHex,
             gasLimit: gasLimit,
             type: selectedOption,
             data: data,
