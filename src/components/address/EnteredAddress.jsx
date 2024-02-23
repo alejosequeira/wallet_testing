@@ -40,7 +40,7 @@ export default function EthAccountsComponent() {
             <NavBar isOpen={sidebarOpen} toggleSidebar={toggleSidebar} />
             <div className={style.pageContainer}>
 
-                <BurgerMenu isOpen={sidebarOpen} toggleSidebar={toggleSidebar} />
+                <BurgerMenu isOpen={sidebarOpen} />
 
                 <div className={`${style.content} ${sidebarOpen ? style.contentShift : ''}`}>
                     <div className={style.header_gral}>

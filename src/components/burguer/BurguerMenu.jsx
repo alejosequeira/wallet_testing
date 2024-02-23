@@ -1,23 +1,23 @@
-'use client'
-import React, { useState, useEffect, useRef } from 'react';
+
+import React from 'react';
 import style from './burguer.module.css';
 import Link from 'next/link';
 import PlayArrowOutlinedIcon from '@mui/icons-material/PlayArrowOutlined';
 
 const links = [
-    // { route: '/', label: 'Home' },
     { route: '/auth', label: 'Auth Test' },
     { route: '/signing', label: 'Signing' },
     { route: '/sending', label: 'Send Transaction' },
-    { route: '/fourMethod', label: 'ADD testing method' },
+    { route: '/scamTesting', label: 'Scam Testing' },
+    { route: '/checkSum', label: 'CheckSum' },
 ];
 
-const BurgerMenu = ({ isOpen, toggleSidebar }) => {
+const BurgerMenu = ({ isOpen }) => {
 
     return (
 
 
-        <div className={isOpen ? `${style.sidebar} ${style.open}` : style.sidebar}>            
+        <div className={isOpen ? `${style.sidebar} ${style.open}` : style.sidebar}>
             <div className={style.menu}>
                 {links.map(({ label, route }) => (
                     <li className={style.sidebarList} key={route}>

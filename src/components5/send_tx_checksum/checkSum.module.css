@@ -1,4 +1,4 @@
-  .input {
+.input {
     padding: 10px;
     margin-bottom: 10px;
     border: 1px solid #ccc;
@@ -171,10 +171,25 @@
 .bouton_download_span{
   margin: auto;
 }
-
-
-
-
+.formu_ADDRESS{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-radius: 1%;
+  box-sizing: border-box;
+  background-color: var(--lightGray);
+  margin: 0px;
+  padding: 0px 0px 0px 0px;
+  margin-bottom: 0.5rem;
+}
+.label_address {
+  color: var(--darkGray);
+  font: var(--default-font);
+  font-size: 0.70rem;
+  font-weight: 600;
+  letter-spacing: -0.0833333333em;
+}
 .botton_toggle {
   display: flex;
   justify-content: center;

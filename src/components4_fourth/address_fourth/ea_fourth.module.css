@@ -94,3 +94,14 @@
     height: 100%;
     margin-top: 1rem;
 }
+
+@media (max-width: 900px) {
+    .form_test {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .block:nth-child(1) {
+        order: -1;
+    }
+}

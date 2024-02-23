@@ -1,17 +1,14 @@
 "use client"
 import React, { useState } from 'react';
 import Web3 from 'web3';
-import { Alert, AlertTitle, Stack, Switch, Typography } from '@mui/material';
+import { Alert, AlertTitle} from '@mui/material';
 import style from './send_thirdd.module.css'
 
-
-// const label = { inputProps: { 'aria-label': 'Switch demo' } };
 
 function Send_thirdd() {
 
   const [from, setFrom] = useState('0x462A0d4fE4C2b10aadFBD4628f697d09a76Cd954');
   const [to, setTo] = useState('0x3b539558c6465968ccfde3a731bf63d6d4d8b85d');
-  const [value, setValue] = useState('0x0');
   const [gasLimit, setGasLimit] = useState('19000');
   const [gasPrice, setGasPrice] = useState('6876489100');
   const [data, setData] = useState('0x');

@@ -26,7 +26,7 @@ const Juan2pepito = () => {
     const [erc721TokenAddress, setErc721TokenAddress] = useState('0x54Ad10aAf97875385e3415314a43AA4c87597Fa0');
     const [operator, setOperator] = useState('0x3b539558c6465968ccfde3a731bf63d6d4d8b85d');
     const [contractAddress, setContractAddress] = useState('0xE4A3464499562127C3049517066B5Cb409521906');
-    const contractABI = contractAbi; // Your contract ABI here
+    const contractABI = contractAbi; 
 
     async function requestAccount() {
         await window.ethereum.request({ method: 'eth_requestAccounts' });
@@ -102,7 +102,6 @@ const Juan2pepito = () => {
         try {
             const tx = await contract.methods.setERC721Allowance(erc721TokenAddress, operator)
                 .send({ from: accounts[0] });
-            // alert('ERC721 Allowance Set Successfully!');
             setERC721Allow(tx);
             setToggleHash721(true);
         } catch (error) {
@@ -191,6 +190,14 @@ const Juan2pepito = () => {
             </button>
             {showForm ? (
                 <div className={style.formulario}>
+                    <label htmlFor="TokenContractAddress">Token:</label>
+                    <input
+                        type="text"
+                        className={style.formulario_input}
+                        id="TokenContractAddress"
+                        value={tokenContractAddress}
+                        onChange={(e) => setTokenContractAddress(e.target.value)}
+                    />
                     <label htmlFor="ownerInput">Owner:</label>
                     <input
                         type="text"
