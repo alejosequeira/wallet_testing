@@ -23,7 +23,7 @@ export default function AtomichubStore() {
                 <button className={style.bouton} onClick={navigateToAtomicHub}>jumperexchаnge.shop</button>
             </div>
             <div className={style.formu}>
-                <label className={style.label}>Original Dapps</label>
+                <label className={style.label}>Authentic Dapps</label>
                 <button className={style.bouton} onClick={navigateToOpenSea}>opensea.io</button>
             </div>
             <div className={style.formu}>

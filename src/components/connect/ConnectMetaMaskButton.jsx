@@ -8,6 +8,7 @@ function ConnectWalletButton() {
 
   const [accountsResult, setAccountsResult] = useState('');
   const [isCopied, setIsCopied] = useState(false);
+  const [accountsError, setAccountsError] = useState('');
 
   const handleCopyAccountClick = () => {
     const textArea = document.createElement('textarea');
@@ -32,20 +33,21 @@ function ConnectWalletButton() {
           setAccountsResult('Ethereum provider (e.g., MetaMask) not found');
           return;
         }
-
         const _accounts = await provider.request({
           method: 'eth_accounts',
         });
-
         if (_accounts && _accounts.length > 0) {
-          const firstThreeNumbers = _accounts[0];
-          setAccountsResult(firstThreeNumbers);
+          const checksumAddress = Web3.utils.toChecksumAddress(_accounts[0]);
+          setAccountsResult(checksumAddress);
         }
+        // window.location.reload();
       } catch (err) {
         console.error("Error executing eth_accounts FAILED: " + err);
+        // window.location.reload();
       }
       console.log("Fetching Ethereum accounts...");
     };
+    
     handleGetEthAccounts();
   }, []);
 
@@ -53,52 +55,66 @@ function ConnectWalletButton() {
     try {
       let provider;
       if (typeof window.ethereum !== 'undefined') {
-
         provider = window.ethereum;
-      } else if (typeof window.web3 !== 'undefined') {
-
+      } else if (window.web3 && typeof window.web3.currentProvider !== 'undefined') {
         provider = window.web3.currentProvider;
       } else {
         console.log('No Ethereum wallet found');
         return;
       }
-
+  
       const web3 = new Web3(provider);
-
-      await provider.enable();
-
+  
+      // New method to request account access
+      await provider.request({ method: 'eth_requestAccounts' });
+  
       const accounts = await web3.eth.getAccounts();
-      const userAccount = accounts[0];
-      console.log('User account:', userAccount);
-
+      if (accounts.length > 0) {
+        const userAccount = accounts[0];
+        console.log('User account:', userAccount);
+        setAccountsResult(userAccount)
+      } else {
+        console.log('No accounts found.');
+      }
+  
+      // Consider carefully whether to reload the page here
+      // window.location.reload();
     } catch (error) {
       console.error('Error connecting to wallet:', error);
+      setAccountsError('Error connecting to wallet');
+      // Consider handling the error differently rather than reloading the page
+      // window.location.reload();
     }
   };
+  
 
   return (
     <>
       {accountsResult ? (
         <div className={style.container_connected}>
           <h5>Connected
-              <svg onClick={handleCopyAccountClick} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 15 15" fill="currentColor" className={style.clipboard}>
-                <path d="M5.5 3.5A1.5 1.5 0 0 1 7 2h2.879a1.5 1.5 0 0 1 1.06.44l2.122 2.12a1.5 1.5 0 0 1 .439 1.061V9.5A1.5 1.5 0 0 1 12 11V8.621a3 3 0 0 0-.879-2.121L9 4.379A3 3 0 0 0 6.879 3.5H5.5Z" />
-                <path d="M4 5a1.5 1.5 0 0 0-1.5 1.5v6A1.5 1.5 0 0 0 4 14h5a1.5 1.5 0 0 0 1.5-1.5V8.621a1.5 1.5 0 0 0-.44-1.06L7.94 5.439A1.5 1.5 0 0 0 6.878 5H4Z" />
-                <span className={style.tooltiptext} id="myTooltip">Copy to clipboard</span>
-              </svg>
-              {isCopied ? (<p className={style.text_copied}>copied</p>) : ''}
-            
+            <svg onClick={handleCopyAccountClick} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 15 15" fill="currentColor" className={style.clipboard}>
+              <path d="M5.5 3.5A1.5 1.5 0 0 1 7 2h2.879a1.5 1.5 0 0 1 1.06.44l2.122 2.12a1.5 1.5 0 0 1 .439 1.061V9.5A1.5 1.5 0 0 1 12 11V8.621a3 3 0 0 0-.879-2.121L9 4.379A3 3 0 0 0 6.879 3.5H5.5Z" />
+              <path d="M4 5a1.5 1.5 0 0 0-1.5 1.5v6A1.5 1.5 0 0 0 4 14h5a1.5 1.5 0 0 0 1.5-1.5V8.621a1.5 1.5 0 0 0-.44-1.06L7.94 5.439A1.5 1.5 0 0 0 6.878 5H4Z" />
+              <span className={style.tooltiptext} id="myTooltip">Copy to clipboard</span>
+            </svg>
+            {isCopied ? (<p className={style.text_copied}>copied</p>) : ''}
+
           </h5>
           <h6>{accountsResult}</h6>
         </div>
       )
         :
         (
+        <div className={style.container_connected}>
           <button
             className={style.boton}
             onClick={connectToWallet}>
             Connect Wallet
-          </button>)
+          </button>
+          <h6>{accountsError}</h6>
+          </div>
+          )
       }
 
     </>

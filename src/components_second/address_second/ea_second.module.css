@@ -37,7 +37,7 @@
     justify-content: center;
     align-items: flex-end;
     flex-direction: column;
-    gap: 10px;
+    gap: 0.2rem;
 }
 
 .header_gral {
@@ -90,4 +90,28 @@
     padding: 10px 0;
     margin-bottom: 25px;
     height: 100%;
+}
+
+@media (max-width: 1200px) {
+    .form_test {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .block:nth-child(3) {
+        order: -1;
+    }    
+}
+
+@media (max-width: 650px) {
+    .header_gral {
+        flex-direction: column;
+        align-items: center;
+        gap: 0;
+        margin:0;
+    }
+    .header_one {
+        flex-direction: row;
+        align-items: center;
+    }
 }

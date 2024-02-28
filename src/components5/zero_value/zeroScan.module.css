@@ -53,6 +53,16 @@
     margin: 0;
     padding: 0;
 }
+.formulario_oneZ{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+    padding: 0;
+    margin-top: 15px;
+}
+
 
 .formu {
     display: flex;
@@ -101,8 +111,6 @@
     align-items: center;
 }
 
-
-
 .formulario label {
     display: block;
     color: var(--darkGray);
@@ -120,7 +128,7 @@
     font-size: 0.6rem;
     border: 2px solid var(--lightyGray);
     border-radius: 4px;
-    padding: 0 10px;
+    padding: 0 8px;
     box-sizing: border-box;
     color: var(--white);
 }
@@ -209,16 +217,4 @@
     margin: 0;
     padding: 0;
     font-size: 1rem;
-}
-@media (max-width: 500px) {
-    .formulario {
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;    
-        justify-content: space-around;
-        gap: 5px;        
-    }
-    .type_check{
-        margin:0;
-    }   
 }

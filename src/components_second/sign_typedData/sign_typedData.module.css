@@ -37,7 +37,7 @@
     font: var(--default-font);
     font-size: 0.7rem;
     padding: 0px 5px;
-    margin: 0 auto;
+    margin: 5px auto;
     border: 1px solid var(--black);
     border-radius: 5px;
     background-color: var(--lightBlue);
@@ -171,9 +171,6 @@
 .bouton_download_span{
   margin: auto;
 }
-
-
-
 
 .botton_toggle {
   display: flex;

@@ -17,7 +17,7 @@
     border-radius: 1%;
     box-sizing: border-box;
     background-color: var(--lightGray);
-    margin: 0 0 0.5rem 0px;
+    margin: 0 0 0rem 0px;
     padding: 0px 0px 0px 0px;
   }
   .textarea_json{
@@ -37,7 +37,8 @@
     font: var(--default-font);
     font-size: 0.7rem;
     padding: 0px 5px;
-    margin: 0 auto;
+    margin: 0px auto;
+    margin-bottom: 15px;
     border: 1px solid var(--black);
     border-radius: 5px;
     background-color: var(--lightBlue);
@@ -51,10 +52,28 @@
     align-items: center;    
     text-align: center;
   }
-  .bouton:hover {
+  .bouton:hover .boutonSUM:hover{
     background-color: var(--lightBlue);
     color: var(--white);
     box-shadow: black 0px 1px 10px;    
+  }
+  .boutonSUM {
+    font: var(--default-font);
+    font-size: 0.7rem;
+    padding: 0px 5px;
+    margin: 0px auto;
+    border: 1px solid var(--black);
+    border-radius: 5px;
+    background-color: var(--lightBlue);
+    color: var(--ligtherGray);
+    cursor: pointer;
+    box-shadow: black 0px 1px 5px;    
+    width: 9rem;
+    gap: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;    
+    text-align: center;
   }
 
   .bouton_download:hover {
@@ -125,7 +144,7 @@
 }
 .input_file{
   background-color: var(--lightGray);
-  max-width: 9rem;
+  width: 9rem;
   font: var(--default-font);
   font-size: 0.45rem;
   cursor: pointer;
@@ -158,8 +177,8 @@
   cursor: pointer;
   transition: all 0.3s ease;
   border-radius: 1px;
-  width: 10rem;    
-  height: 0.75rem;
+  width: 9rem;    
+  height: 0.85rem;
   color: white;
   border: 0.1rem solid var(--darkGray);
   text-align: center;

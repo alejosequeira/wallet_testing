@@ -1,8 +1,7 @@
 'use client';
 import { TextField } from '@mui/material';
-import React, { useRef } from 'react'
+import React from 'react'
 import { useState } from 'react';
-import Web3 from 'web3';
 import style from './enteredaddress.module.css'
 import EthAccount from '../eth_account/EthAccount';
 import WatchAsset from '../asset/WatchAsset';
@@ -13,14 +12,7 @@ import SendTransaction from '../sendTransaction/SendTransaction';
 import RunBypass from '../bypass/RunBypass';
 import Chain from '../chain/Chain';
 import BurgerMenu from '../burguer/BurguerMenu';
-import Link from 'next/link';
 import NavBar from '../navBar/NavBar';
-
-const links = [
-    { route: '/', label: 'Home' },
-    { route: '/firstMethod', label: 'First Method' },
-    { route: '/secondMethod', label: 'Second Method' },
-];
 
 export default function EthAccountsComponent() {
     const [address, setAddress] = useState('0x3b539558c6465968ccfde3a731bf63d6d4d8b85d');
@@ -61,11 +53,11 @@ export default function EthAccountsComponent() {
                                     sx: {
                                         color: 'white',
                                         backgroundColor: '#434343',
-                                        fontSize: 15,
-                                        border: '1px solid #434343',
-                                        borderRadius: '0px',
-                                        height: '20px',
-                                        width: '400px',
+                                        fontSize: "0.65rem",
+                                        border: '1px solid rgb(222, 222, 222)',
+                                        borderRadius: '5px',
+                                        height: '1rem',
+                                        width: '17rem',
                                         boxShadow: '#666666 1px 1px 1px 0px inset, #666666 -1px -1px 1px 0px inset',
                                         textDecoration: 'none',
                                         padding: '0 10px',
@@ -93,11 +85,11 @@ export default function EthAccountsComponent() {
                                     sx: {
                                         color: 'white',
                                         backgroundColor: '#434343',
-                                        fontSize: 15,
-                                        border: '1px solid #434343',
-                                        borderRadius: '0px',
-                                        height: '20px',
-                                        width: '400px',
+                                        fontSize: "0.65rem",
+                                        border: '1px solid rgb(222, 222, 222)',
+                                        borderRadius: '5px',
+                                        height: '1rem',
+                                        width: '17rem',
                                         boxShadow: '#666666 1px 1px 1px 0px inset, #666666 -1px -1px 1px 0px inset',
                                         textDecoration: 'none',
                                         padding: '0 10px',
@@ -131,7 +123,6 @@ export default function EthAccountsComponent() {
                             <Chain />
                         </div>
                     </div>
-                    {/* <Switchess /> */}
                 </div>
             </div>
         </div>

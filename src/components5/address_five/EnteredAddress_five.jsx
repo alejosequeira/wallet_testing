@@ -4,8 +4,8 @@ import style from './ea_five.module.css'
 import { useState } from 'react'
 import NavBar from '@/components/navBar/NavBar'
 import BurgerMenu from '@/components/burguer/BurguerMenu'
-import SendScam from '@/components4_fourth/send_scam/SendScam'
 import CheckSum from '../send_tx_checksum/CheckSum'
+import ZeroScan from '../zero_value/ZeroScan'
 
 
 
@@ -25,8 +25,7 @@ export default function EnteredAddress_five() {
                             <CheckSum />
                         </div>
                         <div className={style.block}>
-                            <SendScam/>
-
+                            <ZeroScan/>
                         </div>
                     </div>
                 </div>

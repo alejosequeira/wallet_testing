@@ -96,3 +96,23 @@
 .container:hover .text_copied {
     display: block;
 }
+@media (max-width: 1200px) {
+    .bouton {
+        margin-bottom: 1rem;
+    }
+    .sub_title{
+        display: block;
+        color: var(--darkGray);
+        font: var(--default-font);
+        font-size: 0.70rem;
+        font-weight: 600;
+        margin-left: 5px;
+    }
+
+    .formu {        
+        flex-direction: row;
+        align-items: center;
+        /* gap: 10px; */
+        justify-content: space-between;
+    }
+}

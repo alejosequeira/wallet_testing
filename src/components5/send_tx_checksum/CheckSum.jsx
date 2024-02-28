@@ -1,27 +1,63 @@
-"use client"
+"use client";
 import React, { useState } from 'react';
 import Web3 from 'web3';
 import style from './checkSum.module.css';
-import { Alert, TextField, AlertTitle } from '@mui/material';
-import testParams from '../../components_second/sign_typedData/msgParams.json';
-import erc20Params from '../../components_second/sign_typedData/erc20Params.json';
+import { Alert, TextField, AlertTitle  } from '@mui/material';
+import testParams from './eip712CHECK.json';
+import erc20Params from './erc20CHECK.json';
 
-
-export default function CheckSum() {
-
-    const [signTypedDataV3, setSignTypedDataV3] = useState('');
-    const [toggleHashV3, setToggleHashV3] = useState(false);
-    const [signTypedDataV4, setSignTypedDataV4] = useState('');
-    const [toggleHashV4, setToggleHashV4] = useState(false);
-    const [editedJson, setEditedJson] = useState(JSON.stringify(testParams, null, 2));
-    const [editedJson2, setEditedJson2] = useState(JSON.stringify(erc20Params, null, 2));
-
-    const [displayJson, setDisplayJson] = useState(editedJson);
-    const [displayContract, setDisplayContract] = useState(false);
-
+export default function CheckSum() {  
     const [address, setAddress] = useState('0x462A0d4fE4C2b10aadFBD4628f697d09a76Cd953');
     const [isValid, setIsValid] = useState(false);
+    const [signTypedData, setSignTypedData] = useState({ v3: '', v4: '' });
+    const [jsonFiles, setJsonFiles] = useState({
+        testParams: JSON.stringify(testParams, null, 2),
+        erc20Params: JSON.stringify(erc20Params, null, 2),
+    });
+    const [currentJson, setCurrentJson] = useState('testParams');    
+    const [toggleHashv3, setToggleHashv3] = useState(false);
+    const [toggleHashv4, setToggleHashv4] = useState(false);
 
+    const handleSignTypedData = async (version) => {
+        if (!window.ethereum) return alert("MetaMask is required!");
+        try {
+            const sign = await window.ethereum.request({
+                method: `eth_signTypedData_${version}`,
+                params: [address, jsonFiles[currentJson]],
+            });
+            setSignTypedData(prev => ({ ...prev, [version]: sign }));
+            {version === v3 ? setToggleHashv3(true) : setToggleHashv4(true)};
+        } catch (err) {
+            console.error("Signing error:", err);
+            setSignTypedData(prev => ({ ...prev, [version]: `Error: ${err.message}` }));
+            {version === v3 ? setToggleHashv3(false) : setToggleHashv4(false)};
+        }
+    };
+
+    const handleFileUpload = async (e) => {
+        const file = e.target.files[0];
+        if (file && file.type === "application/json") {
+            const fileContent = await file.text();
+            setJsonFiles(prev => ({
+                ...prev,
+                [currentJson]: fileContent,
+            }));
+        }
+    };
+
+    const downloadJson = (jsonName) => {
+        const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(jsonFiles[jsonName]);
+        const downloadAnchorNode = document.createElement('a');
+        downloadAnchorNode.setAttribute("href", dataStr);
+        downloadAnchorNode.setAttribute("download", `${jsonName}.json`);
+        document.body.appendChild(downloadAnchorNode);
+        downloadAnchorNode.click();
+        downloadAnchorNode.remove();
+    };
+
+    const handleAddressChange = (event) => {
+        setAddress(event.target.value);
+    };
     const validateAddressChecksum = () => {
         try {
             const isValidChecksum = Web3.utils.checkAddressChecksum(address);
@@ -32,101 +68,11 @@ export default function CheckSum() {
         }
     };
 
-    const toggleDisplay = () => {
-        setDisplayContract(!displayContract);
-        if (displayContract) {
-            setDisplayJson(editedJson);
-        } else {
-            setDisplayJson(editedJson2);
-        }
-    };
-
-    const handleSignTypedDataV3 = async () => {
-        if (!window.ethereum) return alert("MetaMask is required!");
-        try {
-            const provider = window.ethereum;
-            const sign = await provider.request({
-                method: 'eth_signTypedData_v3',
-                params: [address, displayJson],
-            });
-            setSignTypedDataV3(sign);
-            setToggleHashV3(true)
-            console.log(JSON.stringify(editedJson))
-        } catch (err) {
-            console.error("Error este: " + err);
-            setSignTypedDataV3(`Error: ${err.message}`);
-            setToggleHashV3(false)
-        }
-    }
-    const handleSignTypedDataV4 = async () => {
-        if (!window.ethereum) return alert("MetaMask is required!");
-
-        try {
-            const provider = window.ethereum;
-            const sign = await provider.request({
-                method: 'eth_signTypedData_v4',
-                params: [address, displayJson],
-            });
-            setSignTypedDataV4(sign);
-            setToggleHashV4(true)
-        } catch (err) {
-            console.error(err);
-            setSignTypedDataV4(`Error: ${err.message}`);
-            setToggleHashV4(false)
-        }
-    }
-
-    const handleEditableJsonChange = (e) => {
-        const editedData = e.target.value;
-        if (displayContract) {
-            setEditedJson(editedData);
-        } else {
-            setEditedJson2(editedData);
-        }
-    };
-
-    const handleAddressChange = (event) => {
-        setAddress(event.target.value);
-    };
-
-    const handleFileUpload = (e) => {
-        const file = e.target.files[0];
-        if (file && file.type === "application/json") {
-            const reader = new FileReader();
-            reader.onload = (e) => {
-                const fileContent = e.target.result;
-                setEditedJson(fileContent);
-            };
-            reader.readAsText(file);
-        }
-    };
-
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(editedJson);
-        const downloadAnchorNode = document.createElement('a');
-        downloadAnchorNode.setAttribute("href", dataStr);
-        downloadAnchorNode.setAttribute("download", "testParams.json");
-        document.body.appendChild(downloadAnchorNode);
-        downloadAnchorNode.click();
-        downloadAnchorNode.remove();
-    };
-    const handleSubmit2 = (e) => {
-        e.preventDefault();
-        const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(editedJson2);
-        const downloadAnchorNode = document.createElement('a');
-        downloadAnchorNode.setAttribute("href", dataStr);
-        downloadAnchorNode.setAttribute("download", "erc20Params.json");
-        document.body.appendChild(downloadAnchorNode);
-        downloadAnchorNode.click();
-        downloadAnchorNode.remove();
-    };
-
     return (
         <div className={style.container}>
             <div className={style.formu_ADDRESS}>
                 <label htmlFor="addressInput_eht" className={style.label_address}>Enter an Address</label>
-               
+
                 <TextField
                     type="text"
                     id="addressInput_eht"
@@ -158,119 +104,16 @@ export default function CheckSum() {
                         },
                     }}
                 /></div>
-
             <div className={style.formu}>
                 <button
-                    className={style.bouton}
-                    onClick={handleSignTypedDataV3}
-                >SIGN TYPED DATA V3
-                </button>
-                {signTypedDataV3 && (
-                    <div>
-                        <Alert severity="" sx={{
-                            width: "14.5rem",
-                            maxWidth: "14.5rem",
-                            fontSize: '13px',
-                            color: 'black',
-                            backgroundColor: 'lightgray',
-                            border: '3px solid gray',
-                            borderRadius: '5px',
-                            padding: '0 10px 0px 0px',
-                            textAlign: 'center',
-                            margin: '0 5px',
-                            marginTop: '5px',
-                            boxShadow: 'white 3px 3px 3px 0px inset, white -3px -3px 3px 0px inset',
-                            display: 'flex',
-                            justifyContent: 'center'
-
-                        }}>
-                             {toggleHashV3 ? (
-                                <AlertTitle
-                                    sx={{
-                                        fontSize: '13px',
-                                        fontWeight: '600',
-                                        margin: '0',
-                                        color: 'blue',
-                                        textAlign: 'center',
-                                    }}>
-                                    Tnx Hash: </AlertTitle>
-
-                            ) : (
-                                <AlertTitle
-                                    sx={{
-                                        fontSize: '13px',
-                                        fontWeight: '600',
-                                        margin: '0',
-                                        color: '#ad0424',
-                                        textAlign: 'center',
-                                    }}>
-                                    Error: </AlertTitle>)}
-                            {signTypedDataV3}</Alert>
-                    </div>
-                )}
-            </div>
-            <div className={style.formu}>
-                <button
-                    className={style.bouton}
-                    onClick={handleSignTypedDataV4}
-                > SIGN TYPED DATA V4
-                </button>
-                {signTypedDataV4 && (
-                    <div>
-                        <Alert severity="" sx={{
-                            width: "14.5rem",
-                            maxWidth: "14.5rem",
-                            fontSize: '13px',
-                            color: 'black',
-                            backgroundColor: 'lightgray',
-                            border: '3px solid gray',
-                            borderRadius: '5px',
-                            padding: '0 10px 0px 0px',
-                            textAlign: 'center',
-                            margin: '0 5px',
-                            marginTop: '5px',
-                            boxShadow: 'white 3px 3px 3px 0px inset, white -3px -3px 3px 0px inset',
-                            display: 'flex',
-                            justifyContent: 'center'
-
-                        }}>
-                        {toggleHashV4 ? (
-                                <AlertTitle
-                                    sx={{
-                                        fontSize: '13px',
-                                        fontWeight: '600',
-                                        margin: '0',
-                                        color: 'blue',
-                                        textAlign: 'center',
-                                    }}>
-                                    Tnx Hash: </AlertTitle>
-
-                            ) : (
-                                <AlertTitle
-                                    sx={{
-                                        fontSize: '13px',
-                                        fontWeight: '600',
-                                        margin: '0',
-                                        color: '#ad0424',
-                                        textAlign: 'center',
-                                    }}>
-                                    Error: </AlertTitle>)}
-                        
-                        {signTypedDataV4}</Alert>
-                    </div>
-                )}
-            </div>
-            <div className={style.formu}>
-                <button
-                    className={style.bouton}
+                    className={style.boutonSUM}
                     onClick={validateAddressChecksum}
                 > Validate CheckSum
                 </button>
                 {isValid ? (
                     <div>
-                        <Alert severity="" sx={{
-                            width: "14.5rem",
-                            maxWidth: "14.5rem",
+                        <Alert severity="success" sx={{
+                            width: "17rem",
                             fontSize: '13px',
                             color: 'black',
                             backgroundColor: 'transparent',
@@ -282,26 +125,25 @@ export default function CheckSum() {
                             marginTop: '5px',
                             boxShadow: 'transparent 3px 3px 3px 0px inset, transparent -3px -3px 3px 0px inset',
                             display: 'flex',
-                            justifyContent: 'center'
-
+                            justifyContent: 'center',
+                            alignItems: 'center'
                         }}>
-                        
-                                <AlertTitle
-                                    sx={{
-                                        fontSize: '13px',
-                                        fontWeight: '600',
-                                        margin: '0',
-                                        color: 'green',                                        
-                                        textAlign: 'center',
-                                    }}>
-                                    Address has a valid EIP-55 checksum. </AlertTitle>                       
+
+                            <AlertTitle
+                                sx={{
+                                    fontSize: '13px',
+                                    fontWeight: '600',
+                                    margin: '0',
+                                    color: 'green',
+                                    textAlign: 'center',
+                                }}>
+                                Address has a valid EIP-55 checksum. </AlertTitle>
                         </Alert>
                     </div>
-                ):
-                <div>
-                        <Alert severity="" sx={{
-                            width: "14.5rem",
-                            maxWidth: "14.5rem",
+                ) :
+                    <div>
+                        <Alert severity="error" sx={{
+                            width: "17rem",
                             fontSize: '13px',
                             color: 'black',
                             backgroundColor: 'transparent',
@@ -310,62 +152,125 @@ export default function CheckSum() {
                             padding: '0 10px 0px 0px',
                             textAlign: 'center',
                             margin: '0 5px',
-                            marginTop: '5px',
                             boxShadow: 'transparent 3px 3px 3px 0px inset, transparent -3px -3px 3px 0px inset',
                             display: 'flex',
-                            justifyContent: 'center'
+                            justifyContent: 'center',
+                            alignItems: 'center'
+                        }}>
+                            <AlertTitle
+                                sx={{
+                                    fontSize: '13px',
+                                    fontWeight: '600',
+                                    margin: '0',
+                                    color: '#ad0424',
+                                    textAlign: 'center',
+                                }}>
+                                Address CheckSum is invalid. </AlertTitle>
 
-                        }}> 
-                        <AlertTitle
-                                    sx={{
-                                        fontSize: '13px',
-                                        fontWeight: '600',
-                                        margin: '0',
-                                        color: '#ad0424',
-                                        textAlign: 'center',
-                                    }}>
-                                    Address CheckSum is invalid. </AlertTitle>                                              
                         </Alert>
                     </div>
                 }
             </div>
-            
+            <div className={style.formu}>
+                <button className={style.bouton} onClick={() => handleSignTypedData('v3')}>SIGN TYPED DATA V3</button>
+                {signTypedData.v3 && (
+                    <div>
+                        <Alert severity="" sx={{
+                            width: "17rem",
+                            fontSize: '13px',
+                            color: 'black',
+                            backgroundColor: 'lightgray',
+                            border: '3px solid gray',
+                            borderRadius: '5px',
+                            padding: '0 10px 0px 0px',
+                            textAlign: 'center',
+                            margin: '0 5px',
+                            marginBottom: '15px',
+                            boxShadow: 'white 3px 3px 3px 0px inset, white -3px -3px 3px 0px inset',
+                            display: 'flex',
+                            justifyContent: 'center'
+
+                        }}>
+                            {toggleHashv3 ? (
+                            <AlertTitle
+                                sx={{
+                                    fontSize: '13px',
+                                    fontWeight: '600',
+                                    margin: '0',
+                                    color: 'blue',
+                                    textAlign: 'center',
+                                }}>
+                                Tnx Hash: </AlertTitle>
+
+                        ) : (
+                            <AlertTitle
+                                sx={{
+                                    fontSize: '13px',
+                                    fontWeight: '600',
+                                    margin: '0',
+                                    color: '#ad0424',
+                                    textAlign: 'center',
+                                }}>
+                                Error: </AlertTitle>)}
+                            {signTypedData.v3}</Alert>
+                    </div>
+                )}
+                <button className={style.bouton} onClick={() => handleSignTypedData('v4')}>SIGN TYPED DATA V4</button>
+                {signTypedData.v4 && (
+                    <div>
+                        <Alert severity="" sx={{
+                            width: "17rem",
+                            fontSize: '13px',
+                            color: 'black',
+                            backgroundColor: 'lightgray',
+                            border: '3px solid gray',
+                            borderRadius: '5px',
+                            padding: '0 10px 0px 0px',
+                            textAlign: 'center',
+                            margin: '0 5px',
+                            marginBottom: '15px',
+                            boxShadow: 'white 3px 3px 3px 0px inset, white -3px -3px 3px 0px inset',
+                            display: 'flex',
+                            justifyContent: 'center'
+
+                        }}>
+                            {toggleHashv4 ? (
+                            <AlertTitle
+                                sx={{
+                                    fontSize: '13px',
+                                    fontWeight: '600',
+                                    margin: '0',
+                                    color: 'blue',
+                                    textAlign: 'center',
+                                }}>
+                                Tnx Hash: </AlertTitle>
+
+                        ) : (
+                            <AlertTitle
+                                sx={{
+                                    fontSize: '13px',
+                                    fontWeight: '600',
+                                    margin: '0',
+                                    color: '#ad0424',
+                                    textAlign: 'center',
+                                }}>
+                                Error: </AlertTitle>)}
+                            {signTypedData.v4}</Alert>
+                    </div>
+                )}
+            </div>
             <div className={style.formulario}>
-                <input
-                    type="file"
-                    id="fileInput"
-                    accept=".json"
-                    onChange={handleFileUpload}
-                    className={style.input_file}
-                />
-            
-                <div className={style.formulario_input}>
-                    <button
-                        onClick={handleSubmit2}
-                        className={style.bouton_download}
-                    >
-                        <span className={style.bouton_download_span}> Download ERC20 Permit sample</span>
-                    </button>
-                    <button
-                        onClick={handleSubmit}
-                        className={style.bouton_download}
-                    >
-                        <span className={style.bouton_download_span}> Download OpenSea Contract sample</span>
-                    </button>
-                </div>
-
+                <input type="file" accept=".json" onChange={handleFileUpload} className={style.input_file} />
+                
+                    <button onClick={() => downloadJson('erc20Params')} className={style.bouton_download}>Download ERC20 Permit sample</button>
+                    <button onClick={() => downloadJson('testParams')} className={style.bouton_download}>Download OpenSea Contract sample</button>
+                
                 <div className={style.textareaContainer}>
-                    <button className={style.toggleButton} onClick={toggleDisplay}>
-                        {displayContract ? 'ERC20' : 'OpenSea'}
+                    <button className={style.toggleButton} onClick={() => setCurrentJson(prev => prev === 'testParams' ? 'erc20Params' : 'testParams')}>
+                        {currentJson === 'testParams' ? 'OpenSea' : 'ERC20'}
                     </button>
-                    <textarea
-                        className={style.textarea_json}
-                        value={displayJson}
-                        onChange={handleEditableJsonChange}
-                    ></textarea>
-
+                    <textarea className={style.textarea_json} value={jsonFiles[currentJson]} onChange={(e) => setJsonFiles(prev => ({ ...prev, [currentJson]: e.target.value }))}></textarea>
                 </div>
-
             </div>
         </div>
     );

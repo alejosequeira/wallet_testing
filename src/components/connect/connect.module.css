@@ -12,7 +12,6 @@
     border-radius: 5%;
     box-shadow: 5px 5px 10px var(--black);
     transition: 0.5s;
-    margin-right: 15px;
 }
 .boton:hover{
     background-color: var(--brand);
@@ -21,15 +20,13 @@
     transition: 0.5s;
 }
 .container_connected{
-    /* background-color: var(--darkGray); */
-    /* border: 2px solid white; */
     color:  var(--darkGray);
     padding: 0 15px;
     text-align: center;
     text-decoration: none;
     display: inline-block;
     font-size: 16px;
-    font-family: var(--default-font);
+    font-family: var(--default-font);    
     margin-right: 15px;
 }
 .container_connected:hover{
@@ -67,4 +64,17 @@
 .clipboard:hover {
     color: black;
     transform: scale(1.1);
+}
+@media (max-width: 600px) {
+    .container_connected h6 {
+        color: var(--black);
+        white-space: nowrap;
+        overflow: hidden; 
+        text-overflow: ellipsis; 
+        max-width: 6em; 
+        text-align: center;
+    }
+    .container_connected h5{
+        font-size: 0.5rem;
+    } 
 }
