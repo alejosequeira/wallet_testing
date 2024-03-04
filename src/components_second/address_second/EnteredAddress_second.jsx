@@ -6,8 +6,8 @@ import style from './ea_second.module.css'
 import BurgerMenu from '../../components/burguer/BurguerMenu';
 import NavBar from '../../components/navBar/NavBar';
 import Sign from '../sign/Sign';
-import Personal_custom from '../personal_sign/personal_custom';
-import Sign_typedData from '../sign_typedData/sign_typedData';
+import Personal_custom from '../personal_sign/Personal_custom';
+import Sign_typedData from '../sign_typedData/Sign_typedData';
 import SignInWithEthereum from '../eip_4361/SignInWithEthereum';
 
 
