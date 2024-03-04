@@ -30,7 +30,7 @@ function ConnectWalletButton() {
       try {
         const provider = window.ethereum;
         if (!provider) {
-          setAccountsResult('Ethereum provider (e.g., MetaMask) not found');
+          setAccountsError('Ethereum provider (e.g., MetaMask) not found');
           return;
         }
         const _accounts = await provider.request({
