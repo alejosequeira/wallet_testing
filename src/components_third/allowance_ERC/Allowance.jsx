@@ -3,7 +3,7 @@ import style from './juan2pepito.module.css';
 import React, { useState } from 'react';
 import Web3 from 'web3';
 import contractAbi from './contractAbi.json';
-import erc20Abi from './erc20PermitAbi.json';
+import erc20Abi from './erc20PermitABI.json';
 import { Alert,AlertTitle } from '@mui/material';
 
 
