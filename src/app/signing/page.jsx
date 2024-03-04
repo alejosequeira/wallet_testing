@@ -3,8 +3,7 @@ import EnteredAddress_second from '@/components_second/address_second/EnteredAdd
 
 export default function secondMethod() {
   return (
-        <div>
-          
+        <div>          
           <EnteredAddress_second />
         </div>
   )
