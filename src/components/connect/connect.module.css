@@ -75,6 +75,8 @@
         text-align: center;
     }
     .container_connected h5{
-        font-size: 0.5rem;
+        font-size: 0.6rem;
+        color: var(--black);
+        margin-top: 0.1rem;
     } 
 }

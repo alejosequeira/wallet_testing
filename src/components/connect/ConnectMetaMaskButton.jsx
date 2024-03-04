@@ -30,7 +30,7 @@ function ConnectWalletButton() {
       try {
         const provider = window.ethereum;
         if (!provider) {
-          setAccountsError('Ethereum provider (e.g., MetaMask) not found');
+          setAccountsError('Wallet not Found');
           return;
         }
         const _accounts = await provider.request({
@@ -104,7 +104,7 @@ function ConnectWalletButton() {
             onClick={connectToWallet}>
             Connect Wallet
           </button>
-          <h6>{accountsError}</h6>
+          <h5>{accountsError}</h5>
           </div>
           )
       }
