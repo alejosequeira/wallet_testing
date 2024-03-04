@@ -40,12 +40,9 @@ function ConnectWalletButton() {
           const checksumAddress = Web3.utils.toChecksumAddress(_accounts[0]);
           setAccountsResult(checksumAddress);
         }
-        // window.location.reload();
       } catch (err) {
-        console.error("Error executing eth_accounts FAILED: " + err);
-        // window.location.reload();
+        console.error("Error executing eth_accounts FAILED: " + err);        
       }
-      console.log("Fetching Ethereum accounts...");
     };
     
     handleGetEthAccounts();
@@ -77,16 +74,11 @@ function ConnectWalletButton() {
         console.log('No accounts found.');
       }
   
-      // Consider carefully whether to reload the page here
-      // window.location.reload();
     } catch (error) {
       console.error('Error connecting to wallet:', error);
       setAccountsError('Error connecting to wallet');
-      // Consider handling the error differently rather than reloading the page
-      // window.location.reload();
     }
-  };
-  
+  };  
 
   return (
     <>
@@ -116,7 +108,6 @@ function ConnectWalletButton() {
           </div>
           )
       }
-
     </>
   );
 }

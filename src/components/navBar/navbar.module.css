@@ -17,7 +17,7 @@
   }
 
   .portadatitle {
-      font-size: 1.2em;
+      font-size: 1.2rem;
       font-weight: bold;
       color: var(--white);
   }
@@ -78,8 +78,8 @@
       transform: translateY(-8px) rotate(-45deg);
   }
 
-  @media (max-width: 401px) {
+  /* @media (max-width: 401px) {
       .portadatitle {
           font-size: 0.8rem;
       }
-  }
+  } */

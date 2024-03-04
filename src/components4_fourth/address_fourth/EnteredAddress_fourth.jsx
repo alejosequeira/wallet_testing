@@ -25,8 +25,7 @@ export default function EnteredAddress_fourth() {
                         </div>
                         <div className={style.block}>
                             <SendScam/>
-
-                        </div>
+                        </div>                        
                     </div>
                 </div>
             </div>

@@ -92,6 +92,7 @@
     padding: 10px 0;
     margin-bottom: 25px;
     height: 100%;
+    /* width:18rem; */
 }
 @media (max-width: 1200px) {
     .form_test {

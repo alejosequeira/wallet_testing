@@ -8,7 +8,7 @@ import NavBar from '../../components/navBar/NavBar';
 import Sign from '../sign/Sign';
 import Personal_custom from '../personal_sign/personal_custom';
 import Sign_typedData from '../sign_typedData/sign_typedData';
-import { TextFields } from '@mui/icons-material';
+import SignInWithEthereum from '../eip_4361/SignInWithEthereum';
 
 
 
@@ -108,7 +108,8 @@ export default function EnteredAddress_second() {
                     </div>
                     <div className={style.form_test}>
                         <div className={style.block}>
-                            <Sign address={address} challenge={challenge} />
+                            <Sign address={address} challenge={challenge} />                            
+                            <SignInWithEthereum/>                       
                         </div>
                         <div className={style.block}>
                             <Sign_typedData address={address} />
