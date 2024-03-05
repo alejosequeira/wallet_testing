@@ -46,12 +46,22 @@
 }
 
 .formulario_one {
+    width:17rem;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     margin: 0;
     padding: 0;
+}
+.formulario_one h5{
+    font: var(--default-font);
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--darkGray);
+    margin: 0;
+    padding: 0;
+    width: fit-content;
 }
 .formulario_oneZ{
     display: flex;
@@ -122,7 +132,7 @@
 
 .formulario_input {
     text-align: center;
-    width: 16rem;
+    width: 16.5rem;
     background-color: var(--darkGray);
     font: var(--default-font);
     font-size: 0.6rem;
@@ -145,7 +155,7 @@
     align-items: center;
     margin: 0;
     padding: 0;
-    width: 16rem;    
+    width: 16.5rem;    
     background-color: var(--lightyGray);
     font: var(--default-font);
     border-radius: 4px;

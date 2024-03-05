@@ -1,4 +1,3 @@
-
 import React from 'react';
 import style from './burguer.module.css';
 import Link from 'next/link';

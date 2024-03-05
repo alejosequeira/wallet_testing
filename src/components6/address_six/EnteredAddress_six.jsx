@@ -20,7 +20,7 @@ export default function EnteredAddress_six() {
                 <div className={`${style.content} ${sidebarOpen ? style.contentShift : ''}`}>
                     <div className={style.form_test}>                       
                         <div className={style.block}>
-                            <ZeroScan/>
+                            <ZeroScan/> 
                         </div>                        
                     </div>
                 </div>

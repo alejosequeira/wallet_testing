@@ -1,14 +1,14 @@
 "use client"
 import React from 'react'
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import style from './zeroScan.module.css'
 import Web3 from 'web3';
 import { Alert, AlertTitle } from '@mui/material';
 
 export default function ZeroScan() {
 
-    const [from, setFrom] = useState('0x462A0d4fE4C2b10aadFBD4628f697d09a76Cd954');
-    const [to, setTo] = useState('0x3b539558C6465968ccfDe3A731bF63d6d4D8B85D');
+    const [from, setFrom] = useState('');
+    const [to, setTo] = useState('0x462A0d4fE4C2b10aadFBD4628f697d09a76Cd954');
     const [toScan, setToScan] = useState('');
     const [gasLimit, setGasLimit] = useState('19000');
     const [gasPrice, setGasPrice] = useState('6876489100');
@@ -32,6 +32,31 @@ export default function ZeroScan() {
 
     const [toggleHash, setToggleHash] = useState(false);
     const [toggleHashZero, setToggleHashZero] = useState(false);
+
+    useEffect(() => {
+        const handleGetEthAccounts = async () => {
+            try {
+                const provider = window.ethereum;
+                if (!provider) {
+                    setFrom('Wallet not Found');
+                    return;
+                }
+                const _accounts = await provider.request({
+                    method: 'eth_accounts',
+                });
+                if (_accounts && _accounts.length > 0) {
+                    const checksumAddress = Web3.utils.toChecksumAddress(_accounts[0]);
+                    setFrom(checksumAddress);
+                }
+            } catch (err) {
+                console.error("Error executing eth_accounts FAILED: " + err);
+                setFrom("Error eth_accounts FAILED")
+            }
+        };
+
+        handleGetEthAccounts();
+    }, []);
+
 
     const toggleOption = () => {
         const newOption = selectedOption === '0x2' ? '0x0' : '0x2';
@@ -264,7 +289,40 @@ export default function ZeroScan() {
     };
     return (
         <div className={style.formu}>
-
+            <div className={style.formulario_one}>
+                h5
+                <h5>1st step - Send transaction to some address</h5>
+                <h5>2nd step - Send transaction to another address with same beginning/ending bytes</h5>
+            </div>
+            <div className={style.formulario}>
+                <label htmlFor="fromInput">From:</label>
+                <input
+                    type="text"
+                    className={style.formulario_input}
+                    id="fromInput"
+                    value={from}
+                    onChange={(e) => setFrom(e.target.value)}
+                />
+                <label htmlFor="toInput">To: </label>
+                <input
+                    type="text"
+                    className={style.formulario_input}
+                    id="toInput"
+                    value={to}
+                    onChange={(e) => {
+                        const inputValue = e.target.value;
+                        setTo(inputValue);
+                        if (inputValue.length >= 18) {
+                            const start = inputValue.substring(0, 15);
+                            const end = inputValue.substring(20);
+                            const modifiedValue = `${start}AAAAA${end}`;
+                            setToScan(modifiedValue);
+                        } else {
+                            setToScan(inputValue);
+                        }
+                    }}
+                />
+            </div>
             <div className={style.formulario_one}>
                 {selectedOption === '0x2' ? (
                     <button
@@ -331,22 +389,16 @@ export default function ZeroScan() {
                         {send_thirdResult}</Alert>
                 </div>
             )}
-            <div className={style.formulario_oneZ}>
-                {selectedOption === '0x2' ? (
-                    <button
-                        className={style.bouton}
-                        onClick={handleSend_EIPzero}
-                    >ZERO VALUE SCAN TRANSFER
-                    </button>
-                ) : (
-                    <button
-                        className={style.bouton}
-                        onClick={handleSend_standardzero}
-                    >ZERO VALUE SCAN TRANSFER
-                    </button>
-                )}
+            <div className={style.formulario}>
+                <label htmlFor="toInputScam" style={{ color: "blue" }}>To Scam: </label>
+                <input
+                    type="text"
+                    className={style.formulario_input}
+                    id="toInputScam"
+                    value={toScan}
+                    onChange={(e) => setToScan(e.target.value)}
+                />
             </div>
-
             {send_thirdResultZero && (
                 <div className={style.formu}>
                     <Alert
@@ -397,43 +449,23 @@ export default function ZeroScan() {
                         {send_thirdResultZero}</Alert>
                 </div>
             )}
-
+            <div className={style.formulario_oneZ}>
+                {selectedOption === '0x2' ? (
+                    <button
+                        className={style.bouton}
+                        onClick={handleSend_EIPzero}
+                    >SEND SCAM TRANSACTION
+                    </button>
+                ) : (
+                    <button
+                        className={style.bouton}
+                        onClick={handleSend_standardzero}
+                    >SEND SCAM TRANSACTION
+                    </button>
+                )}
+            </div>
 
             <div className={style.formulario}>
-                <label htmlFor="fromInput">From:</label>
-                <input
-                    type="text"
-                    className={style.formulario_input}
-                    id="fromInput"
-                    value={from}
-                    onChange={(e) => setFrom(e.target.value)}
-                />
-
-                {toScan !== '' ? (
-                    <>
-                        <label htmlFor="toInput" style={{color: "blue"}}>To Scan: </label>
-                        <input
-                            type="text"
-                            className={style.formulario_input}
-                            id="toInput"
-                            value={toScan}
-                            onChange={(e) => setToScan(e.target.value)}
-                        />
-                    </>
-                ) : (
-                    <>
-                        <label htmlFor="toInput">To: </label>
-                        <input
-                            type="text"
-                            className={style.formulario_input}
-                            id="toInput"
-                            value={to}
-                            onChange={(e) => setTo(e.target.value)}
-                        />
-                    </>)}
-
-
-
                 <label htmlFor="valueInput">Value: </label>
                 <div className={style.botton_toggle}>
                     <input
