@@ -1,14 +1,12 @@
 "use client"
 import React from 'react'
-import style from './ea_five.module.css'
+import style from './ea_seven.module.css'
 import { useState } from 'react'
-import NavBar from '@/components/navBar/NavBar'
-import BurgerMenu from '@/components/burguer/BurguerMenu'
-import CheckSum from '../send_tx_checksum/CheckSum'
+import NavBar from '@/components/navBar/NavBar';
+import BurgerMenu from '@/components/burguer/BurguerMenu';
+import SignInWithEthereum from '../eip_4361/SignInWithEthereum';
 
-
-
-export default function EnteredAddress_five() {
+export default function EnteredAddress_seven() {
     const [sidebarOpen, setSidebarOpen] = useState(false);
 
     const toggleSidebar = () => setSidebarOpen(!sidebarOpen);
@@ -21,8 +19,8 @@ export default function EnteredAddress_five() {
                 <div className={`${style.content} ${sidebarOpen ? style.contentShift : ''}`}>
                     <div className={style.form_test}>
                         <div className={style.block}>
-                            <CheckSum />
-                        </div>                        
+                            <SignInWithEthereum />
+                        </div>
                     </div>
                 </div>
             </div>

@@ -8,7 +8,6 @@ import NavBar from '../../components/navBar/NavBar';
 import Sign from '../sign/Sign';
 import Personal_custom from '../personal_sign/Personal_custom';
 import Sign_typedData from '../sign_typedData/Sign_typedData';
-import SignInWithEthereum from '../eip_4361/SignInWithEthereum';
 
 
 
@@ -108,8 +107,7 @@ export default function EnteredAddress_second() {
                     </div>
                     <div className={style.form_test}>
                         <div className={style.block}>
-                            <Sign address={address} challenge={challenge} />                            
-                            <SignInWithEthereum/>                       
+                            <Sign address={address} challenge={challenge} />                                                                     
                         </div>
                         <div className={style.block}>
                             <Sign_typedData address={address} />
