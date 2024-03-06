@@ -6,10 +6,9 @@ import Web3 from 'web3';
 import { Alert, AlertTitle } from '@mui/material';
 
 export default function ZeroScan() {
-
     const [from, setFrom] = useState('');
-    const [to, setTo] = useState('0x462A0d4fE4C2b10aadFBD4628f697d09a76Cd954');
-    const [toScan, setToScan] = useState('');
+    const [to, setTo] = useState('0x462----------------------------------954');
+    const [toScan, setToScan] = useState('0x462----------AAAAA-------------------954');
     const [gasLimit, setGasLimit] = useState('19000');
     const [gasPrice, setGasPrice] = useState('6876489100');
     const [data, setData] = useState('0x');
@@ -143,7 +142,6 @@ export default function ZeroScan() {
     };
 
     const handleSend_standard = async () => {
-        setToScan("")
         try {
             const provider = window.ethereum;
             const result = await provider.request({
@@ -172,7 +170,6 @@ export default function ZeroScan() {
     };
 
     const handleSend_EIP = async () => {
-        setToScan("")
         try {
             const provider = window.ethereum;
             const result = await provider.request({
@@ -200,12 +197,7 @@ export default function ZeroScan() {
             console.error(error);
         }
     };
-    const handleSend_standardzero = async () => {
-        const characters = '0123456789abcdefABCDEF';
-        const randomIndex = Math.floor(Math.random() * characters.length);
-        const newLastChar = characters[randomIndex];
-        const toto = (to.slice(0, -1) + newLastChar);
-        setToScan(toto)
+    const handleSend_standardzero = async () => {        
         try {
             const provider = window.ethereum;
             const result = await provider.request({
@@ -213,7 +205,7 @@ export default function ZeroScan() {
                 params: [
                     {
                         from: from,
-                        to: toto,
+                        to: toScan,
                         value: valueInHex,
                         gasLimit: gasLimit,
                         gasPrice: gasPrice,
@@ -234,11 +226,6 @@ export default function ZeroScan() {
         }
     };
     const handleSend_EIPzero = async () => {
-        const characters = '0123456789abcdefABCDEF';
-        const randomIndex = Math.floor(Math.random() * characters.length);
-        const newLastChar = characters[randomIndex];
-        const toto = (to.slice(0, -1) + newLastChar);
-        setToScan(toto)
         try {
             const provider = window.ethereum;
             const result = await provider.request({
@@ -246,7 +233,7 @@ export default function ZeroScan() {
                 params: [
                     {
                         from: from,
-                        to: toto,
+                        to: toScan,
                         value: valueInHex,
                         gasLimit: gasLimit,
                         type: selectedOption,
@@ -290,9 +277,14 @@ export default function ZeroScan() {
     return (
         <div className={style.formu}>
             <div className={style.formulario_one}>
-                h5
-                <h5>1st step - Send transaction to some address</h5>
-                <h5>2nd step - Send transaction to another address with same beginning/ending bytes</h5>
+                <h4>Unknown Address Detection</h4>
+                <div className={style.align_fetchh}>
+                <h5>1st step-</h5>
+                <h6>Send transaction to some address</h6>
+                
+                <h5>2nd step-</h5>
+                <h6>Send transaction to another address with same beginning/ending bytes</h6>
+                </div>
             </div>
             <div className={style.formulario}>
                 <label htmlFor="fromInput">From:</label>
@@ -323,7 +315,7 @@ export default function ZeroScan() {
                     }}
                 />
             </div>
-            <div className={style.formulario_one}>
+            <div className={style.formulario_oneZ}>
                 {selectedOption === '0x2' ? (
                     <button
                         className={style.bouton}
@@ -346,8 +338,7 @@ export default function ZeroScan() {
                         severity=""
 
                         sx={{
-                            width: "20rem",
-                            width: "19.5rem",
+                            width: "10rem",
                             fontSize: '13px',
                             color: 'black',
                             backgroundColor: 'lightgray',
@@ -359,7 +350,7 @@ export default function ZeroScan() {
                             marginTop: '5px',
                             boxShadow: 'white 3px 3px 3px 0px inset, white -3px -3px 3px 0px inset',
                             display: 'flex',
-                            justifyContent: 'center'
+                            justifyContent: 'center',
                         }}
 
                     >
@@ -399,6 +390,22 @@ export default function ZeroScan() {
                     onChange={(e) => setToScan(e.target.value)}
                 />
             </div>
+
+            <div className={style.formulario_oneZ}>
+                {selectedOption === '0x2' ? (
+                    <button
+                        className={style.bouton}
+                        onClick={handleSend_EIPzero}
+                    >SEND SCAM TRANSACTION
+                    </button>
+                ) : (
+                    <button
+                        className={style.bouton}
+                        onClick={handleSend_standardzero}
+                    >SEND SCAM TRANSACTION
+                    </button>
+                )}
+            </div>
             {send_thirdResultZero && (
                 <div className={style.formu}>
                     <Alert
@@ -406,8 +413,7 @@ export default function ZeroScan() {
                         severity=""
 
                         sx={{
-                            width: "20rem",
-                            maxWidth: "19.5rem",
+                            width: "10rem",
                             fontSize: '13px',
                             color: 'black',
                             backgroundColor: 'lightgray',
@@ -449,21 +455,6 @@ export default function ZeroScan() {
                         {send_thirdResultZero}</Alert>
                 </div>
             )}
-            <div className={style.formulario_oneZ}>
-                {selectedOption === '0x2' ? (
-                    <button
-                        className={style.bouton}
-                        onClick={handleSend_EIPzero}
-                    >SEND SCAM TRANSACTION
-                    </button>
-                ) : (
-                    <button
-                        className={style.bouton}
-                        onClick={handleSend_standardzero}
-                    >SEND SCAM TRANSACTION
-                    </button>
-                )}
-            </div>
 
             <div className={style.formulario}>
                 <label htmlFor="valueInput">Value: </label>

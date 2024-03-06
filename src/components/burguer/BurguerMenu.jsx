@@ -11,7 +11,7 @@ const links = [
     { route: '/checkSum', label: 'Address Checksum Validation' },
     { route: '/unknown', label: 'Unknown Address Detection' },
     { route: '/siwe', label: 'EIP-4361 (SIWE)' },
-    { route: '/pishing', label: 'Pishing Sites' },
+    { route: '/phishing', label: 'Phishing Sites' },
 ];
 
 const BurgerMenu = ({ isOpen }) => {
@@ -21,7 +21,7 @@ const BurgerMenu = ({ isOpen }) => {
         <div className={isOpen ? `${style.sidebar} ${style.open}` : style.sidebar}>
             <div className={style.menu}>
                 {links.map(({ label, route }) => {                    
-                    if (route === '/pishing') {
+                    if (route === '/phishing') {
                         return (
                             <li className={style.sidebarList} key={route}>
                                 <PlayArrowOutlinedIcon sx={{ fontSize: 20 }} className={style.icon} />

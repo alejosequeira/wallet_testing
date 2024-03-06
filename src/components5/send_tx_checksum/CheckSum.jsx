@@ -1,63 +1,58 @@
 "use client";
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Web3 from 'web3';
 import style from './checkSum.module.css';
-import { Alert, TextField, AlertTitle  } from '@mui/material';
-import testParams from './eip712CHECK.json';
-import erc20Params from './erc20CHECK.json';
+import { Alert, TextField, AlertTitle } from '@mui/material';
 
-export default function CheckSum() {  
-    const [address, setAddress] = useState('0x462A0d4fE4C2b10aadFBD4628f697d09a76Cd953');
+export default function CheckSum() {
+    const [address, setAddress] = useState('');
     const [isValid, setIsValid] = useState(false);
-    const [signTypedData, setSignTypedData] = useState({ v3: '', v4: '' });
-    const [jsonFiles, setJsonFiles] = useState({
-        testParams: JSON.stringify(testParams, null, 2),
-        erc20Params: JSON.stringify(erc20Params, null, 2),
-    });
-    const [currentJson, setCurrentJson] = useState('testParams');    
-    const [toggleHashv3, setToggleHashv3] = useState(false);
-    const [toggleHashv4, setToggleHashv4] = useState(false);
 
-    const handleSignTypedData = async (version) => {
-        if (!window.ethereum) return alert("MetaMask is required!");
-        try {
-            const sign = await window.ethereum.request({
-                method: `eth_signTypedData_${version}`,
-                params: [address, jsonFiles[currentJson]],
-            });
-            setSignTypedData(prev => ({ ...prev, [version]: sign }));
-            {version === v3 ? setToggleHashv3(true) : setToggleHashv4(true)};
-        } catch (err) {
-            console.error("Signing error:", err);
-            setSignTypedData(prev => ({ ...prev, [version]: `Error: ${err.message}` }));
-            {version === v3 ? setToggleHashv3(false) : setToggleHashv4(false)};
-        }
-    };
 
-    const handleFileUpload = async (e) => {
-        const file = e.target.files[0];
-        if (file && file.type === "application/json") {
-            const fileContent = await file.text();
-            setJsonFiles(prev => ({
-                ...prev,
-                [currentJson]: fileContent,
-            }));
-        }
-    };
+    useEffect(() => {
+        const handleGetEthAccounts = async () => {
+            try {
+                const provider = window.ethereum;
+                if (!provider) {
+                    setAddress('Wallet not Found');
+                    return;
+                }
+                const _accounts = await provider.request({
+                    method: 'eth_accounts',
+                });
+                if (_accounts && _accounts.length > 0) {
+                    let checksumAddress = Web3.utils.toChecksumAddress(_accounts[0]);
+                    // let checksumAddress = "0xsccb539558C6465968ccfDe3A731bF63d6d4D8B85D";
+                    let firstChar = checksumAddress.charAt(2); // Getting the first actual character of the address
 
-    const downloadJson = (jsonName) => {
-        const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(jsonFiles[jsonName]);
-        const downloadAnchorNode = document.createElement('a');
-        downloadAnchorNode.setAttribute("href", dataStr);
-        downloadAnchorNode.setAttribute("download", `${jsonName}.json`);
-        document.body.appendChild(downloadAnchorNode);
-        downloadAnchorNode.click();
-        downloadAnchorNode.remove();
-    };
+                    // If the first character is a letter and uppercase, convert to lowercase
+                    // Otherwise, if it's a number, change it to 'A'
+                    if (isNaN(firstChar)) { // If it's not a number
+                        if (firstChar === firstChar.toUpperCase()) { // And if it's uppercase
+                            firstChar = firstChar.toLowerCase(); // Convert to lowercase
+                        }
+                        else {
+                            firstChar = firstChar.toUpperCase(); // Capitalize
+                        }
+                    } else { // If it's a number
+                        firstChar = 'A'; // Change it to 'A'
+                    }
 
-    const handleAddressChange = (event) => {
-        setAddress(event.target.value);
-    };
+                    // Construct the modified address
+                    checksumAddress = `0x${firstChar}${checksumAddress.slice(3)}`;
+
+                    setAddress(checksumAddress);
+                }
+            } catch (err) {
+                console.error("Error executing eth_accounts FAILED: " + err);
+                setAddress("Error executing eth_accounts FAILED");
+            }
+        };
+
+        handleGetEthAccounts();
+    }, []);
+
+
     const validateAddressChecksum = () => {
         try {
             const isValidChecksum = Web3.utils.checkAddressChecksum(address);
@@ -67,11 +62,14 @@ export default function CheckSum() {
             setIsValid(false);
         }
     };
+    const handleAddressChange = (e) => {
+        setAddress(e.target.value);
+    }
 
     return (
         <div className={style.container}>
             <div className={style.formu_ADDRESS}>
-                <label htmlFor="addressInput_eht" className={style.label_address}>Enter an Address</label>
+                <label htmlFor="addressInput_eht" className={style.label_address}>Enter an Address with invalid checksum</label>
 
                 <TextField
                     type="text"
@@ -91,7 +89,7 @@ export default function CheckSum() {
                             width: '17rem',
                             boxShadow: '#666666 1px 1px 1px 0px inset, #666666 -1px -1px 1px 0px inset',
                             textDecoration: 'none',
-                            padding: '0 10px',
+                            padding: '0 5px',
                             '&:focus': {
                                 border: '1px solid #434343',
                             },
@@ -171,107 +169,7 @@ export default function CheckSum() {
                     </div>
                 }
             </div>
-            <div className={style.formu}>
-                <button className={style.bouton} onClick={() => handleSignTypedData('v3')}>SIGN TYPED DATA V3</button>
-                {signTypedData.v3 && (
-                    <div>
-                        <Alert severity="" sx={{
-                            width: "17rem",
-                            fontSize: '13px',
-                            color: 'black',
-                            backgroundColor: 'lightgray',
-                            border: '3px solid gray',
-                            borderRadius: '5px',
-                            padding: '0 10px 0px 0px',
-                            textAlign: 'center',
-                            margin: '0 5px',
-                            marginBottom: '15px',
-                            boxShadow: 'white 3px 3px 3px 0px inset, white -3px -3px 3px 0px inset',
-                            display: 'flex',
-                            justifyContent: 'center'
 
-                        }}>
-                            {toggleHashv3 ? (
-                            <AlertTitle
-                                sx={{
-                                    fontSize: '13px',
-                                    fontWeight: '600',
-                                    margin: '0',
-                                    color: 'blue',
-                                    textAlign: 'center',
-                                }}>
-                                Tnx Hash: </AlertTitle>
-
-                        ) : (
-                            <AlertTitle
-                                sx={{
-                                    fontSize: '13px',
-                                    fontWeight: '600',
-                                    margin: '0',
-                                    color: '#ad0424',
-                                    textAlign: 'center',
-                                }}>
-                                Error: </AlertTitle>)}
-                            {signTypedData.v3}</Alert>
-                    </div>
-                )}
-                <button className={style.bouton} onClick={() => handleSignTypedData('v4')}>SIGN TYPED DATA V4</button>
-                {signTypedData.v4 && (
-                    <div>
-                        <Alert severity="" sx={{
-                            width: "17rem",
-                            fontSize: '13px',
-                            color: 'black',
-                            backgroundColor: 'lightgray',
-                            border: '3px solid gray',
-                            borderRadius: '5px',
-                            padding: '0 10px 0px 0px',
-                            textAlign: 'center',
-                            margin: '0 5px',
-                            marginBottom: '15px',
-                            boxShadow: 'white 3px 3px 3px 0px inset, white -3px -3px 3px 0px inset',
-                            display: 'flex',
-                            justifyContent: 'center'
-
-                        }}>
-                            {toggleHashv4 ? (
-                            <AlertTitle
-                                sx={{
-                                    fontSize: '13px',
-                                    fontWeight: '600',
-                                    margin: '0',
-                                    color: 'blue',
-                                    textAlign: 'center',
-                                }}>
-                                Tnx Hash: </AlertTitle>
-
-                        ) : (
-                            <AlertTitle
-                                sx={{
-                                    fontSize: '13px',
-                                    fontWeight: '600',
-                                    margin: '0',
-                                    color: '#ad0424',
-                                    textAlign: 'center',
-                                }}>
-                                Error: </AlertTitle>)}
-                            {signTypedData.v4}</Alert>
-                    </div>
-                )}
-            </div>
-            <div className={style.formulario}>
-                <input type="file" accept=".json" onChange={handleFileUpload} className={style.input_file} />
-                
-                    <button onClick={() => downloadJson('erc20Params')} className={style.bouton_download}>Download ERC20 Permit sample</button>
-                    <button onClick={() => downloadJson('testParams')} className={style.bouton_download}>Download OpenSea Contract sample</button>
-                
-                <div className={style.textareaContainer}>
-                    <button className={style.toggleButton} onClick={() => setCurrentJson(prev => prev === 'testParams' ? 'erc20Params' : 'testParams')}>
-                        {currentJson === 'testParams' ? 'OpenSea' : 'ERC20'}
-                    </button>
-                    <textarea className={style.textarea_json} value={jsonFiles[currentJson]} onChange={(e) => setJsonFiles(prev => ({ ...prev, [currentJson]: e.target.value }))}></textarea>
-                </div>
-            </div>
         </div>
     );
 }

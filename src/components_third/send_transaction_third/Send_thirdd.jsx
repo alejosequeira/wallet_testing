@@ -1,26 +1,27 @@
 "use client"
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Web3 from 'web3';
-import { Alert, AlertTitle} from '@mui/material';
+import { Alert, AlertTitle } from '@mui/material';
 import style from './send_thirdd.module.css'
 
 
 function Send_thirdd() {
 
-  const [from, setFrom] = useState('0x462A0d4fE4C2b10aadFBD4628f697d09a76Cd954');
-  const [to, setTo] = useState('0x3b539558c6465968ccfde3a731bf63d6d4d8b85d');
+  const [from, setFrom] = useState('');
+  const [to, setTo] = useState('0x3b539558C6465968ccfDe3A731bF63d6d4D8B85D');
   const [gasLimit, setGasLimit] = useState('19000');
-  const [gasPrice, setGasPrice] = useState('6876489100');
+  const [gasPrice, setGasPrice] = useState('');
   const [data, setData] = useState('0x');
-  const [nonce, setNonce] = useState('0x0');
-  const [chainId, setChainId] = useState('1');
+  const [nonce, setNonce] = useState('');
+  const [chainId, setChainId] = useState('');
   const [send_thirdResult, setSend_thirdResult] = useState('');
   const [isToggledLimit, setIsToggledLimit] = useState(false);
   const [isToggledPrice, setIsToggledPrice] = useState(false);
+  const [isToggledNonce, setIsToggledNonce] = useState(false);
 
   const [maxFeePerGas, setMaxFeePerGas] = useState('');
   const [maxPriorityFeePerGas, setMaxPriorityFeePerGas] = useState('0');
-  const [isAutoMaxFee, setIsAutoMaxFee] = useState(false);
+  const [isAutoMaxFee, setIsAutoMaxFee] = useState(true);
 
   const [valueInWei, setValueInWei] = useState('0');
   const [valueInHex, setValueInHex] = useState('0x0');
@@ -34,6 +35,91 @@ function Send_thirdd() {
     const newOption = selectedOption === '0x2' ? '0x0' : '0x2';
     setSelectedOption(newOption);
   };
+  useEffect(() => {
+    const handleGetEthAccounts = async () => {
+      try {
+        const provider = window.ethereum;
+        if (!provider) {
+          setFrom('Wallet not Found');
+          return;
+        }
+        const _accounts = await provider.request({
+          method: 'eth_accounts',
+        });
+        if (_accounts && _accounts.length > 0) {
+          const checksumAddress = Web3.utils.toChecksumAddress(_accounts[0]);
+          setFrom(checksumAddress);
+          await getNounce(checksumAddress);
+          await fetchGasLimit(checksumAddress);
+        }
+      } catch (err) {
+        console.error("Error executing eth_accounts FAILED: " + err);
+        setFrom("Error eth_accounts FAILED")
+      }
+    };
+
+    const getNounce = async (address) => {
+      setIsToggledNonce(!isToggledNonce);
+      try {
+        const provider = window.ethereum;
+        const web3 = new Web3(provider);
+        const nonce = await web3.eth.getTransactionCount(address, 'latest');
+        setNonce(`${nonce.toString()}`);
+      } catch (error) {
+        setNonce(error.message);
+        console.error('Error fetching nonce:', error);
+      }
+    };
+    const fetchGasLimit = async (address) => {
+      setIsToggledLimit(!isToggledLimit);
+      try {
+        const provider = window.ethereum;
+        const web3 = new Web3(provider);
+
+        const transaction = {
+          from: address,
+          to: to,
+          value: valueInHex,
+          data: data,
+        };
+
+        const estimatedGas = await window.ethereum.request({
+          method: 'eth_estimateGas',
+          params: [transaction],
+        });
+        const estimatedGasNumber = web3.utils.hexToNumber(estimatedGas);
+
+        setGasLimit(`${estimatedGasNumber}`);
+
+      } catch (error) {
+        setGasLimit(error.message)
+        console.error('Error estimating gas:', error);
+      }
+    };
+
+    handleGetEthAccounts();
+    fetchMaxFees();
+    loadBlockchainData();
+  }, []);
+
+
+  const loadBlockchainData = async () => {
+    if (window.ethereum) {
+      const web3 = new Web3(window.ethereum);
+      try {
+        await window.ethereum.enable(); // Request access if needed
+        const currentChainId = await web3.eth.getChainId();
+        setChainId(currentChainId);
+      } catch (error) {
+        console.error("Could not get chain ID:", error);
+        setChainId("Could not get chain ID")
+      }
+    } else {
+      console.log('Non-Ethereum browser detected. You should consider trying MetaMask!');
+      setChainId("Non-Ethereum browser detected. You should consider trying MetaMask!")
+    }
+  };
+
 
   const toggleDisplay = () => {
     setDisplayWei(!displayWei);
@@ -73,8 +159,9 @@ function Send_thirdd() {
     }
   };
 
+
   const fetchGasPrice = async () => {
-    setIsToggledPrice(!isToggledPrice);
+    // setIsToggledPrice(!isToggledPrice);
     try {
       const provider = window.ethereum;
       const web3 = new Web3(provider);
@@ -88,7 +175,7 @@ function Send_thirdd() {
   };
 
   const fetchGasLimit = async () => {
-    setIsToggledLimit(!isToggledLimit);
+    // setIsToggledLimit(!isToggledLimit);
     try {
       const provider = window.ethereum;
       const web3 = new Web3(provider);
@@ -115,6 +202,8 @@ function Send_thirdd() {
   };
 
   const handleSend_standard = async () => {
+    fetchGasLimit();
+    fetchGasPrice();
     try {
       const provider = window.ethereum;
       const result = await provider.request({
@@ -143,6 +232,8 @@ function Send_thirdd() {
   };
 
   const handleSend_EIP = async () => {
+    fetchMaxFees();
+    fetchGasLimit();
     try {
       const provider = window.ethereum;
       const result = await provider.request({
@@ -174,6 +265,7 @@ function Send_thirdd() {
 
 
   const fetchMaxFees = async () => {
+    // setIsAutoMaxFee(!isAutoMaxFee);
     try {
       const provider = window.ethereum;
       const web3 = new Web3(provider);
@@ -257,7 +349,6 @@ function Send_thirdd() {
             {send_thirdResult}</Alert>
         </div>
       )}
-
       <div className={style.formulario}>
         <label htmlFor="fromInput">From:</label>
         <input
@@ -314,7 +405,8 @@ function Send_thirdd() {
           <label htmlFor="MaxFeePerGasInput">Max Fee: </label>
 
         ) : (
-          <label htmlFor="gasLimitInput">Gas Limit:</label>
+          <label htmlFor="gasPriceInput">Gas Price: </label>
+
         )}
         {selectedOption === '0x2' ? (
           <div className={style.botton_toggle}>
@@ -328,7 +420,11 @@ function Send_thirdd() {
             />
             <button
               className={`${style.toggleButton} ${isAutoMaxFee ? style.toggleOn : style.toggleOff}`}
-              onClick={() => { fetchMaxFees(); setIsAutoMaxFee(!isAutoMaxFee); }}
+              onClick={() => {
+                setIsAutoMaxFee(!isAutoMaxFee);
+                fetchMaxFees();
+              }
+              }
             >
               {isAutoMaxFee ? 'AUTO' : 'AUTO'}
             </button>
@@ -337,16 +433,22 @@ function Send_thirdd() {
           <div className={style.botton_toggle}>
             <input
               type="text"
-              id="gasLimitInput"
-              value={gasLimit}
-              onChange={(e) => setGasLimit(parseInt(e.target.value))}
-              disabled={isToggledLimit}
               className={style.input_botton}
+              id="gasPriceInput"
+              value={gasPrice}
+              onChange={(e) => setGasPrice(e.target.value)}
+              disabled={isToggledPrice}
             />
-            <button className={`${style.toggleButton} ${isToggledLimit ? style.toggleOn : style.toggleOff}`} onClick={fetchGasLimit}>
-              {isToggledLimit ? 'AUTO' : 'AUTO'}
+            <button
+              className={`${style.toggleButton} ${isToggledPrice ? style.toggleOn : style.toggleOff}`}
+              onClick={() => {
+                setIsToggledPrice(!isToggledPrice);
+                fetchGasPrice();
+              }}>
+              {isToggledPrice ? 'AUTO' : 'AUTO'}
             </button>
           </div>
+
         )}
         {selectedOption === '0x2' ? (
           <label htmlFor="setMaxPriorityFeePerGas">Priority: </label>
@@ -361,27 +463,24 @@ function Send_thirdd() {
           />
         ) : ("")}
 
-        <label htmlFor="gasPriceInput">Gas Price: </label>
+        <label htmlFor="gasLimitInput">Gas Limit:</label>
         <div className={style.botton_toggle}>
           <input
             type="text"
+            id="gasLimitInput"
+            value={gasLimit}
+            onChange={(e) => setGasLimit(parseInt(e.target.value))}
+            disabled={isToggledLimit}
             className={style.input_botton}
-            id="gasPriceInput"
-            value={gasPrice}
-            onChange={(e) => setGasPrice(e.target.value)}
-            disabled={isToggledPrice}
           />
-          <button
-            className={`${style.toggleButton} ${isToggledPrice ? style.toggleOn : style.toggleOff}`}
-            onClick={fetchGasPrice}
-          >
-            {isToggledPrice ? 'AUTO' : 'AUTO'}
+          <button className={`${style.toggleButton} ${isToggledLimit ? style.toggleOn : style.toggleOff}`}
+            onClick={() => {
+              setIsToggledLimit(!isToggledLimit);
+              fetchGasLimit();
+            }}>
+            {isToggledLimit ? 'AUTO' : 'AUTO'}
           </button>
         </div>
-
-
-
-
         <label htmlFor="data">Data: </label>
         <input
           type="text"
@@ -390,7 +489,6 @@ function Send_thirdd() {
           value={data}
           onChange={(e) => setData(e.target.value)}
         />
-
         <label htmlFor="nonce">Nonce:</label>
         <div className={style.botton_toggle}>
           <input
@@ -399,13 +497,17 @@ function Send_thirdd() {
             id="nonce"
             value={nonce}
             onChange={(e) => setNonce(e.target.value)}
+            disabled={isToggledNonce}
           />
-          <button className={style.toggleButton} onClick={getNonce}>
-            GET
+          <button
+            className={`${style.toggleButton} ${isToggledNonce ? style.toggleOn : style.toggleOff}`}
+            onClick={() => {
+              setIsToggledNonce(!isToggledNonce);
+              getNonce();
+            }}>
+            {isToggledNonce ? 'AUTO' : 'AUTO'}
           </button>
         </div>
-
-
         <label htmlFor="chainId">Chain ID: </label>
         <input
           type="text"
@@ -414,15 +516,8 @@ function Send_thirdd() {
           value={chainId}
           onChange={(e) => setChainId(e.target.value)}
         />
-
-
-
-
       </div>
-      
-
     </div>
   );
 }
-
 export default Send_thirdd;
