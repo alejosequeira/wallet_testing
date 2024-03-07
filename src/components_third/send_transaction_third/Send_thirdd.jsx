@@ -66,7 +66,7 @@ function Send_thirdd() {
         const nonce = await web3.eth.getTransactionCount(address, 'latest');
         setNonce(`${nonce.toString()}`);
       } catch (error) {
-        setNonce(error.message);
+        setNonce("Provided Address invalid");
         console.error('Error fetching nonce:', error);
       }
     };

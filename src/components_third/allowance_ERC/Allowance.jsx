@@ -1,18 +1,18 @@
 "use client"
 import style from './juan2pepito.module.css';
-import React, { useState } from 'react';
+import React, { useState, useEffect} from 'react';
 import Web3 from 'web3';
 import contractAbi from './contractAbi.json';
-import erc20Abi from './erc20PermitABI.json';
+import erc20ABI from './erc20PermitABI.json';
 import { Alert,AlertTitle } from '@mui/material';
-
 
 const Juan2pepito = () => {
     const [erc20Allow, setERC20Allow] = useState("");
+    const [erc20Check, setERC20Check] = useState("");
     const [erc721Allow, setERC721Allow] = useState("");
     const [tokenContractAddress, setTokenContractAddress] = useState('0xBf7F7560063b38b7ffE972C9401AC7a6aBaA7659');
-    const [owner, setOwner] = useState('0x462A0d4fE4C2b10aadFBD4628f697d09a76Cd954');
-    const [spender, setSpender] = useState('0x3b539558c6465968ccfde3a731bf63d6d4d8b85d');
+    const [owner, setOwner] = useState('');
+    const [spender, setSpender] = useState('0x3b539558C6465968ccfDe3A731bF63d6d4D8B85D');
     const [value1, setValue] = useState('1000000000000000000');
     const [deadline, setDeadline] = useState(9999999999);
     const [signature, setSignature] = useState('0xfcf6af9335fa6b0a63ef0f2128fb923a810e1f575cf6565fe0e474352763e1287eb0750cd9755b59ed9ad301b6489d591736c071494ad2cef9629a6fd41f0dcf1b');
@@ -22,15 +22,41 @@ const Juan2pepito = () => {
     const [showForm, setShowForm] = useState(false);
     const [showForm721, setShowForm721] = useState(false);
     const [toggleHash, setToggleHash] = useState(false);
+    const [toggleCheck, setToggleCheck] = useState();
     const [toggleHash721, setToggleHash721] = useState(false);
     const [erc721TokenAddress, setErc721TokenAddress] = useState('0x54Ad10aAf97875385e3415314a43AA4c87597Fa0');
     const [operator, setOperator] = useState('0x3b539558c6465968ccfde3a731bf63d6d4d8b85d');
     const [contractAddress, setContractAddress] = useState('0xE4A3464499562127C3049517066B5Cb409521906');
     const contractABI = contractAbi; 
+    const erc20Abi = erc20ABI; 
+    
 
     async function requestAccount() {
         await window.ethereum.request({ method: 'eth_requestAccounts' });
     }
+    useEffect(() => {
+        const handleGetEthAccounts = async () => {
+          try {
+            const provider = window.ethereum;
+            if (!provider) {
+                setOwner('Wallet not Found');
+              return;
+            }
+            const _accounts = await provider.request({
+              method: 'eth_accounts',
+            });
+            if (_accounts && _accounts.length > 0) {
+              const checksumAddress = Web3.utils.toChecksumAddress(_accounts[0]);
+              setOwner(checksumAddress);
+            }
+          } catch (err) {
+            console.error("Error executing eth_accounts FAILED: " + err);
+            setOwner("Error eth_accounts FAILED")
+          }
+        };
+        
+    handleGetEthAccounts();    
+  }, []);
 
     const setERC20Allowance = async () => {
         const web3 = new Web3(window.ethereum);
@@ -74,25 +100,23 @@ const Juan2pepito = () => {
     const checkERC20Allowance = async () => {
         const web3 = new Web3(window.ethereum);
         const tokenContract = new web3.eth.Contract(erc20Abi, tokenContractAddress);
-        const r = "0x" + signature.slice(2, 66);
-        setR(r);
-        const s = "0x" + signature.slice(66, 130);
-        setS(s);
-        const v = parseInt(signature.slice(130, 132), 16);
-        setV(v);
+    
         try {
-            // Query the allowance
-            const allowance = await tokenContract.methods.allowance(owner, spender).call();
-            const formattedAllowance = new web3.utils.BN(allowance);
-            setERC20Allow(`Allowance of ${formattedAllowance.toString()} tokens`);
-            setToggleHash(true)
+            // Fetch the current allowance
+            const currentAllowance = await tokenContract.methods.allowance(owner, spender).call();
+            console.log(`Current allowance for spender is: ${currentAllowance}`);
+            setERC20Check(`allowance for spender is: ${currentAllowance}`);
+            setToggleCheck(true);
+            // Optionally, convert the allowance to a more readable format
+            const readableAllowance = web3.utils.fromWei(currentAllowance, 'ether');
+            console.log(`Readable allowance for spender is: ${readableAllowance} tokens`);
         } catch (error) {
             console.error("Error checking allowance:", error);
-            setERC20Allow(error);
-            setToggleHash(false);
+            setERC20Check("Failed to check allowance. See console for more details.");
+            setToggleCheck(false);
         }
     };
-
+          
     async function setERC721Allowance() {
         await requestAccount();
         const web3 = new Web3(window.ethereum);
@@ -110,7 +134,6 @@ const Juan2pepito = () => {
             setToggleHash721(false);
         }
     }
-
 
     const handleSignatureChange = (e) => {
         const sig = e.target.value;
@@ -131,9 +154,6 @@ const Juan2pepito = () => {
         <div className={style.container}>
             <div className={style.formu}>
                 <button className={style.bouton} onClick={setERC20Allowance}>ERC20 ALLOWANCE</button>
-            </div>
-            <div className={style.formu}>
-                <button className={style.bouton} onClick={checkERC20Allowance}>ERC20 VERIFY</button>
                 {erc20Allow && (
                     <div  className={style.formu}>
                         <Alert
@@ -167,7 +187,7 @@ const Juan2pepito = () => {
                                         color: 'blue',
                                         textAlign: 'center',
                                     }}>
-                                    Tnx Hash: </AlertTitle>
+                                    Signature: </AlertTitle>
 
                             ) : (
                                 <AlertTitle
@@ -181,6 +201,59 @@ const Juan2pepito = () => {
                                     Error: </AlertTitle>)}
 
                             {erc20Allow}
+                        </Alert>
+                    </div>
+                )}
+            </div>
+            <div className={style.formu}>
+                <button className={style.bouton} onClick={checkERC20Allowance}>ERC20 VERIFY</button>
+                {erc20Check && (
+                    <div  className={style.formu}>
+                        <Alert
+
+                            severity=""
+
+                            sx={{
+                                width: "20rem",
+                                maxWidth: "19.5rem",
+                                fontSize: '13px',
+                                color: 'black',
+                                backgroundColor: 'lightgray',
+                                border: '3px solid gray',
+                                borderRadius: '5px',
+                                padding: '0 10px 0px 0px',
+                                textAlign: 'center',
+                                margin: '0 5px',
+                                marginTop: '5px',
+                                boxShadow: 'white 3px 3px 3px 0px inset, white -3px -3px 3px 0px inset',
+                                display: 'flex',
+                                justifyContent: 'center'
+                            }}
+
+                        >
+                            {toggleCheck ? (
+                                <AlertTitle
+                                    sx={{
+                                        fontSize: '13px',
+                                        fontWeight: '600',
+                                        margin: '0',
+                                        color: 'blue',
+                                        textAlign: 'center',
+                                    }}>
+                                    Success: </AlertTitle>
+
+                            ) : (
+                                <AlertTitle
+                                    sx={{
+                                        fontSize: '13px',
+                                        fontWeight: '600',
+                                        margin: '0',
+                                        color: '#ad0424',
+                                        textAlign: 'center',
+                                    }}>
+                                    Error: </AlertTitle>)}
+
+                            {erc20Check}
                         </Alert>
                     </div>
                 )}
@@ -347,6 +420,4 @@ const Juan2pepito = () => {
         </div>
     );
 };
-
-
 export default Juan2pepito;
