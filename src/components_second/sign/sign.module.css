@@ -25,3 +25,27 @@
   color: var(--white);
   box-shadow: black 0px 1px 10px;    
 }
+.text_copied {
+  background-color: var(--darkGray);
+  color: white;
+  padding: 0 5px;
+  border-radius: 5px;
+  font: var(--default-font);
+  font-size: 0.5rem;
+  margin-left: 5px;
+}
+
+.clipboard {
+  width: 15px;
+  padding: 0;
+  margin: 0;
+  margin-left: 5px;
+  cursor: pointer;
+  z-index: 10;
+  color: var(--darkGray);
+}
+
+.clipboard:hover {
+  color: black;
+  transform: scale(1.1);
+}

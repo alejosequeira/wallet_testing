@@ -4,12 +4,14 @@
     border: 1px solid #ccc;
     border-radius: 4px;
   }
+
   .input:focus {
     outline: none;
     border-color: #7cabf9;
     box-shadow: 0 0 0 3px rgba(124, 172, 249, 0.1);
   }
-  .formu{
+
+  .formu {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -20,7 +22,97 @@
     margin: 0 0 0.5rem 0px;
     padding: 0px 0px 0px 0px;
   }
-  .textarea_json{
+
+  .text_copied {
+    background-color: var(--darkGray);
+    color: white;
+    padding: 0 5px;
+    border-radius: 5px;
+    font: var(--default-font);
+    font-size: 0.5rem;
+    margin-left: 5px;
+  }
+
+  .clipboard {
+    width: 15px;
+    padding: 0;
+    margin: 0;
+    margin-left: 5px;
+    cursor: pointer;
+    z-index: 10;
+    color: var(--darkGray);
+  }
+
+  .clipboard:hover {
+    color: black;
+    transform: scale(1.1);
+  }
+
+  .container_connected {
+    color: var(--darkGray);
+    padding: 0 15px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    font-family: var(--default-font);
+    margin-right: 15px;
+  }
+
+  .container_connected:hover {
+    color: var(--black);
+  }
+
+  .container_connected h6 {
+    color: var(--black);
+  }
+
+  .boton {
+    background-color: var(--darkGray);
+    border: 2px solid white;
+    color: white;
+    padding: 0 15px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    font-family: 'Courier New', Courier, monospace;
+    cursor: pointer;
+    border-radius: 5%;
+    box-shadow: 5px 5px 10px var(--black);
+    transition: 0.5s;
+  }
+
+  .boton:hover {
+    background-color: var(--brand);
+    color: var(--black);
+    box-shadow: 5px 5px 10px var(--darkGray);
+    transition: 0.5s;
+  }
+
+  .container_connected {
+    color: var(--darkGray);
+    padding: 0 15px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    font-family: var(--default-font);
+    margin-right: 15px;
+  }
+
+  .container_connected:hover {
+    color: var(--black);
+  }
+
+  .container_connected h6 {
+    color: var(--black);
+  }
+
+  .text_copied {
+    top: -23px
+}
+  .textarea_json {
     text-align: start;
     width: 17rem;
     height: 10rem;
@@ -33,6 +125,7 @@
     box-sizing: border-box;
     color: var(--white);
   }
+
   .bouton {
     font: var(--default-font);
     font-size: 0.7rem;
@@ -43,33 +136,37 @@
     background-color: var(--lightBlue);
     color: var(--ligtherGray);
     cursor: pointer;
-    box-shadow: black 0px 1px 5px;    
+    box-shadow: black 0px 1px 5px;
     width: 9rem;
     gap: 5px;
     display: flex;
     justify-content: center;
-    align-items: center;    
+    align-items: center;
     text-align: center;
   }
+
   .bouton:hover {
     background-color: var(--lightBlue);
     color: var(--white);
-    box-shadow: black 0px 1px 10px;    
+    box-shadow: black 0px 1px 10px;
   }
 
   .bouton_download:hover {
-    box-shadow: inset black 0px 0.1px 9px;   
+    box-shadow: inset black 0px 0.1px 9px;
   }
+
   .bouton_download:disabled {
     background-color: var(--darkBlue);
     color: var(--ligtherGray);
-    box-shadow: black 0px 1px 5px;    
+    box-shadow: black 0px 1px 5px;
   }
+
   .bouton_download:disabled:hover {
     background-color: var(--darkBlue);
     color: var(--ligtherGray);
-    box-shadow: black 0px 1px 5px;    
+    box-shadow: black 0px 1px 5px;
   }
+
   .container {
     display: flex;
     flex-direction: column;
@@ -80,137 +177,142 @@
     background-color: var(--lightGray);
     margin: 0;
     padding: 0px 0px 0px 0px;
-}
-.formulario {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  margin: 0 0.5rem;
-  padding: 0;
-  gap: 10px;
-}
+  }
 
-.formulario label {
-  display: block; 
-  color: var(--black); 
-  font: var(--default-font);
-  font-size: 0.75rem;
-  margin: 0px;
-}
+  .formulario {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 0 0.5rem;
+    padding: 0;
+    gap: 10px;
+  }
 
-.formulario_input {
-  display: flex;
-  text-align: center;
-  justify-content: space-between;
-  align-items: center;
+  .formulario label {
+    display: block;
+    color: var(--black);
+    font: var(--default-font);
+    font-size: 0.75rem;
+    margin: 0px;
+  }
 
-  width: 17rem;
-  /* background-color: var(--darkGray); */
-  font: var(--default-font);
-  font-size: 0.6rem;
-  /* border: 2px solid var(--lightyGray); */
-  border-radius: 4px;
-  padding: 5px 10px;
-  box-sizing: border-box;
-  color: var(--white);
-  gap: 0.5rem;
-}
+  .formulario_input {
+    display: flex;
+    text-align: center;
+    justify-content: space-between;
+    align-items: center;
+
+    width: 17rem;
+    /* background-color: var(--darkGray); */
+    font: var(--default-font);
+    font-size: 0.6rem;
+    /* border: 2px solid var(--lightyGray); */
+    border-radius: 4px;
+    padding: 5px 10px;
+    box-sizing: border-box;
+    color: var(--white);
+    gap: 0.5rem;
+  }
 
 
-.formulario_input:focus {
-  outline: none;
-  border-color: #7cabf9;
-  box-shadow: 0 0 0 3px rgba(124, 172, 249, 0.1);
-}
-.input_file{
-  background-color: var(--lightGray);
-  max-width: 9rem;
-  font: var(--default-font);
-  font-size: 0.45rem;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: inset black 0px 0.09px 5px;    
-  
-  height: 0.85rem;
-  border: 0.1rem  solid var(--darkGray);
-  text-align: center;
-  text-decoration: none;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: auto;
-  color: var(--blue);
-  font-weight: 600;
-  border-radius: 1px;
-}  
+  .formulario_input:focus {
+    outline: none;
+    border-color: #7cabf9;
+    box-shadow: 0 0 0 3px rgba(124, 172, 249, 0.1);
+  }
 
-.input_file:hover {
-  box-shadow: inset black 0px 0.1px 9px;    
-  
-}
-.bouton_download{
-  font: var(--default-font);
-  font-size: 0.45rem;
-  margin: 0 auto;
-  background-color: var(--gray);
-  color: var(--ligtherGray);
-  cursor: pointer;
-  transition: all 0.3s ease;
-  border-radius: 1px;
-  width: 10rem;    
-  height: 0.75rem;
-  color: white;
-  border: 0.1rem solid var(--darkGray);
-  text-align: center;
-  text-decoration: none;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-.bouton_download_span{
-  margin: auto;
-}
+  .input_file {
+    background-color: var(--lightGray);
+    max-width: 9rem;
+    font: var(--default-font);
+    font-size: 0.45rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: inset black 0px 0.09px 5px;
 
-.botton_toggle {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: 0;
-  padding: 0;
-  width: 16rem;    
-  background-color: var(--lightyGray);
-  font: var(--default-font);
-  border-radius: 4px;
-  border: 2px solid var(--lightyGray);
-  text-align: center;
-}
+    height: 0.85rem;
+    border: 0.1rem solid var(--darkGray);
+    text-align: center;
+    text-decoration: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: auto;
+    color: var(--blue);
+    font-weight: 600;
+    border-radius: 1px;
+  }
 
-.toggleButton {
-  position: absolute;
-  top: 15px;
-  right: 20px;
-  color: white;
-  border-radius: 4px;
-  cursor: pointer;
-  font: var(--default-font);
-  font-size: 0.4rem;
-  transition: background-color 0.3s;
-  width: 2rem;
-  margin:0 0.5rem;
-  text-align: center;
-  border: 1px solid var(--lightyGray);
-}
-.textareaContainer {
-  position: relative;
-}
+  .input_file:hover {
+    box-shadow: inset black 0px 0.1px 9px;
 
-.input_botton {
-  text-align: center;
-  font: var(--default-font);
-  font-size: 0.6rem;    
-  color: var(--white);
-  width: 15rem;
-  border: none;
-  border-radius: 4px;
-}
+  }
+
+  .bouton_download {
+    font: var(--default-font);
+    font-size: 0.45rem;
+    margin: 0 auto;
+    background-color: var(--gray);
+    color: var(--ligtherGray);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border-radius: 1px;
+    width: 10rem;
+    height: 0.75rem;
+    color: white;
+    border: 0.1rem solid var(--darkGray);
+    text-align: center;
+    text-decoration: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .bouton_download_span {
+    margin: auto;
+  }
+
+  .botton_toggle {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+    padding: 0;
+    width: 16rem;
+    background-color: var(--lightyGray);
+    font: var(--default-font);
+    border-radius: 4px;
+    border: 2px solid var(--lightyGray);
+    text-align: center;
+  }
+
+  .toggleButton {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    color: white;
+    border-radius: 4px;
+    cursor: pointer;
+    font: var(--default-font);
+    font-size: 0.4rem;
+    transition: background-color 0.3s;
+    width: 2rem;
+    margin: 0 0.5rem;
+    text-align: center;
+    border: 1px solid var(--lightyGray);
+  }
+
+  .textareaContainer {
+    position: relative;
+  }
+
+  .input_botton {
+    text-align: center;
+    font: var(--default-font);
+    font-size: 0.6rem;
+    color: var(--white);
+    width: 15rem;
+    border: none;
+    border-radius: 4px;
+  }

@@ -6,9 +6,18 @@ import { Alert, AlertTitle } from '@mui/material';
 
 const SignInWithEthereum = () => {
     const [message, setMessage] = useState('');
-    // const [msjOpen, setMsjOpen] = useState('');
-    // const [msjDapp, setMsjDapp] = useState('');
-    // domain= ${domain}\naddress= ${account}\nstatement= ${statement}\nuri= ${uri}\nversion= ${version}\nnonce= ${nonce}\nissuedAt= ${issuedAt}
+
+
+    const [from, setFrom] = useState('');
+    const [domain, setDomain] = useState('');
+    const [statement, setStatement] = useState('Welcome to OpenSea!');
+    const [description, setDescription] = useState('Click to sign in and accept the OpenSea Terms of Service (https://opensea.io/tos) and Privacy Policy (https://opensea.io/privacy).');
+    const [description2, setDescription2] = useState('This request will not trigger a blockchain transaction or cost any gas fees.');
+    const [uri, setUri] = useState('');
+    const [nonce, setNonce] = useState('');
+
+
+
     const [toggleHashZero, setToggleHashZero] = useState(false);
 
     const signInWithEthereum = async () => {
@@ -16,27 +25,28 @@ const SignInWithEthereum = () => {
             alert('Please install MetaMask to use this feature.');
             return;
         }
-
         try {
             const web3 = new Web3(window.ethereum);
             const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
-            const account = accounts[0];
+            setFrom(accounts[0])
             const domain = window.location.host;
-            const statement = "Sign in with Ethereum to the app.";
+            setDomain(domain)
             const uri = window.location.origin;
+            setUri(uri)
             const version = "1";
-            const nonce = Math.floor(Math.random() * 1000000).toString(); // Simple nonce; use a more secure method in production
+            const nonce = Math.floor(Math.random() * 1000000).toString(); 
+            setNonce(nonce)
             const issuedAt = new Date().toISOString();
 
-            const message = `Welcome to OpenSea!\n\nClick to sign in and accept the OpenSea Terms of Service (https://opensea.io/tos) and Privacy Policy (https://opensea.io/privacy).\n\n This request will not trigger a blockchain transaction or cost any gas fees.\n\nWallet address= \n${account}\n\nnonce= \n${nonce}`;
+            const message = `${statement}\n\n${description}\n\n ${description2}\n\nWallet address= \n${from}\n\nNonce= \n${nonce}`;
 
-            const signature = await web3.eth.personal.sign(message, account);
+            const signature = await web3.eth.personal.sign(message, accounts[0]);
 
             const r = "0x" + signature.slice(2, 66);
             const s = "0x" + signature.slice(66, 130);
             const v = parseInt(signature.slice(130, 132), 16);
             console.log({ message, signature });
-            setMessage(`Signature:\n${signature}\nr:\n${r}\ns:\n${s}\nv:${v} \n\nMessage: \n${message}`);
+            setMessage(`${signature}\nr:\n${r}\ns:\n${s}\nv:${v}`);
             setToggleHashZero(true)
         } catch (error) {
             setMessage('Error signing in');
@@ -46,12 +56,12 @@ const SignInWithEthereum = () => {
     };
 
     return (
-        <div>
+        <div className={style.formu}>
             <button className={style.bouton} onClick={signInWithEthereum}>EIP-4361</button>
             {message && (
                 <>
                     <Alert severity="" sx={{
-                        width: "17rem",
+                        width: "17.5rem",
                         font: 'var(--default-font)',
                         fontSize: '13px',
                         color: 'black',
@@ -100,6 +110,73 @@ const SignInWithEthereum = () => {
 
                 </>
             )}
+            <div className={style.formulario}>
+                <label htmlFor="fromInput">From:</label>
+                <textarea
+                    type="text"
+                    className={style.formulario_input}
+                    id="fromInput"
+                    value={from}
+                    onChange={(e) => setFrom(e.target.value)}
+                    rows="1"
+                />
+                <label htmlFor="toInput">Domain: </label>
+                <textarea
+                    type="text"
+                    className={style.formulario_input}
+                    id="toInput"
+                    value={domain}
+                    onChange={(e) => setDomain(e.target.value)}
+                    rows="1"
+                />
+
+                <label htmlFor="valueInput">Uri: </label>
+                <textarea
+                    type="text"
+                    className={style.formulario_input}
+                    id="valueInput"
+                    value={uri}
+                    onChange={(e) => setUri(e.target.value)}
+                    rows="1"
+                />
+                <label htmlFor="statement">statement: </label>
+                <textarea
+                    type="text"
+                    className={style.formulario_input}
+                    id="statement"
+                    value={statement}
+                    onChange={(e) => setStatement(e.target.value)}
+                    rows="1"
+                />
+                <label htmlFor="description">Description:</label>
+                <textarea
+                    type="text"
+                    className={style.formulario_input}
+                    id="description"
+                    value={description}
+                    onChange={(e) => setDescription(e.target.value)}
+                    rows="4"
+                />
+                <label htmlFor="description">Description:</label>
+                <textarea
+                    type="text"
+                    className={style.formulario_input}
+                    id="description"
+                    value={description2}
+                    onChange={(e) => setDescription2(e.target.value)}
+                    rows="2"
+                />
+
+                <label htmlFor="chainId">Nonce: </label>
+                <textarea
+                    type="text"
+                    className={style.formulario_input}
+                    id="chainId"
+                    value={nonce}
+                    onChange={(e) => setNonce(e.target.value)}
+                    rows="1"
+                />
+            </div>
         </div>
     );
 };

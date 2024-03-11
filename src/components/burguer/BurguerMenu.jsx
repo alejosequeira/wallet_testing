@@ -15,7 +15,7 @@ const links = [
 ];
 
 const BurgerMenu = ({ isOpen }) => {
-    const externalLink = 'https://metamask.github.io/eth-phishing-detect/';
+    const externalLink = 'https://github.com/MetaMask/eth-phishing-detect/blob/main/src/config.json';
 
     return (
         <div className={isOpen ? `${style.sidebar} ${style.open}` : style.sidebar}>

@@ -8,13 +8,37 @@ import NavBar from '../../components/navBar/NavBar';
 import Sign from '../sign/Sign';
 import Personal_custom from '../personal_sign/Personal_custom';
 import Sign_typedData from '../sign_typedData/Sign_typedData';
-
-
+import Web3 from 'web3';
+import { useEffect } from 'react';
 
 export default function EnteredAddress_second() {
-    const [address, setAddress] = useState('0x462A0d4fE4C2b10aadFBD4628f697d09a76Cd954');
+    const [address, setAddress] = useState('');
     const [challenge, setChallenge] = useState('Example `personal_sign` message');
     const [sidebarOpen, setSidebarOpen] = useState(false);
+
+
+  useEffect(() => {
+    const handleGetEthAccounts = async () => {
+      try {
+        const provider = window.ethereum;
+        if (!provider) {
+            setAddress('Wallet not Found');
+          return;
+        }
+        const _accounts = await provider.request({
+          method: 'eth_accounts',
+        });
+        if (_accounts && _accounts.length > 0) {
+          const checksumAddress = Web3.utils.toChecksumAddress(_accounts[0]);
+          setAddress(checksumAddress);
+        }
+      } catch (err) {
+        console.error("Error executing eth_accounts FAILED: " + err);        
+      }
+    };
+    
+    handleGetEthAccounts();
+  }, []);
 
     const toggleSidebar = () => setSidebarOpen(!sidebarOpen);
 
