@@ -78,7 +78,6 @@
     color: var(--darkGray);
     margin: 0;
     padding: 0;
-    /* text-align: center; */
 }
 .formulario_oneZ{
     display: flex;
@@ -181,7 +180,6 @@
 }
 
 .toggleButton {
-    /* padding: 0px 10px; */
     color: white;
     border-radius: 4px;
     cursor: pointer;

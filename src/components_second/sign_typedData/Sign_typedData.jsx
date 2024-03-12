@@ -6,6 +6,7 @@ import testParams from './msgParams.json';
 import erc20Params from './erc20Params.json';
 
 export default function SignTypedData({ address }) {
+    
     const [signTypedData, setSignTypedData] = useState({ v3: '', v4: '' });
     const [jsonFiles, setJsonFiles] = useState({
         testParams: JSON.stringify(testParams, null, 2),

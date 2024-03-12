@@ -1,6 +1,6 @@
 "use client";
 import React from 'react'
-import ZeroScan from '../zero_value/ZeroScan';
+import ZeroScan from '../unknown_detection/Unknown_detection';
 import style from './ea_six.module.css'
 import { useState } from 'react'
 import NavBar from '../../components/navBar/NavBar'

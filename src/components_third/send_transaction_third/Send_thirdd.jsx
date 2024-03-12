@@ -161,7 +161,6 @@ function Send_thirdd() {
 
 
   const fetchGasPrice = async () => {
-    // setIsToggledPrice(!isToggledPrice);
     try {
       const provider = window.ethereum;
       const web3 = new Web3(provider);
@@ -175,7 +174,6 @@ function Send_thirdd() {
   };
 
   const fetchGasLimit = async () => {
-    // setIsToggledLimit(!isToggledLimit);
     try {
       const provider = window.ethereum;
       const web3 = new Web3(provider);
@@ -265,7 +263,6 @@ function Send_thirdd() {
 
 
   const fetchMaxFees = async () => {
-    // setIsAutoMaxFee(!isAutoMaxFee);
     try {
       const provider = window.ethereum;
       const web3 = new Web3(provider);
@@ -481,6 +478,7 @@ function Send_thirdd() {
             {isToggledLimit ? 'AUTO' : 'AUTO'}
           </button>
         </div>
+        
         <label htmlFor="data">Data: </label>
         <input
           type="text"

@@ -483,8 +483,10 @@ export default function CheckSum() {
 
 
                         {send_thirdResult}</Alert>
+                        
                 </div>
             )}
+            <h6>* Just change the first Character to check</h6>
             <div className={style.formulario}>
                 <label htmlFor="fromInput">From:</label>
                 <input

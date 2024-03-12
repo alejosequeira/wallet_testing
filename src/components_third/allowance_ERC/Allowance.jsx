@@ -1,10 +1,10 @@
 "use client"
 import style from './juan2pepito.module.css';
-import React, { useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import Web3 from 'web3';
 import contractAbi from './contractAbi.json';
 import erc20ABI from './erc20PermitABI.json';
-import { Alert,AlertTitle } from '@mui/material';
+import { Alert, AlertTitle } from '@mui/material';
 
 const Juan2pepito = () => {
     const [erc20Allow, setERC20Allow] = useState("");
@@ -27,36 +27,43 @@ const Juan2pepito = () => {
     const [erc721TokenAddress, setErc721TokenAddress] = useState('0x54Ad10aAf97875385e3415314a43AA4c87597Fa0');
     const [operator, setOperator] = useState('0x3b539558c6465968ccfde3a731bf63d6d4d8b85d');
     const [contractAddress, setContractAddress] = useState('0xE4A3464499562127C3049517066B5Cb409521906');
-    const contractABI = contractAbi; 
-    const erc20Abi = erc20ABI; 
-    
+    const contractABI = contractAbi;
+    const erc20Abi = erc20ABI;
+
 
     async function requestAccount() {
         await window.ethereum.request({ method: 'eth_requestAccounts' });
     }
     useEffect(() => {
         const handleGetEthAccounts = async () => {
-          try {
-            const provider = window.ethereum;
-            if (!provider) {
-                setOwner('Wallet not Found');
-              return;
+            try {
+                const provider = window.ethereum;
+                if (!provider) {
+                    setOwner('Wallet not Found');
+                    return;
+                }
+                const _accounts = await provider.request({
+                    method: 'eth_accounts',
+                });
+                if (_accounts && _accounts.length > 0) {
+                    const checksumAddress = Web3.utils.toChecksumAddress(_accounts[0]);
+                    setOwner(checksumAddress);
+                }
+            } catch (err) {
+                console.error("Error executing eth_accounts FAILED: " + err);
+                setOwner("Error eth_accounts FAILED")
             }
-            const _accounts = await provider.request({
-              method: 'eth_accounts',
-            });
-            if (_accounts && _accounts.length > 0) {
-              const checksumAddress = Web3.utils.toChecksumAddress(_accounts[0]);
-              setOwner(checksumAddress);
-            }
-          } catch (err) {
-            console.error("Error executing eth_accounts FAILED: " + err);
-            setOwner("Error eth_accounts FAILED")
-          }
         };
-        
-    handleGetEthAccounts();    
-  }, []);
+        const extractSignatureParts = async (signature) => {
+            setR("0x" + signature.slice(2, 66))
+            setS("0x" + signature.slice(66, 130))
+            setV(parseInt(signature.slice(130, 132), 16))
+        }
+
+
+        handleGetEthAccounts();
+        extractSignatureParts(signature);
+    }, []);
 
     const setERC20Allowance = async () => {
         const web3 = new Web3(window.ethereum);
@@ -100,7 +107,7 @@ const Juan2pepito = () => {
     const checkERC20Allowance = async () => {
         const web3 = new Web3(window.ethereum);
         const tokenContract = new web3.eth.Contract(erc20Abi, tokenContractAddress);
-    
+
         try {
             // Fetch the current allowance
             const currentAllowance = await tokenContract.methods.allowance(owner, spender).call();
@@ -116,7 +123,7 @@ const Juan2pepito = () => {
             setToggleCheck(false);
         }
     };
-          
+
     async function setERC721Allowance() {
         await requestAccount();
         const web3 = new Web3(window.ethereum);
@@ -129,7 +136,7 @@ const Juan2pepito = () => {
             setERC721Allow(tx);
             setToggleHash721(true);
         } catch (error) {
-            console.error('Error setting ERC721 allowance:', error);           
+            console.error('Error setting ERC721 allowance:', error);
             setERC721Allow('Error setting ERC721 allowance:', error);
             setToggleHash721(false);
         }
@@ -155,7 +162,7 @@ const Juan2pepito = () => {
             <div className={style.formu}>
                 <button className={style.bouton} onClick={setERC20Allowance}>ERC20 ALLOWANCE</button>
                 {erc20Allow && (
-                    <div  className={style.formu}>
+                    <div className={style.formu}>
                         <Alert
 
                             severity=""
@@ -208,7 +215,7 @@ const Juan2pepito = () => {
             <div className={style.formu}>
                 <button className={style.bouton} onClick={checkERC20Allowance}>ERC20 VERIFY</button>
                 {erc20Check && (
-                    <div  className={style.formu}>
+                    <div className={style.formu}>
                         <Alert
 
                             severity=""
@@ -264,7 +271,8 @@ const Juan2pepito = () => {
             {showForm ? (
                 <div className={style.formulario}>
                     <label htmlFor="TokenContractAddress">Token:</label>
-                    <input
+                    <textarea
+                        rows="1"
                         type="text"
                         className={style.formulario_input}
                         id="TokenContractAddress"
@@ -272,7 +280,8 @@ const Juan2pepito = () => {
                         onChange={(e) => setTokenContractAddress(e.target.value)}
                     />
                     <label htmlFor="ownerInput">Owner:</label>
-                    <input
+                    <textarea
+                        rows="1"
                         type="text"
                         className={style.formulario_input}
                         id="ownerInput"
@@ -280,7 +289,8 @@ const Juan2pepito = () => {
                         onChange={(e) => setOwner(e.target.value)}
                     />
                     <label htmlFor="spenderInput">Spender:</label>
-                    <input
+                    <textarea
+                        rows="1"
                         type="text"
                         className={style.formulario_input}
                         id="spenderInput"
@@ -288,7 +298,8 @@ const Juan2pepito = () => {
                         onChange={(e) => setSpender(e.target.value)}
                     />
                     <label htmlFor="valueInput">Value:</label>
-                    <input
+                    <textarea
+                        rows="1"
                         type="text"
                         className={style.formulario_input}
                         id="valueInput"
@@ -296,7 +307,8 @@ const Juan2pepito = () => {
                         onChange={(e) => setValue(e.target.value)}
                     />
                     <label htmlFor="deadlineInput">Deadline:</label>
-                    <input
+                    <textarea
+                        rows="1"
                         type="text"
                         className={style.formulario_input}
                         id="deadlineInput"
@@ -304,29 +316,33 @@ const Juan2pepito = () => {
                         onChange={(e) => setDeadline(e.target.value)}
                     />
                     <label htmlFor="signatureInput">Signature:</label>
-                    <input
+                    <textarea
                         type="text"
                         className={style.formulario_input}
                         id="signatureInput"
                         value={signature}
                         onChange={handleSignatureChange}
+                        rows="3"
                     />
                     <label htmlFor="rInput">r :</label>
-                    <input
+                    <textarea
+                        rows="2"
                         type="text"
                         className={style.formulario_input}
                         id="rInput"
                         value={r1}
                     />
                     <label htmlFor="sInput">s :</label>
-                    <input
+                    <textarea
+                        rows="2"
                         type="text"
                         className={style.formulario_input}
                         id="sInput"
                         value={s1}
                     />
                     <label htmlFor="vInput">v :</label>
-                    <input
+                    <textarea
+                        rows="1"
                         type="text"
                         className={style.formulario_input}
                         id="vInput"
@@ -337,7 +353,7 @@ const Juan2pepito = () => {
             <div className={style.formu}>
                 <button className={style.bouton} onClick={setERC721Allowance}>ERC721 ALLOWANCE</button>
                 {erc721Allow && (
-                    <div  className={style.formu}>
+                    <div className={style.formu}>
                         <Alert
 
                             severity=""
@@ -393,7 +409,8 @@ const Juan2pepito = () => {
             {showForm721 ? (
                 <div className={style.formulario}>
                     <label htmlFor="ERC721TokenAddress">Token:</label>
-                    <input
+                    <textarea
+                        rows="1"
                         type="text"
                         className={style.formulario_input}
                         id="ERC721TokenAddress"
@@ -401,7 +418,8 @@ const Juan2pepito = () => {
                         onChange={(e) => setErc721TokenAddress(e.target.value)}
                     />
                     <label htmlFor="Operator">Operator:</label>
-                    <input
+                    <textarea
+                        rows="1"
                         type="text"
                         className={style.formulario_input}
                         id="Operator"
@@ -409,13 +427,14 @@ const Juan2pepito = () => {
                         onChange={(e) => setOperator(e.target.value)}
                     />
                     <label htmlFor="contractAddress">Contract:</label>
-                    <input
+                    <textarea
+                        rows="1"
                         type="text"
                         className={style.formulario_input}
                         id="contractAddress"
                         value={contractAddress}
                         onChange={(e) => setContractAddress(e.target.value)}
-                    />                    
+                    />
                 </div>) : ""}
         </div>
     );

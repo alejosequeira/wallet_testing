@@ -1,7 +1,7 @@
 "use client"
 import React from 'react'
 import { useEffect, useState } from 'react';
-import style from './zeroScan.module.css'
+import style from './unknown.module.css'
 import Web3 from 'web3';
 import { Alert, AlertTitle } from '@mui/material';
 
@@ -10,7 +10,7 @@ export default function ZeroScan() {
     const [to, setTo] = useState('0x462----------------------------------954');
     const [toScan, setToScan] = useState('0x462----------AAAAA-------------------954');
     const [gasLimit, setGasLimit] = useState('19000');
-    const [gasPrice, setGasPrice] = useState('6876489100');
+    const [gasPrice, setGasPrice] = useState('');
     const [data, setData] = useState('0x');
     const [nonce, setNonce] = useState('0x0');
     const [chainId, setChainId] = useState('1');
@@ -18,10 +18,10 @@ export default function ZeroScan() {
     const [send_thirdResultZero, setSend_thirdResultZero] = useState('');
     const [isToggledLimit, setIsToggledLimit] = useState(false);
     const [isToggledPrice, setIsToggledPrice] = useState(false);
-
+    const [isToggledNonce, setIsToggledNonce] = useState(false);
     const [maxFeePerGas, setMaxFeePerGas] = useState('');
     const [maxPriorityFeePerGas, setMaxPriorityFeePerGas] = useState('0');
-    const [isAutoMaxFee, setIsAutoMaxFee] = useState(false);
+    const [isAutoMaxFee, setIsAutoMaxFee] = useState(true);
 
     const [valueInWei, setValueInWei] = useState('0');
     const [valueInHex, setValueInHex] = useState('0x0');
@@ -46,6 +46,8 @@ export default function ZeroScan() {
                 if (_accounts && _accounts.length > 0) {
                     const checksumAddress = Web3.utils.toChecksumAddress(_accounts[0]);
                     setFrom(checksumAddress);
+                    await getNounce(checksumAddress);
+                    await fetchGasLimit(checksumAddress);
                 }
             } catch (err) {
                 console.error("Error executing eth_accounts FAILED: " + err);
@@ -53,7 +55,48 @@ export default function ZeroScan() {
             }
         };
 
+        const getNounce = async (address) => {
+            setIsToggledNonce(!isToggledNonce);
+            try {
+                const provider = window.ethereum;
+                const web3 = new Web3(provider);
+                const nonce = await web3.eth.getTransactionCount(address, 'latest');
+                setNonce(`${nonce.toString()}`);
+            } catch (error) {
+                setNonce("Provided Address invalid");
+                console.error('Error fetching nonce:', error);
+            }
+        };
+        const fetchGasLimit = async (address) => {
+            setIsToggledLimit(!isToggledLimit);
+            try {
+                const provider = window.ethereum;
+                const web3 = new Web3(provider);
+
+                const transaction = {
+                    from: address,
+                    to: to,
+                    value: valueInHex,
+                    data: data,
+                };
+
+                const estimatedGas = await window.ethereum.request({
+                    method: 'eth_estimateGas',
+                    params: [transaction],
+                });
+                const estimatedGasNumber = web3.utils.hexToNumber(estimatedGas);
+
+                setGasLimit(`${estimatedGasNumber}`);
+
+            } catch (error) {
+                setGasLimit(error.message)
+                console.error('Error estimating gas:', error);
+            }
+        };
+
         handleGetEthAccounts();
+        fetchMaxFees();
+        loadBlockchainData();
     }, []);
 
 
@@ -64,6 +107,23 @@ export default function ZeroScan() {
 
     const toggleDisplay = () => {
         setDisplayWei(!displayWei);
+    };
+
+    const loadBlockchainData = async () => {
+        if (window.ethereum) {
+            const web3 = new Web3(window.ethereum);
+            try {
+                await window.ethereum.enable(); // Request access if needed
+                const currentChainId = await web3.eth.getChainId();
+                setChainId(currentChainId);
+            } catch (error) {
+                console.error("Could not get chain ID:", error);
+                setChainId("Could not get chain ID")
+            }
+        } else {
+            console.log('Non-Ethereum browser detected. You should consider trying MetaMask!');
+            setChainId("Non-Ethereum browser detected. You should consider trying MetaMask!")
+        }
     };
 
     const convertValue = () => {
@@ -101,7 +161,6 @@ export default function ZeroScan() {
     };
 
     const fetchGasPrice = async () => {
-        setIsToggledPrice(!isToggledPrice);
         try {
             const provider = window.ethereum;
             const web3 = new Web3(provider);
@@ -115,7 +174,6 @@ export default function ZeroScan() {
     };
 
     const fetchGasLimit = async () => {
-        setIsToggledLimit(!isToggledLimit);
         try {
             const provider = window.ethereum;
             const web3 = new Web3(provider);
@@ -142,6 +200,8 @@ export default function ZeroScan() {
     };
 
     const handleSend_standard = async () => {
+        fetchGasLimit();
+        fetchGasPrice();
         try {
             const provider = window.ethereum;
             const result = await provider.request({
@@ -170,6 +230,8 @@ export default function ZeroScan() {
     };
 
     const handleSend_EIP = async () => {
+        fetchMaxFees();
+        fetchGasLimit();
         try {
             const provider = window.ethereum;
             const result = await provider.request({
@@ -197,7 +259,9 @@ export default function ZeroScan() {
             console.error(error);
         }
     };
-    const handleSend_standardzero = async () => {        
+    const handleSend_standardzero = async () => {
+        fetchGasLimit();
+        fetchGasPrice();
         try {
             const provider = window.ethereum;
             const result = await provider.request({
@@ -226,6 +290,8 @@ export default function ZeroScan() {
         }
     };
     const handleSend_EIPzero = async () => {
+        fetchMaxFees();
+        fetchGasLimit();
         try {
             const provider = window.ethereum;
             const result = await provider.request({
@@ -279,11 +345,11 @@ export default function ZeroScan() {
             <div className={style.formulario_one}>
                 <h4>Unknown Address Detection</h4>
                 <div className={style.align_fetchh}>
-                <h5>1st step-</h5>
-                <h6>Send transaction to some address</h6>
-                
-                <h5>2nd step-</h5>
-                <h6>Send transaction to another address with same beginning/ending bytes</h6>
+                    <h5>1st step-</h5>
+                    <h6>Send transaction to some address</h6>
+
+                    <h5>2nd step-</h5>
+                    <h6>Send transaction to another address with same beginning/ending bytes</h6>
                 </div>
             </div>
             <div className={style.formulario}>
@@ -301,6 +367,7 @@ export default function ZeroScan() {
                     className={style.formulario_input}
                     id="toInput"
                     value={to}
+                    placeholder={to}
                     onChange={(e) => {
                         const inputValue = e.target.value;
                         setTo(inputValue);
@@ -386,7 +453,8 @@ export default function ZeroScan() {
                     type="text"
                     className={style.formulario_input}
                     id="toInputScam"
-                    value={toScan}
+                    value={toScan}                
+                    placeholder={toScan}                    
                     onChange={(e) => setToScan(e.target.value)}
                 />
             </div>
@@ -495,7 +563,8 @@ export default function ZeroScan() {
                     <label htmlFor="MaxFeePerGasInput">Max Fee: </label>
 
                 ) : (
-                    <label htmlFor="gasLimitInput">Gas Limit:</label>
+                    <label htmlFor="gasPriceInput">Gas Price: </label>
+
                 )}
                 {selectedOption === '0x2' ? (
                     <div className={style.botton_toggle}>
@@ -509,7 +578,11 @@ export default function ZeroScan() {
                         />
                         <button
                             className={`${style.toggleButton} ${isAutoMaxFee ? style.toggleOn : style.toggleOff}`}
-                            onClick={() => { fetchMaxFees(); setIsAutoMaxFee(!isAutoMaxFee); }}
+                            onClick={() => {
+                                setIsAutoMaxFee(!isAutoMaxFee);
+                                fetchMaxFees();
+                            }
+                            }
                         >
                             {isAutoMaxFee ? 'AUTO' : 'AUTO'}
                         </button>
@@ -518,16 +591,22 @@ export default function ZeroScan() {
                     <div className={style.botton_toggle}>
                         <input
                             type="text"
-                            id="gasLimitInput"
-                            value={gasLimit}
-                            onChange={(e) => setGasLimit(parseInt(e.target.value))}
-                            disabled={isToggledLimit}
                             className={style.input_botton}
+                            id="gasPriceInput"
+                            value={gasPrice}
+                            onChange={(e) => setGasPrice(e.target.value)}
+                            disabled={isToggledPrice}
                         />
-                        <button className={`${style.toggleButton} ${isToggledLimit ? style.toggleOn : style.toggleOff}`} onClick={fetchGasLimit}>
-                            {isToggledLimit ? 'AUTO' : 'AUTO'}
+                        <button
+                            className={`${style.toggleButton} ${isToggledPrice ? style.toggleOn : style.toggleOff}`}
+                            onClick={() => {
+                                setIsToggledPrice(!isToggledPrice);
+                                fetchGasPrice();
+                            }}>
+                            {isToggledPrice ? 'AUTO' : 'AUTO'}
                         </button>
                     </div>
+
                 )}
                 {selectedOption === '0x2' ? (
                     <label htmlFor="setMaxPriorityFeePerGas">Priority: </label>
@@ -542,24 +621,24 @@ export default function ZeroScan() {
                     />
                 ) : ("")}
 
-                <label htmlFor="gasPriceInput">Gas Price: </label>
+                <label htmlFor="gasLimitInput">Gas Limit:</label>
                 <div className={style.botton_toggle}>
                     <input
                         type="text"
+                        id="gasLimitInput"
+                        value={gasLimit}
+                        onChange={(e) => setGasLimit(parseInt(e.target.value))}
+                        disabled={isToggledLimit}
                         className={style.input_botton}
-                        id="gasPriceInput"
-                        value={gasPrice}
-                        onChange={(e) => setGasPrice(e.target.value)}
-                        disabled={isToggledPrice}
                     />
-                    <button
-                        className={`${style.toggleButton} ${isToggledPrice ? style.toggleOn : style.toggleOff}`}
-                        onClick={fetchGasPrice}
-                    >
-                        {isToggledPrice ? 'AUTO' : 'AUTO'}
+                    <button className={`${style.toggleButton} ${isToggledLimit ? style.toggleOn : style.toggleOff}`}
+                        onClick={() => {
+                            setIsToggledLimit(!isToggledLimit);
+                            fetchGasLimit();
+                        }}>
+                        {isToggledLimit ? 'AUTO' : 'AUTO'}
                     </button>
                 </div>
-
 
 
 
@@ -579,10 +658,16 @@ export default function ZeroScan() {
                         className={style.input_botton}
                         id="nonce"
                         value={nonce}
+                        disabled={isToggledNonce}
                         onChange={(e) => setNonce(e.target.value)}
                     />
-                    <button className={style.toggleButton} onClick={getNonce}>
-                        GET
+                    <button
+                        className={`${style.toggleButton} ${isToggledNonce ? style.toggleOn : style.toggleOff}`}
+                        onClick={() => {
+                            setIsToggledNonce(!isToggledNonce);
+                            getNonce();
+                        }}>
+                        {isToggledNonce ? 'AUTO' : 'AUTO'}
                     </button>
                 </div>
 

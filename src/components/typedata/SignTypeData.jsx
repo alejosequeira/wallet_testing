@@ -1,243 +1,250 @@
 'use client';
 import React, { useState } from 'react';
 import style from './signtypedata.module.css';
-import { Alert, Button } from '@mui/material';
+import { Alert,AlertTitle } from '@mui/material';
+import testParams from '../../components_second/sign_typedData/msgParams.json';
+import erc20Params from '../../components_second/sign_typedData/erc20Params.json';
 
 const SignTypeData = ({ address }) => {
-    const [signTypedDataV3, setSignTypedDataV3] = useState('');
-    const [signTypedDataV4, setSignTypedDataV4] = useState('');
 
-    const handleSignTypedDataV3 = async () => {
-        if (!window.ethereum) return alert("MetaMask is required!");
-        const chainIdInt = 137;
 
-        const msgParams= {
-            types: {
-              EIP712Domain: [
-                { name: 'name', type: 'string' },
-                { name: 'version', type: 'string' },
-                { name: 'chainId', type: 'uint256' },
-                { name: 'verifyingContract', type: 'address' },
-              ],
-              OrderComponents: [
-                { name: 'offerer', type: 'address' },
-                { name: 'zone', type: 'address' },
-                { name: 'offer', type: 'OfferItem[]' },
-                { name: 'consideration', type: 'ConsiderationItem[]' },
-                { name: 'orderType', type: 'uint8' },
-                { name: 'startTime', type: 'uint256' },
-                { name: 'endTime', type: 'uint256' },
-                { name: 'zoneHash', type: 'bytes32' },
-                { name: 'salt', type: 'uint256' },
-                { name: 'conduitKey', type: 'bytes32' },
-                { name: 'counter', type: 'uint256' },
-              ],
-              OfferItem: [
-                { name: 'itemType', type: 'uint8' },
-                { name: 'token', type: 'address' },
-                { name: 'identifierOrCriteria', type: 'uint256' },
-                { name: 'startAmount', type: 'uint256' },
-                { name: 'endAmount', type: 'uint256' },
-              ],
-              ConsiderationItem: [
-                { name: 'itemType', type: 'uint8' },
-                { name: 'token', type: 'address' },
-                { name: 'identifierOrCriteria', type: 'uint256' },
-                { name: 'startAmount', type: 'uint256' },
-                { name: 'endAmount', type: 'uint256' },
-                { name: 'recipient', type: 'address' },
-              ],
-            },
-            primaryType: 'OrderComponents',
-            domain: {
-              name: 'Seaport',
-              version: '1.5',
-              verifyingContract: '0x00000000000000ADc04C56Bf30aC9d3c0aAF14dC',
-            },
-            message: {
-              offerer: '0x462A0d4fE4C2b10aadFBD4628f697d09a76Cd954',
-              offer: [
-                {
-                  itemType: '2',
-                  token: '0x06CbC40095C8Aa4Bf4a83A24A72EF4e511CbD67C',
-                  identifierOrCriteria: '0',
-                  startAmount: '1',
-                  endAmount: '1',
-                },
-              ],
-              consideration: [
-                {
-                  itemType: '1',
-                  token: '0x7ceB23fD6bC0adD59E62ac25578270cFf1b9f619',
-                  identifierOrCriteria: '0',
-                  startAmount: '975000000000000000',
-                  endAmount: '975000000000000000',
-                  recipient: '0x462A0d4fE4C2b10aadFBD4628f697d09a76Cd954',
-                },
-                {
-                  itemType: '1',
-                  token: '0x7ceB23fD6bC0adD59E62ac25578270cFf1b9f619',
-                  identifierOrCriteria: '0',
-                  startAmount: '25000000000000000',
-                  endAmount: '25000000000000000',
-                  recipient: '0x0000a26b00c1F0DF003000390027140000fAa719',
-                },
-              ],
-              startTime: '1706558876',
-              endTime: '1706645274',
-              orderType: '0',
-              zone: '0x0000000000000000000000000000000000000000',
-              zoneHash: '0x0000000000000000000000000000000000000000000000000000000000000000',
-              salt: '24446860302761739304752683030156737591518664810215442929805956489435592037505',
-              conduitKey: '0x0000007b02230091a7ed01230072f7006a004d60a8d4e71d599b8104250f0000',
-              counter: '0',
-            },
-          };
-          
+    const [showForm, setShowForm] = useState(false);
+    const [signTypedData, setSignTypedData] = useState({ v3: '', v4: '' });
+    const [jsonFiles, setJsonFiles] = useState({
+        testParams: JSON.stringify(testParams, null, 2),
+        erc20Params: JSON.stringify(erc20Params, null, 2),
+    });
+    const [currentJson, setCurrentJson] = useState('testParams');
+    const [toggleHashZero, setToggleHashZero] = useState({ v3: 'false', v4: 'false' })
 
-        try {
-            const provider = window.ethereum;
-            const sign = await provider.request({
-                method: 'eth_signTypedData_v3',
-                params: [address, JSON.stringify(msgParams)],
-            });
-            setSignTypedDataV3(sign);
-        } catch (error) {
-            console.log('Error signing typed data V3: ', error);
-            console.error(error);
-            setSignTypedDataV3(`Error: ${error.message}`);
-        }
-        console.log("execute")
+    const [isCopied, setIsCopied] = useState({ v3: false, v4: false })
+    const toggleFormDisplay = () => {
+        setShowForm(!showForm);
     };
-    const handleSignTypedDataV4 = async () => {
-        const chainIdInt = 137;
 
-        const msgParams = {
-            domain: {
-                chainId: chainIdInt.toString(),
-                name: 'Ether Mail',
-                verifyingContract: '0xCcCCccccCCCCcCCCCCCcCcCccCcCCCcCcccccccC',
-                version: '1',
-            },
-            message: {
-                contents: 'Hello, Bob!',
-                from: {
-                    name: 'Cow',
-                    wallets: [
-                        '0xCD2a3d9F938E13CD947Ec05AbC7FE734Df8DD826',
-                        '0xDeaDbeefdEAdbeefdEadbEEFdeadbeEFdEaDbeeF',
-                    ],
-                },
-                to: [
-                    {
-                        name: 'Bob',
-                        wallets: [
-                            '0xbBbBBBBbbBBBbbbBbbBbbbbBBbBbbbbBbBbbBBbB',
-                            '0xB0BdaBea57B0BDABeA57b0bdABEA57b0BDabEa57',
-                            '0xB0B0b0b0b0b0B000000000000000000000000000',
-                        ],
-                    },
-                ],
-                attachment: '0x',
-            },
-            primaryType: 'Mail',
-            types: {
-                EIP712Domain: [
-                    { name: 'name', type: 'string' },
-                    { name: 'version', type: 'string' },
-                    { name: 'chainId', type: 'uint256' },
-                    { name: 'verifyingContract', type: 'address' },
-                ],
-                Group: [
-                    { name: 'name', type: 'string' },
-                    { name: 'members', type: 'Person[]' },
-                ],
-                Mail: [
-                    { name: 'from', type: 'Person' },
-                    { name: 'to', type: 'Person[]' },
-                    { name: 'contents', type: 'string' },
-                    { name: 'attachment', type: 'bytes' },
-                ],
-                Person: [
-                    { name: 'name', type: 'string' },
-                    { name: 'wallets', type: 'address[]' },
-                ],
-            },
-        };
-
-        try {
-            const provider = window.ethereum;
-            const sign = await provider.request({
-                method: 'eth_signTypedData_v4',
-                params: [address, JSON.stringify(msgParams)],
-            });
-            setSignTypedDataV4(sign);
-        } catch (err) {
-            console.error(err);
-            setSignTypedDataV4(`Error: ${err.message}`);
+    const handleCopyAccountClick = async (version) => {
+        if (!navigator.clipboard) {
+            console.error('Clipboard API not available.');
+            return;
         }
+        try {
+            await navigator.clipboard.writeText(signTypedData[version]);
+            setIsCopied({[version]:true});
+            console.log(navigator.clipboard.writeText(signTypedData[version]))
+            setTimeout(() => setIsCopied({[version]:false}), 2000); // Reset after 2 seconds
+        } catch (err) {
+            console.error('Failed to copy text:', err);
+        }
+    };
+
+    const handleSignTypedData = async (version) => {
+        if (!window.ethereum) return alert("MetaMask is required!");
+        try {
+            const sign = await window.ethereum.request({
+                method: `eth_signTypedData_${version}`,
+                params: [address, jsonFiles[currentJson]],
+            });
+            setSignTypedData(prev => ({ ...prev, [version]: sign }));
+            setToggleHashZero(prev => ({ ...prev, [version]: true }));
+        } catch (err) {
+            console.error("Signing error:", err);
+            setSignTypedData(prev => ({ ...prev, [version]: `Error: ${err.message}` }));
+            setToggleHashZero(prev => ({ ...prev, [version]: false }));
+        }
+    };
+
+    const handleFileUpload = async (e) => {
+        const file = e.target.files[0];
+        if (file && file.type === "application/json") {
+            const fileContent = await file.text();
+            setJsonFiles(prev => ({
+                ...prev,
+                [currentJson]: fileContent,
+            }));
+        }
+    };
+
+    const downloadJson = (jsonName) => {
+        const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(jsonFiles[jsonName]);
+        const downloadAnchorNode = document.createElement('a');
+        downloadAnchorNode.setAttribute("href", dataStr);
+        downloadAnchorNode.setAttribute("download", `${jsonName}.json`);
+        document.body.appendChild(downloadAnchorNode);
+        downloadAnchorNode.click();
+        downloadAnchorNode.remove();
     };
 
     return (
-        <div className={style.formu}>
-            <div className={style.form}>
-                <button
-                    className={style.bouton}
-                    onClick={handleSignTypedDataV3}
-                >SIGN TYPED DATA V3
-                </button>
-                {signTypedDataV3 && (
+        <div className={style.container}>
+            <div className={style.formu}>
+                <button className={style.bouton} onClick={() => handleSignTypedData('v3')}>SIGN TYPED DATA V3</button>
+                {signTypedData.v3 && (
                     <div>
                         <Alert severity="" sx={{
-                            width: "14.5rem",
-                            maxWidth: "14.5rem",
+                            width: "17.5rem",
+                            font: 'var(--default-font)',
                             fontSize: '13px',
                             color: 'black',
                             backgroundColor: 'lightgray',
                             border: '3px solid gray',
                             borderRadius: '5px',
-                            padding: '0 10px 0px 0px',
-                            textAlign: 'center',
                             margin: '0 5px',
                             marginTop: '5px',
                             boxShadow: 'white 3px 3px 3px 0px inset, white -3px -3px 3px 0px inset',
-                            display: 'flex',
+                            padding: '0',
+                            textAlign: 'center',
                             justifyContent: 'center'
-
-                        }}>{signTypedDataV3}</Alert>
+                        }}>
+                            {toggleHashZero.v3 ? (
+                                <AlertTitle sx={{
+                                    fontSize: '13px',
+                                    fontWeight: '600',
+                                    margin: '0px 10px 0px 0px',
+                                    color: 'green',
+                                    textAlign: 'center',
+                                    padding: '0',
+                                }}>
+                                    Signature
+                                    {!isCopied.v3 &&
+                                        <svg onClick={() => handleCopyAccountClick('v3')} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 15 15" fill="currentColor" className={style.clipboard}>
+                                            <path d="M5.5 3.5A1.5 1.5 0 0 1 7 2h2.879a1.5 1.5 0 0 1 1.06.44l2.122 2.12a1.5 1.5 0 0 1 .439 1.061V9.5A1.5 1.5 0 0 1 12 11V8.621a3 3 0 0 0-.879-2.121L9 4.379A3 3 0 0 0 6.879 3.5H5.5Z" />
+                                            <path d="M4 5a1.5 1.5 0 0 0-1.5 1.5v6A1.5 1.5 0 0 0 4 14h5a1.5 1.5 0 0 0 1.5-1.5V8.621a1.5 1.5 0 0 0-.44-1.06L7.94 5.439A1.5 1.5 0 0 0 6.878 5H4Z" />
+                                        </svg>
+                                    }
+                                    {isCopied.v3 && <span
+                                        className={style.text_copied}
+                                        id="myTooltip">Copied !</span>}
+                                </AlertTitle>
+                            ) : (
+                                <AlertTitle sx={{
+                                    fontSize: '13px',
+                                    fontWeight: '600',
+                                    margin: '0px 10px 0px 0px',
+                                    color: '#ad0424',
+                                    textAlign: 'center',
+                                    padding: '0',
+                                }}>
+                                    Error
+                                    {!isCopied.v3 &&
+                                        <svg onClick={() => handleCopyAccountClick('v3')} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 15 15" fill="currentColor" className={style.clipboard}>
+                                            <path d="M5.5 3.5A1.5 1.5 0 0 1 7 2h2.879a1.5 1.5 0 0 1 1.06.44l2.122 2.12a1.5 1.5 0 0 1 .439 1.061V9.5A1.5 1.5 0 0 1 12 11V8.621a3 3 0 0 0-.879-2.121L9 4.379A3 3 0 0 0 6.879 3.5H5.5Z" />
+                                            <path d="M4 5a1.5 1.5 0 0 0-1.5 1.5v6A1.5 1.5 0 0 0 4 14h5a1.5 1.5 0 0 0 1.5-1.5V8.621a1.5 1.5 0 0 0-.44-1.06L7.94 5.439A1.5 1.5 0 0 0 6.878 5H4Z" />
+                                        </svg>
+                                    }
+                                    {isCopied.v3 && <span
+                                        className={style.text_copied}
+                                        id="myTooltip">Copied !</span>}
+                                </AlertTitle>
+                            )}
+                            <pre style={{
+                                whiteSpace: 'pre-wrap',
+                                wordWrap: 'break-word',
+                                textAlign: 'left',
+                                margin: '0px 10px 0px 0px',
+                                overflowX: 'hidden',
+                                padding: '0',
+                            }}>{signTypedData.v3}</pre>
+                        </Alert>
                     </div>
                 )}
-            </div>
-            <div className={style.form}>
-                <button
-                    className={style.bouton}
-                    onClick={handleSignTypedDataV4}
-                > SIGN TYPED DATA V4
-                </button>
-                {signTypedDataV4 && (
+                <button className={style.bouton} onClick={() => handleSignTypedData('v4')}>SIGN TYPED DATA V4</button>
+                {signTypedData.v4 && (
                     <div>
                         <Alert severity="" sx={{
-                            width: "14.5rem",
-                            maxWidth: "14.5rem",
+                            width: "17.5rem",
+                            font: 'var(--default-font)',
                             fontSize: '13px',
                             color: 'black',
                             backgroundColor: 'lightgray',
                             border: '3px solid gray',
                             borderRadius: '5px',
-                            padding: '0 10px 0px 0px',
-                            textAlign: 'center',
                             margin: '0 5px',
                             marginTop: '5px',
                             boxShadow: 'white 3px 3px 3px 0px inset, white -3px -3px 3px 0px inset',
-                            display: 'flex',
+                            padding: '0',
+                            textAlign: 'center',
                             justifyContent: 'center'
+                        }}>
+                            {toggleHashZero.v4 ? (
+                                <AlertTitle sx={{
+                                    fontSize: '13px',
+                                    fontWeight: '600',
+                                    margin: '0px 10px 0px 0px',
+                                    color: 'blue',
+                                    textAlign: 'center',
+                                    padding: '0',
+                                }}>
+                                    Signature
+                                    {!isCopied.v4 &&
+                                        <svg onClick={() => handleCopyAccountClick('v4')} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 15 15" fill="currentColor" className={style.clipboard}>
+                                            <path d="M5.5 3.5A1.5 1.5 0 0 1 7 2h2.879a1.5 1.5 0 0 1 1.06.44l2.122 2.12a1.5 1.5 0 0 1 .439 1.061V9.5A1.5 1.5 0 0 1 12 11V8.621a3 3 0 0 0-.879-2.121L9 4.379A3 3 0 0 0 6.879 3.5H5.5Z" />
+                                            <path d="M4 5a1.5 1.5 0 0 0-1.5 1.5v6A1.5 1.5 0 0 0 4 14h5a1.5 1.5 0 0 0 1.5-1.5V8.621a1.5 1.5 0 0 0-.44-1.06L7.94 5.439A1.5 1.5 0 0 0 6.878 5H4Z" />
+                                        </svg>
+                                    }
+                                    {isCopied.v4 && <span
+                                        className={style.text_copied}
+                                        id="myTooltip">Copied !</span>}
+                                </AlertTitle>
+                            ) : (
+                                <AlertTitle sx={{
+                                    fontSize: '13px',
+                                    fontWeight: '600',
+                                    margin: '0px 10px 0px 0px',
+                                    color: '#ad0424',
+                                    textAlign: 'center',
+                                    padding: '0',
+                                }}>
+                                    Error
+                                    {!isCopied.v4 &&
 
-                        }}>{signTypedDataV4}</Alert>
+                                        <svg onClick={() => handleCopyAccountClick('v4')} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 15 15" fill="currentColor" className={style.clipboard}>
+                                            <path d="M5.5 3.5A1.5 1.5 0 0 1 7 2h2.879a1.5 1.5 0 0 1 1.06.44l2.122 2.12a1.5 1.5 0 0 1 .439 1.061V9.5A1.5 1.5 0 0 1 12 11V8.621a3 3 0 0 0-.879-2.121L9 4.379A3 3 0 0 0 6.879 3.5H5.5Z" />
+                                            <path d="M4 5a1.5 1.5 0 0 0-1.5 1.5v6A1.5 1.5 0 0 0 4 14h5a1.5 1.5 0 0 0 1.5-1.5V8.621a1.5 1.5 0 0 0-.44-1.06L7.94 5.439A1.5 1.5 0 0 0 6.878 5H4Z" />
+                                        </svg>
+                                    }
+                                    {isCopied.v4
+                                        && <span
+                                            className={style.text_copied}
+                                            id="myTooltip">Copied !</span>}
+                                </AlertTitle>
+                            )}
+
+                            <pre style={{
+                                whiteSpace: 'pre-wrap',
+                                wordWrap: 'break-word',
+                                textAlign: 'left',
+                                margin: '0px 10px 0px 0px',
+                                overflowX: 'hidden',
+                                padding: '0',
+                            }}>
+                                {signTypedData.v4}
+
+                            </pre>
+                        </Alert>
                     </div>
                 )}
+                <button onClick={toggleFormDisplay} className={style.toggleeButton}>
+                {showForm ? 'Hide SIGN Params' : 'Show SIGN Params'}
+            </button>
             </div>
+            
+            {showForm && (
+                <>
+            <div className={style.formulario}>
+                <input type="file" accept=".json" onChange={handleFileUpload} className={style.input_file} />
+                <div className={style.formulario_input}>
+                    <button onClick={() => downloadJson('erc20Params')} className={style.bouton_download}>Download ERC20 Permit sample</button>
+                    <button onClick={() => downloadJson('testParams')} className={style.bouton_download}>Download OpenSea Contract sample</button>
+                </div>
+                <div className={style.textareaContainer}>
+                    <button className={style.toggleButton} onClick={() => setCurrentJson(prev => prev === 'testParams' ? 'erc20Params' : 'testParams')}>
+                        {currentJson === 'testParams' ? 'OpenSea' : 'ERC20'}
+                    </button>
+                    <textarea className={style.textarea_json} value={jsonFiles[currentJson]} onChange={(e) => setJsonFiles(prev => ({ ...prev, [currentJson]: e.target.value }))}></textarea>
+                </div>
+            </div></>)}
         </div>
     );
-};
+}
 
 export default SignTypeData;
