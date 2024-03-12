@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, version } from 'react';
+import React, { useState } from 'react';
 import style from '../sign_typedData/sign_typedData.module.css';
 import { Alert, AlertTitle } from '@mui/material';
 import testParams from './msgParams.json';
