@@ -1,10 +1,10 @@
-import EnteredAddress_fourth from '@/components/scamTestComponents/menuScamTest/MenuScamTest'
+import MenuScamTest from '@/components/scamTest/menu/MenuScamTest'
 import React from 'react'
 
-export default function page() {
+export default function scamTesting() {
   return (
     <div>
-        <EnteredAddress_fourth/>
+        <MenuScamTest/>
     </div>
   )
 }

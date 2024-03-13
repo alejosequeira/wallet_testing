@@ -1,10 +1,10 @@
 import React from 'react'
-import EnteredAddress_second from '@/components/signComponents/menuSign/MenuSign'
+import MenuSign from '@/components/sign/menu/MenuSign'
 
-export default function secondMethod() {
+export default function sign() {
   return (
         <div>          
-          <EnteredAddress_second />
+          <MenuSign />
         </div>
   )
 }

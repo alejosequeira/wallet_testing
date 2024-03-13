@@ -1,4 +1,4 @@
-import EthAccountsComponent from '@/components/authTestComponents/menuAuth/MenuAuth'
+import EthAccountsComponent from '@/components/authTest/menu/MenuAuth'
 
 export default function Home() {
   return (

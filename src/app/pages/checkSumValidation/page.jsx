@@ -1,7 +1,7 @@
-import MenuCheckSum from '@/components/checkSumComponents/menuCheckSum/MenuCheckSum'
+import MenuCheckSum from '@/components/checkSum/menu/MenuCheckSum'
 import React from 'react'
 
-export default function page() {
+export default function checkSumValidation() {
   return (
     <div>
         <MenuCheckSum/>

@@ -1,14 +1,14 @@
 
-import EthAccountsComponent from '@/components/authTestComponents/menuAuth/MenuAuth'
+import MenuAuth from '@/components/authTest/menu/MenuAuth'
 import React from 'react'
 
 
-export default function FirstMethod() {
+export default function authTest() {
 
 
   return (
     <>
-      <EthAccountsComponent />
+      <MenuAuth />
     </>
   )
 }

@@ -1,10 +1,10 @@
-import EnteredAddress_six from '@/components/addressDetectionComponents/menuAdDetection/MenuAdDetection'
+import MenuAdDetection from '@/components/addressDetection/menu/MenuAdDetection'
 import React from 'react'
 
-export default function page() {
+export default function addressDetection() {
   return (
     <div>
-      <EnteredAddress_six/>
+      <MenuAdDetection/>
     </div>
   )
 }

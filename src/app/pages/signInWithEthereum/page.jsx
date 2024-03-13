@@ -1,10 +1,10 @@
-import EnteredAddress_seven from '@/components/siweComponents/menuSiwe/menuSiwe'
 import React from 'react'
+import MenuSiwe from '@/components/siwe/menu/MenuSiwe'
 
-export default function page() {
+export default function signInWithEthereum() {
   return (
     <div>
-        <EnteredAddress_seven/>
+        <MenuSiwe/>
     </div>
   )
 }

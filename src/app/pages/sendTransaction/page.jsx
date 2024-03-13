@@ -1,11 +1,11 @@
 import React from 'react'
-import EnteredAddress_third from '../../../components/sendTxComponents/menuSendTx/MenuSendTx'
+import MenuSendTx from '../../../components/sendTransaction/menu/MenuSendTx'
 
-export default function thirdMethod() {
+export default function sendTransaction() {
   return (
         <div>
           
-          <EnteredAddress_third/>
+          <MenuSendTx/>
         </div>
   )
 }
