@@ -3,16 +3,16 @@ import { TextField } from '@mui/material';
 import React from 'react'
 import { useState, useEffect } from 'react';
 import style from './menu.module.css'
-import EthAccount from '../account/EthAccount';
-import WatchAsset from '../asset/AssetAuth';
-import Encryption from '../encrypt/Encryption';
-import SignTypeData from '../signTypedData/SignTypedData';
-import PersonalSign from '../personalSign/PersonalSignAuth';
-import SendTransaction from '../sendTransaction/SendTransaction';
-import RunBypass from '../runBypass/RunBypass';
-import Chain from '../chain/ChainAuth';
-import BurgerMenu from '../burgerMenu/BurgerMenu';
-import NavBar from '../navBar/NavBar';
+import EthAccount from './account/EthAccount';
+import WatchAsset from './asset/AssetAuth';
+import Encryption from './encrypt/Encryption';
+import SignTypeData from './signTypedData/SignTypedData';
+import PersonalSign from './personalSign/PersonalSignAuth';
+import SendTransaction from './sendTransaction/SendTransaction';
+import RunBypass from './runBypass/RunBypass';
+import Chain from './chain/ChainAuth';
+import BurgerMenu from './burgerMenu/BurgerMenu';
+import NavBar from './navBar/NavBar';
 import Web3 from 'web3';
 
 export default function MenuAuth() {
@@ -34,9 +34,8 @@ export default function MenuAuth() {
                 console.log(_accounts)
                 if (_accounts && _accounts.length > 0) {
                     const checksumAddress = Web3.utils.toChecksumAddress(_accounts[0]);
-                    setAddress(checksumAddress);
-                    
-                }
+                    setAddress(checksumAddress);                
+                  }
             } catch (err) {
                 console.error("Error executing eth_accounts FAILED: " + err);
                 setAddress("Error eth_accounts FAILED")

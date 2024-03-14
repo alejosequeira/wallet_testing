@@ -1,4 +1,4 @@
-import MenuAuth from '@/components/authTest/menu/MenuAuth'
+import MenuAuth from '@/components/authTest/MenuAuth'
 
 export default function Home() {
   return (

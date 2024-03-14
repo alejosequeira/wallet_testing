@@ -27,7 +27,6 @@ const MyTokenDeployer = () => {
             console.error('Failed to copy text:', err);
         }
     };
-    // MetaMask Tx Signature: User denied transaction signature.
 
     const deployContract = async () => {
         setLoading(true);
