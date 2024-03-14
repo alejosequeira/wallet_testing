@@ -1,7 +1,7 @@
 "use client";
 import React from 'react'
 import ZeroScan from '../UnknownAdDetection';
-import style from './ea_six.module.css'
+import style from './menu.module.css'
 import { useState } from 'react'
 import NavBar from '../../authTest/navBar/NavBar'
 import BurgerMenu from '../../authTest/burgerMenu/BurgerMenu'

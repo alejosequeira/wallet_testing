@@ -1,7 +1,7 @@
 'use client';
 import React from 'react'
 import { useState } from 'react';
-import style from './ea_third.module.css'
+import style from './menu.module.css'
 import BurgerMenu from '../../authTest/burgerMenu/BurgerMenu';
 import NavBar from '../../authTest/navBar/NavBar';
 import SendTransaction from '../SendTransaction';

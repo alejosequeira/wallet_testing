@@ -2,7 +2,7 @@
 import { TextField } from '@mui/material';
 import React from 'react'
 import { useState } from 'react';
-import style from './ea_second.module.css'
+import style from './menu.module.css'
 import BurgerMenu from '../../authTest/burgerMenu/BurgerMenu';
 import NavBar from '../../authTest/navBar/NavBar';
 import Sign from '../Sign';
@@ -10,6 +10,7 @@ import Personal_custom from '../personal/PersonalSign';
 import Sign_typedData from '../typedData/SignTypedData';
 import Web3 from 'web3';
 import { useEffect } from 'react';
+import DeployContract from '../deployContract/DeployContract';
 
 export default function MenuSign() {
     const [address, setAddress] = useState('');
@@ -131,13 +132,14 @@ export default function MenuSign() {
                     </div>
                     <div className={style.form_test}>
                         <div className={style.block}>
-                            <Sign address={address} challenge={challenge} />                                                                     
+                            <Sign address={address} challenge={challenge} />            
+                            <Personal_custom address={address} challenge={challenge} />                                                         
                         </div>
                         <div className={style.block}>
                             <Sign_typedData address={address} />
                         </div>
                         <div className={style.block}>
-                            <Personal_custom address={address} challenge={challenge} />
+                            <DeployContract/>
                         </div>
                     </div>
                 </div>

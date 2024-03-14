@@ -1,9 +1,9 @@
-import EthAccountsComponent from '@/components/authTest/menu/MenuAuth'
+import MenuAuth from '@/components/authTest/menu/MenuAuth'
 
 export default function Home() {
   return (
     <div>    
-       <EthAccountsComponent />  
+       <MenuAuth />  
     </div>
   )
 }
