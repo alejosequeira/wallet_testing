@@ -178,7 +178,6 @@ function SendTransaction() {
 
 
     const fetchGasPrice = async () => {
-        // setIsToggledPrice(!isToggledPrice);
         try {
             const provider = window.ethereum;
             const web3 = new Web3(provider);
@@ -192,7 +191,6 @@ function SendTransaction() {
     };
 
     const fetchGasLimit = async () => {
-        // setIsToggledLimit(!isToggledLimit);
         try {
             const provider = window.ethereum;
             const web3 = new Web3(provider);
@@ -282,7 +280,6 @@ function SendTransaction() {
 
 
     const fetchMaxFees = async () => {
-        // setIsAutoMaxFee(!isAutoMaxFee);
         try {
             const provider = window.ethereum;
             const web3 = new Web3(provider);

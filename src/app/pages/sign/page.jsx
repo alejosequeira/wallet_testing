@@ -1,5 +1,5 @@
 import React from 'react'
-import MenuSign from '@/components/sign/menu/MenuSign'
+import MenuSign from '@/app/pages/sign/MenuSign'
 
 export default function sign() {
   return (

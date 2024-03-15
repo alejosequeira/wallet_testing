@@ -3,16 +3,16 @@ import { TextField } from '@mui/material';
 import React from 'react'
 import { useState, useEffect } from 'react';
 import style from './menu.module.css'
-import EthAccount from './account/EthAccount';
-import WatchAsset from './asset/AssetAuth';
-import Encryption from './encrypt/Encryption';
-import SignTypeData from './signTypedData/SignTypedData';
-import PersonalSign from './personalSign/PersonalSignAuth';
-import SendTransaction from './sendTransaction/SendTransaction';
-import RunBypass from './runBypass/RunBypass';
-import Chain from './chain/ChainAuth';
-import BurgerMenu from './burgerMenu/BurgerMenu';
-import NavBar from './navBar/NavBar';
+import EthAccount from '../../../components/2buttonsMethods/account/EthAccount';
+import WatchAsset from '../../../components/2buttonsMethods/asset/AssetAuth';
+import Encryption from '../../../components/2buttonsMethods/encrypt/Encryption';
+import SignTypeData from '../../../components/2buttonsMethods/signTypedData/SignTypedData';
+import PersonalSign from '../../../components/2buttonsMethods/personalSign/PersonalSignAuth';
+import SendTransaction from '../../../components/2buttonsMethods/sendTransaction/SendTransaction';
+import RunBypass from '../../../components/2buttonsMethods/runBypass/RunBypass';
+import Chain from '../../../components/2buttonsMethods/chain/ChainAuth';
+import BurgerMenu from '../../../components/1navBar/burgerMenu/BurgerMenu';
+import NavBar from '../../../components/1navBar/NavBar';
 import Web3 from 'web3';
 
 export default function MenuAuth() {

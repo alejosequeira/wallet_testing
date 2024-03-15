@@ -1,12 +1,14 @@
-"use client"
+"use client";
 import React from 'react'
-import style from './menu.module.css'
-import { useState } from 'react'
-import NavBar from '@/components/authTest/navBar/NavBar';
-import BurgerMenu from '@/components/authTest/burgerMenu/BurgerMenu';
-import SignInWithEthereum from '../SignInWithEthereum';
+import { useState } from 'react';
+import style from './ea_fourth.module.css'
+import BurgerMenu from '../../../components/1navBar/burgerMenu/BurgerMenu';
+import NavBar from '../../../components/1navBar/NavBar';
+import AtomichubStore from '../../../components/2buttonsMethods/linksDapps/LinkScamDapp';
+import SendScam from '../../../components/2buttonsMethods/sendScamTest/SendScamTx';
 
-export default function MenuSiwe() {
+
+export default function MenuScamTest() {
     const [sidebarOpen, setSidebarOpen] = useState(false);
 
     const toggleSidebar = () => setSidebarOpen(!sidebarOpen);
@@ -19,8 +21,11 @@ export default function MenuSiwe() {
                 <div className={`${style.content} ${sidebarOpen ? style.contentShift : ''}`}>
                     <div className={style.form_test}>
                         <div className={style.block}>
-                            <SignInWithEthereum />
+                            <AtomichubStore />
                         </div>
+                        <div className={style.block}>
+                            <SendScam/>
+                        </div>                        
                     </div>
                 </div>
             </div>

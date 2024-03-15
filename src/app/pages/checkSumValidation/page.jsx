@@ -1,4 +1,4 @@
-import MenuCheckSum from '@/components/checkSum/menu/MenuCheckSum'
+import MenuCheckSum from './MenuCheckSum'
 import React from 'react'
 
 export default function checkSumValidation() {

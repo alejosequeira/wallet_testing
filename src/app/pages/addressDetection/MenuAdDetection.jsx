@@ -1,14 +1,13 @@
 "use client";
 import React from 'react'
-import { useState } from 'react';
-import style from './ea_fourth.module.css'
-import BurgerMenu from '../../authTest/burgerMenu/BurgerMenu';
-import NavBar from '../../authTest/navBar/NavBar';
-import AtomichubStore from '../linksDapps/LinkScamDapp';
-import SendScam from '../SendScamTx';
+import ZeroScan from '../../../components/2buttonsMethods/addressDetection/UnknownAdDetection';
+import style from './menu.module.css'
+import { useState } from 'react'
+import NavBar from '../../../components/1navBar/NavBar'
+import BurgerMenu from '../../../components/1navBar/burgerMenu/BurgerMenu'
 
 
-export default function MenuScamTest() {
+export default function MenuAdDetection() {
     const [sidebarOpen, setSidebarOpen] = useState(false);
 
     const toggleSidebar = () => setSidebarOpen(!sidebarOpen);
@@ -19,12 +18,9 @@ export default function MenuScamTest() {
             <div className={style.pageContainer}>
                 <BurgerMenu isOpen={sidebarOpen} />
                 <div className={`${style.content} ${sidebarOpen ? style.contentShift : ''}`}>
-                    <div className={style.form_test}>
+                    <div className={style.form_test}>                       
                         <div className={style.block}>
-                            <AtomichubStore />
-                        </div>
-                        <div className={style.block}>
-                            <SendScam/>
+                            <ZeroScan/> 
                         </div>                        
                     </div>
                 </div>
@@ -32,3 +28,4 @@ export default function MenuScamTest() {
         </div>
     )
 }
+ 
