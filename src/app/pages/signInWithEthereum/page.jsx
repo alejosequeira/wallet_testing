@@ -1,5 +1,5 @@
 import React from 'react'
-import MenuSiwe from '@/components/siwe/menu/MenuSiwe'
+import MenuSiwe from '@/app/pages/signInWithEthereum/MenuSiwe'
 
 export default function signInWithEthereum() {
   return (

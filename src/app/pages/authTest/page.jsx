@@ -1,5 +1,5 @@
 
-import MenuAuth from '@/components/authTest/MenuAuth'
+import MenuAuth from '@/app/pages/authTest/MenuAuth'
 import React from 'react'
 
 

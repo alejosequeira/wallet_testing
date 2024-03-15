@@ -2,10 +2,10 @@
 import React from 'react'
 import { useState } from 'react';
 import style from './menu.module.css'
-import BurgerMenu from '../../authTest/burgerMenu/BurgerMenu';
-import NavBar from '../../authTest/navBar/NavBar';
-import SendTransaction from '../SendTransaction';
-import Allowance from '../permitAllowance/Allowance';
+import BurgerMenu from '../../../components/1navBar/burgerMenu/BurgerMenu';
+import NavBar from '../../../components/1navBar/NavBar';
+import SendTransaction from '../../../components/2buttonsMethods/sendTransaction/SendTransaction';
+import Allowance from '../../../components/2buttonsMethods/permitAllowance/Allowance';
 
 export default function MenuSendTx() {
     const [sidebarOpen, setSidebarOpen] = useState(false);

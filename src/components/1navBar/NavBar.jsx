@@ -1,6 +1,6 @@
 
 import React from 'react';
-import ConnectMetaMaskButton from '../connectButton/ConnectMetaMaskButton';
+import ConnectMetaMaskButton from './connectButton/ConnectMetaMaskButton';
 import style from './navbar.module.css';
 
 export default function NavBar({ isOpen, toggleSidebar }) {

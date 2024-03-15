@@ -1,5 +1,5 @@
 import React from 'react'
-import MenuSendTx from '../../../components/sendTransaction/menu/MenuSendTx'
+import MenuSendTx from './MenuSendTx'
 
 export default function sendTransaction() {
   return (

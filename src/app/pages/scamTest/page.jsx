@@ -1,4 +1,4 @@
-import MenuScamTest from '@/components/scamTest/menu/MenuScamTest'
+import MenuScamTest from '@/app/pages/scamTest/MenuScamTest'
 import React from 'react'
 
 export default function scamTesting() {

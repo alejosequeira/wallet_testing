@@ -1,4 +1,4 @@
-import MenuAdDetection from '@/components/addressDetection/menu/MenuAdDetection'
+import MenuAdDetection from '@/app/pages/addressDetection/MenuAdDetection'
 import React from 'react'
 
 export default function addressDetection() {

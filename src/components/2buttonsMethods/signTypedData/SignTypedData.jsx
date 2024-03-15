@@ -2,8 +2,8 @@
 import React, { useState } from 'react';
 import style from './signtypedata.module.css';
 import { Alert,AlertTitle } from '@mui/material';
-import testParams from '../../sign/typedData/msgParams.json';
-import erc20Params from '../../sign/typedData/erc20Params.json';
+import testParams from './msgParams.json';
+import erc20Params from './erc20Params.json';
 
 const SignTypeData = ({ address }) => {
 
