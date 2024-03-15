@@ -2,9 +2,9 @@
 import React from 'react'
 import style from './menu.module.css'
 import { useState } from 'react'
-import NavBar from '@/components/1navBar/NavBar'
-import BurgerMenu from '@/components/1navBar/burgerMenu/BurgerMenu'
-import CheckSum from '../../../components/2buttonsMethods/sendTransactionSUM/SendTxCheckSum'
+import NavBar from '@/components/navBar/NavBar'
+import BurgerMenu from '@/components/navBar/burgerMenu/BurgerMenu'
+import CheckSum from '../../../components/methodButton/sendTransactionSUM/SendTxCheckSum'
 
 export default function MenuCheckSum() {
     const [sidebarOpen, setSidebarOpen] = useState(false);

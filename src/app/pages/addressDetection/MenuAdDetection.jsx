@@ -1,10 +1,10 @@
 "use client";
 import React from 'react'
-import ZeroScan from '../../../components/2buttonsMethods/addressDetection/UnknownAdDetection';
+import ZeroScan from '../../../components/methodButton/addressDetection/UnknownAdDetection';
 import style from './menu.module.css'
 import { useState } from 'react'
-import NavBar from '../../../components/1navBar/NavBar'
-import BurgerMenu from '../../../components/1navBar/burgerMenu/BurgerMenu'
+import NavBar from '../../../components/navBar/NavBar'
+import BurgerMenu from '../../../components/navBar/burgerMenu/BurgerMenu'
 
 
 export default function MenuAdDetection() {

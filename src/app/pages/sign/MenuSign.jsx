@@ -3,14 +3,14 @@ import { TextField } from '@mui/material';
 import React from 'react'
 import { useState } from 'react';
 import style from './menu.module.css'
-import BurgerMenu from '../../../components/1navBar/burgerMenu/BurgerMenu';
-import NavBar from '../../../components/1navBar/NavBar';
-import Sign from '../../../components/2buttonsMethods/sign/Sign';
-import Personal_custom from '../../../components/2buttonsMethods/personal/PersonalSign';
-import Sign_typedData from '../../../components/2buttonsMethods/signTypedData/SignTypedData';
+import BurgerMenu from '../../../components/navBar/burgerMenu/BurgerMenu';
+import NavBar from '../../../components/navBar/NavBar';
+import Sign from '../../../components/methodButton/sign/Sign';
+import Personal_custom from '../../../components/methodButton/personal/PersonalSign';
+import Sign_typedData from '../../../components/methodButton/signTypedData/SignTypedData';
 import Web3 from 'web3';
 import { useEffect } from 'react';
-import DeployContract from '../../../components/2buttonsMethods/deployContract/DeployContract';
+import DeployContract from '../../../components/methodButton/deployContract/DeployContract';
 
 export default function MenuSign() {
     const [address, setAddress] = useState('');

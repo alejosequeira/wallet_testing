@@ -2,10 +2,10 @@
 import React from 'react'
 import { useState } from 'react';
 import style from './ea_fourth.module.css'
-import BurgerMenu from '../../../components/1navBar/burgerMenu/BurgerMenu';
-import NavBar from '../../../components/1navBar/NavBar';
-import AtomichubStore from '../../../components/2buttonsMethods/linksDapps/LinkScamDapp';
-import SendScam from '../../../components/2buttonsMethods/sendScamTest/SendScamTx';
+import BurgerMenu from '../../../components/navBar/burgerMenu/BurgerMenu';
+import NavBar from '../../../components/navBar/NavBar';
+import AtomichubStore from '../../../components/methodButton/linksDapps/LinkScamDapp';
+import SendScam from '../../../components/methodButton/sendScamTest/SendScamTx';
 
 
 export default function MenuScamTest() {

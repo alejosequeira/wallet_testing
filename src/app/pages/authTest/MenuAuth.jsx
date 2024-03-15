@@ -3,16 +3,16 @@ import { TextField } from '@mui/material';
 import React from 'react'
 import { useState, useEffect } from 'react';
 import style from './menu.module.css'
-import EthAccount from '../../../components/2buttonsMethods/account/EthAccount';
-import WatchAsset from '../../../components/2buttonsMethods/asset/AssetAuth';
-import Encryption from '../../../components/2buttonsMethods/encrypt/Encryption';
-import SignTypeData from '../../../components/2buttonsMethods/signTypedData/SignTypedData';
-import PersonalSign from '../../../components/2buttonsMethods/personalSign/PersonalSignAuth';
-import SendTransaction from '../../../components/2buttonsMethods/sendTransaction/SendTransaction';
-import RunBypass from '../../../components/2buttonsMethods/runBypass/RunBypass';
-import Chain from '../../../components/2buttonsMethods/chain/ChainAuth';
-import BurgerMenu from '../../../components/1navBar/burgerMenu/BurgerMenu';
-import NavBar from '../../../components/1navBar/NavBar';
+import EthAccount from '../../../components/methodButton/account/EthAccount';
+import WatchAsset from '../../../components/methodButton/asset/AssetAuth';
+import Encryption from '../../../components/methodButton/encrypt/Encryption';
+import SignTypeData from '../../../components/methodButton/signTypedData/SignTypedData';
+import PersonalSign from '../../../components/methodButton/personalSign/PersonalSignAuth';
+import SendTransaction from '../../../components/methodButton/sendTransaction/SendTransaction';
+import RunBypass from '../../../components/methodButton/runBypass/RunBypass';
+import Chain from '../../../components/methodButton/chain/ChainAuth';
+import BurgerMenu from '../../../components/navBar/burgerMenu/BurgerMenu';
+import NavBar from '../../../components/navBar/NavBar';
 import Web3 from 'web3';
 
 export default function MenuAuth() {
