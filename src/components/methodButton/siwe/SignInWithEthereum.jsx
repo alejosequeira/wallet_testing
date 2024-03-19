@@ -3,65 +3,26 @@ import React, { useState, useEffect } from 'react';
 import Web3 from 'web3';
 import style from './signEth.module.css';
 import { Alert, AlertTitle } from '@mui/material';
+import { handleGetEthAccounts } from '@/utils/web3';
 
 export default function SignInWithEthereum (){
-    const [message, setMessage] = useState('');
+    
+    
     const [from, setFrom] = useState('');
-    const [domain, setDomain] = useState('');
-    const [statement, setStatement] = useState('Welcome to OpenSea!');
-    const [description, setDescription] = useState('Click to sign in and accept the OpenSea Terms of Service (https://opensea.io/tos) and Privacy Policy (https://opensea.io/privacy).');
-    const [description2, setDescription2] = useState('This request will not trigger a blockchain transaction or cost any gas fees.');
-    const [uri, setUri] = useState('');
-    const [nonce, setNonce] = useState('');
-    const [issued, setIssued] = useState('');
+    const [message, setMessage] = useState();
+    const [messages, setMessages] = useState();
     const [signatureCopy, setSignatureCopy] = useState('');
     const [toggleHashZero, setToggleHashZero] = useState(false);
     const [isCopied, setIsCopied] = useState(false)
 
     useEffect(() => {
-        const handleGetEthAccounts = async () => {
-            try {
-                const provider = window.ethereum;
-                if (!provider) {
-                    setFrom('Wallet not Found');
-                    return;
-                }
-                const _accounts = await provider.request({
-                    method: 'eth_accounts',
-                });
-                if (_accounts && _accounts.length > 0) {
-                    const checksumAddress = Web3.utils.toChecksumAddress(_accounts[0]);
-                    setFrom(checksumAddress);
-                    await getNounce(checksumAddress);
-                }
-            } catch (err) {
-                console.error("Error executing eth_accounts FAILED: " + err);
-                setFrom("Error eth_accounts FAILED")
-            }
+        const fetchData = async () => {
+            const fromResult = await handleGetEthAccounts(setFrom);         
+            setMessages(`https://opensea.io \n wants you to sign in with your Ethereum account:\n${fromResult}\n\nSign in with Ethereum to the app.\n\nURI: \nhttps://opensea.io\nVersion: 1\nChain ID: 137\nNonce: 12345678\nIssued At: 2024-03-10T01:08:50.113Z`)
+    
         };
-
-        const getNounce = async (address) => {
-
-            try {
-                const provider = window.ethereum;
-                const web3 = new Web3(provider);
-                const nonce = await web3.eth.getTransactionCount(address, 'latest');
-                setNonce(`${nonce.toString()}`);
-            } catch (error) {
-                setNonce("Provided Address invalid");
-                console.error('Error fetching nonce:', error);
-            }
-        };
-
-        handleGetEthAccounts();
-        const domain = window.location.host;
-        setDomain(domain)
-        const uri = window.location.origin;
-        setUri(uri)
+        fetchData();
     }, []);
-
-
-
     const handleCopyAccountClick = async () => {
         if (!navigator.clipboard) {
             console.error('Clipboard API not available.');
@@ -88,12 +49,8 @@ export default function SignInWithEthereum (){
                 console.error('No Ethereum accounts found.');
                 return;
             }
-            const issuedAt = new Date().toISOString();
-            console.log(issuedAt)
-            setIssued(issuedAt)
-            const message = constructMessage(statement, description, description2, from, nonce);
 
-            const signature = await web3.eth.personal.sign(message, from);
+            const signature = await web3.eth.personal.sign(messages, from);
             setSignatureCopy(signature);
             const { r, s, v } = extractSignatureParts(signature);
 
@@ -106,9 +63,6 @@ export default function SignInWithEthereum (){
         }
     };
 
-    function constructMessage(statement, description, description2, from, nonce) {
-        return `${statement}\n\n${description}\n\n${description2}\n\nWallet address= \n${from}\n\nNonce= \n${nonce}`;
-    }
 
     function extractSignatureParts(signature) {
         const r = "0x" + signature.slice(2, 66);
@@ -201,71 +155,17 @@ export default function SignInWithEthereum (){
                     onChange={(e) => setFrom(e.target.value)}
                     rows="1"
                 />
-                <label htmlFor="toInput">Domain: </label>
-                <textarea
-                    type="text"
-                    className={style.formulario_input}
-                    id="toInput"
-                    value={domain}
-                    onChange={(e) => setDomain(e.target.value)}
-                    rows="1"
-                />
-
-                <label htmlFor="valueInput">Uri: </label>
-                <textarea
-                    type="text"
-                    className={style.formulario_input}
-                    id="valueInput"
-                    value={uri}
-                    onChange={(e) => setUri(e.target.value)}
-                    rows="1"
-                />
-                <label htmlFor="statement">Statement: </label>
-                <textarea
-                    type="text"
-                    className={style.formulario_input}
-                    id="statement"
-                    value={statement}
-                    onChange={(e) => setStatement(e.target.value)}
-                    rows="1"
-                />
+                
                 <label htmlFor="description">Message:</label>
                 <textarea
                     type="text"
                     className={style.formulario_input}
                     id="description"
-                    value={description}
-                    onChange={(e) => setDescription(e.target.value)}
-                    rows="3"
+                    value={messages}
+                    onChange={(e) => setMessages(e.target.value)}
+                    rows="12"
                 />
-                <label htmlFor="description">Gas Cost:</label>
-                <textarea
-                    type="text"
-                    className={style.formulario_input}
-                    id="description"
-                    value={description2}
-                    onChange={(e) => setDescription2(e.target.value)}
-                    rows="2"
-                />
-
-                <label htmlFor="chainId">Nonce: </label>
-                <textarea
-                    type="text"
-                    className={style.formulario_input}
-                    id="chainId"
-                    value={nonce}
-                    onChange={(e) => setNonce(e.target.value)}
-                    rows="1"
-                />
-                <label htmlFor="issued">Issued: </label>
-                <textarea
-                    type="text"
-                    className={style.formulario_input}
-                    id="issued"
-                    value={issued}
-                    onChange={(e) => setIssued(e.target.value)}
-                    rows="1"
-                />
+                
             </div>
         </div>
     );
