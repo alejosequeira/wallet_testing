@@ -13,6 +13,7 @@ export default function SignInWithEthereum (){
     const [description2, setDescription2] = useState('This request will not trigger a blockchain transaction or cost any gas fees.');
     const [uri, setUri] = useState('');
     const [nonce, setNonce] = useState('');
+    const [issued, setIssued] = useState('');
     const [signatureCopy, setSignatureCopy] = useState('');
     const [toggleHashZero, setToggleHashZero] = useState(false);
     const [isCopied, setIsCopied] = useState(false)
@@ -28,7 +29,6 @@ export default function SignInWithEthereum (){
                 const _accounts = await provider.request({
                     method: 'eth_accounts',
                 });
-                console.log(_accounts)
                 if (_accounts && _accounts.length > 0) {
                     const checksumAddress = Web3.utils.toChecksumAddress(_accounts[0]);
                     setFrom(checksumAddress);
@@ -90,6 +90,7 @@ export default function SignInWithEthereum (){
             }
             const issuedAt = new Date().toISOString();
             console.log(issuedAt)
+            setIssued(issuedAt)
             const message = constructMessage(statement, description, description2, from, nonce);
 
             const signature = await web3.eth.personal.sign(message, from);
@@ -254,6 +255,15 @@ export default function SignInWithEthereum (){
                     id="chainId"
                     value={nonce}
                     onChange={(e) => setNonce(e.target.value)}
+                    rows="1"
+                />
+                <label htmlFor="issued">Issued: </label>
+                <textarea
+                    type="text"
+                    className={style.formulario_input}
+                    id="issued"
+                    value={issued}
+                    onChange={(e) => setIssued(e.target.value)}
                     rows="1"
                 />
             </div>

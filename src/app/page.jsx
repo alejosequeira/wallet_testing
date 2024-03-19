@@ -1,4 +1,4 @@
-import MenuAuth from '@/app/pages/authTest/MenuAuth'
+import MenuAuth from '@/app/authTest/MenuAuth'
 
 export default function Home() {
   return (
