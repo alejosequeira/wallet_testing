@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from './PageLayout.module.css';
+import styles from './pageLayout.module.css';
 import NavBar from './navBar/NavBar';
 import BurgerMenu from './burgerMenu/BurgerMenu';
 
