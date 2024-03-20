@@ -36,6 +36,8 @@ const SendTransaction = ({ viewForm, viewScamButton, viewCheckSum }) => {
 
     const [toggleHash, setToggleHash] = useState(false);
     const [toggleHashZero, setToggleHashZero] = useState(false);
+    const [toggleScam, setToggleScam] = useState(true);
+
 
     const [isCopied, setIsCopied] = useState(false)
     const [showForm, setShowForm] = useState(viewForm);
@@ -52,20 +54,19 @@ const SendTransaction = ({ viewForm, viewScamButton, viewCheckSum }) => {
         fetchData();
     }, []);
 
-
-
     const toggleOption = () => {
         const newOption = selectedOption === '0x2' ? '0x0' : '0x2';
         setSelectedOption(newOption);
     };
-
+    const toggleScamZero = () => {
+        setToggleScam(!toggleScam);
+    };
     const toggleDisplay = () => {
         setDisplayWei(!displayWei);
     };
     const toggleFormDisplay = () => {
         setShowForm(!showForm);
     };
-
 
     const convertValue = () => {
         const input = parseFloat(valueInWei);
@@ -88,7 +89,6 @@ const SendTransaction = ({ viewForm, viewScamButton, viewCheckSum }) => {
             }
         }
     };
-
 
     const handleSendStandardTransacction = async () => {
         Web3Utils.fetchGasPrice(setGasPrice);
@@ -161,7 +161,7 @@ const SendTransaction = ({ viewForm, viewScamButton, viewCheckSum }) => {
                 params: [
                     {
                         from: from,
-                        to: toScan,
+                        to: toggleScam ? (toScan) : (toScamAddress),
                         value: valueInHex,
                         gasLimit: gasLimit,
                         gasPrice: gasPrice,
@@ -191,7 +191,7 @@ const SendTransaction = ({ viewForm, viewScamButton, viewCheckSum }) => {
                 params: [
                     {
                         from: from,
-                        to: toScan,
+                        to: toggleScam ? (toScan) : (toScamAddress),
                         value: valueInHex,
                         gasLimit: gasLimit,
                         type: selectedOption,
@@ -213,23 +213,28 @@ const SendTransaction = ({ viewForm, viewScamButton, viewCheckSum }) => {
             setToggleHashZero(false)
         }
     };
-
-
     return (
         <div className={style.formu}>
             {showScamButton && (
-                <div className={style.formulario_one}>
-                    <h4>Zero Value Transfer Scam Prevention</h4>
-                    <div className={style.align_fetchh}>
-                        <h5>1st step-</h5>
-                        <h6>Send transaction to some address</h6>
-
-                        <h5>2nd step-</h5>
-                        <h6>Send transaction to another address with same beginning/ending bytes</h6>
-                        {/* <h5>3rd step -</h5>
-                        <h6>Send transaction to a scam address</h6> */}
-                    </div>
-                </div>)}
+                <>
+                    {toggleScam ? (
+                        <div className={style.formulario_one}>
+                            <h4>Zero Value Transfer Scam Prevention</h4>
+                            <div className={style.align_fetchh}>
+                                <h5>1st step-</h5>
+                                <h7>Send transaction to some address</h7>
+                                <h5>2nd step-</h5>
+                                <h7>Send transaction to another address with same beginning/ending bytes</h7>                                
+                            </div>
+                        </div>
+                    ) : (
+                        <div className={style.formulario_one}>
+                            <h4>Transfer to Attacker/Scam Address</h4>
+                            <h6>Attempt sending a transaction to well-known scam/attacker address</h6>
+                        </div>
+                    )}
+                </>
+            )}
             {!showScamButton && (<>
                 <div className={style.formulario_oneZ}>
                     {selectedOption === '0x2' ? (
@@ -317,6 +322,10 @@ const SendTransaction = ({ viewForm, viewScamButton, viewCheckSum }) => {
                     </div>
                 )}
             </>)}
+
+            <button onClick={toggleScamZero} style={{ color: "blue" }} className={style.toggleeButton}>
+                {toggleScam ? 'ZERO VALUE' : 'SCAM ADDRESS'}
+            </button>
 
             <button onClick={toggleFormDisplay} className={style.toggleeButton}>
                 {showForm ? 'Hide Tx Params' : 'Show Tx Params'}
@@ -451,25 +460,34 @@ const SendTransaction = ({ viewForm, viewScamButton, viewCheckSum }) => {
                                 {send_thirdResult}</Alert>
                         </div>
                     )}
-                    <div className={style.formulario}>
-                        <label htmlFor="toInputScam" style={{ color: "blue" }}>To Mod: </label>
+                    {showForm && (<div className={style.formulario}>
+                        <label htmlFor="toInputScam" style={{ color: "blue" }}>To Scam: </label>
                         <input
                             type="text"
                             className={style.formulario_input}
                             id="toInputScam"
-                            value={toScan}
-                            placeholder={toScan}
-                            onChange={(e) => setToScan(e.target.value)}
-                        />
+                            value={
+                                toggleScam ? (toScan) : (toScamAddress)
+                            }
+                            onChange={(e) => {
+                                const inputValue = e.target.value;
+                                if (toggleScam) {
+                                    setToScan(inputValue);
+                                } else {                                    
+                                    setToScamAddress(inputValue);
+                                }
+                            }} />
+                            
+                        
 
-                    </div>
+                    </div>)}
 
                     <div className={style.formulario_oneZ}>
                         {selectedOption === '0x2' ? (
                             <button
                                 className={style.bouton}
                                 onClick={handleSendTxEIP1559Unknow}
-                            >SEND MOD TRANSACTION
+                            >SEND SCAM TRANSACTION
                             </button>
                         ) : (
                             <button

@@ -20,7 +20,7 @@
 
 .align_fetchh {
     display: grid;
-    grid-template-columns: 0.3fr 1fr;
+    grid-template-columns: 1fr 3fr;
     margin-top: 0.5rem;
 }
 
@@ -78,6 +78,17 @@
     color: var(--darkGray);
     margin: 0;
     padding: 0;
+    width: fit-content;
+    text-align: center;
+}
+.align_fetchh h7{
+    font: var(--default-font);
+    font-size: 0.8rem;
+    color: var(--darkGray);
+    margin: 0;
+    padding: 0;
+    width: fit-content;
+    float: right;
 }
 .formulario_oneZ{
     display: flex;
