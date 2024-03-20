@@ -9,7 +9,7 @@ import Sign_typedData from '@/components/methodButton/signTypedData/SignTypedDat
 import { TextField } from '@mui/material';
 import { handleGetEthAccounts } from '@/utils/web3';
 
-export default function sign({ sidebarOpen, toggleSidebar }) {
+export default function Sign({ sidebarOpen, toggleSidebar }) {
   const [address, setAddress] = useState('');
   const [challenge, setChallenge] = useState('Example `personal_sign` message');
   useEffect(() => {

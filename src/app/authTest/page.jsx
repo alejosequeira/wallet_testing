@@ -13,7 +13,8 @@ import SendTransaction from '@/components/methodButton/sendTransaction/SendTrans
 import RunBypass from '@/components/methodButton/runBypass/RunBypass';
 import Chain from '@/components/methodButton/chain/ChainAuth';
 import { handleGetEthAccounts } from '@/utils/web3';
-export default function authTest({ sidebarOpen, toggleSidebar }) {
+
+export default function AuthTest({ sidebarOpen, toggleSidebar }) {
 
   const [address, setAddress] = useState('');
   const [message, setMessage] = useState('Example `personal_sign` message');
