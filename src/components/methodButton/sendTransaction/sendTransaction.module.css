@@ -8,8 +8,8 @@
     color: var(--ligtherGray);
     cursor: pointer;
     box-shadow: black 0px 1px 5px;
-    width: 12rem;
-    margin: 0 10px;
+    width: 10rem;
+    margin: 5px;
 }
 
 .bouton:hover {
@@ -19,9 +19,9 @@
 }
 
 .align_fetchh {
-    margin-top: 10px;
-    display: flex;
-    text-align: center;
+    display: grid;
+    grid-template-columns: 1fr 3fr;
+    margin-top: 0.5rem;
 }
 
 .bouton_fetch {
@@ -46,13 +46,60 @@
 }
 
 .formulario_one {
+    width:20rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: stretch;
+    margin: 0;
+    padding: 0;
+}
+.formulario_one h4{
+    font: var(--default-font);
+    font-size: 0.90rem;
+    font-weight: 600;
+    color: var(--darkGray);
+    margin: 0;
+    padding: 0;
+    text-align: center;
+}
+.formulario_one h5{
+    font: var(--default-font);
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--darkGray);
+    margin: 0;
+    padding: 0;
+    width: max-content;
+}
+.formulario_one h6{
+    font: var(--default-font);
+    font-size: 0.8rem;
+    color: var(--darkGray);
+    margin: 0;
+    padding: 0;
+    width: fit-content;
+    text-align: center;
+}
+.align_fetchh h7{
+    font: var(--default-font);
+    font-size: 0.8rem;
+    color: var(--darkGray);
+    margin: 0;
+    padding: 0;
+    width: fit-content;
+    float: right;
+}
+.formulario_oneZ{
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     margin: 0;
     padding: 0;
+    /* margin-top: 0.5rem; */
 }
+
 
 .formu {
     display: flex;
@@ -62,7 +109,7 @@
     border-radius: 1%;
     box-sizing: border-box;
     background-color: var(--lightGray);
-    margin: 0.5rem 0 0 0px;
+    margin:0px;
     padding: 0px 0px 0px 0px;
 }
 .labelText{
@@ -95,13 +142,11 @@
     display: grid;
     grid-template-columns: 0.1fr 1fr;
     row-gap: 15px;
-    margin-top: 1rem;
+    margin-top: 0.5rem;
     margin-left: 10px;
     margin-right: 10px;
     align-items: center;
 }
-
-
 
 .formulario label {
     display: block;
@@ -114,15 +159,16 @@
 
 .formulario_input {
     text-align: center;
-    width: 16rem;
+    width: 16.5rem;
     background-color: var(--darkGray);
     font: var(--default-font);
     font-size: 0.6rem;
     border: 2px solid var(--lightyGray);
     border-radius: 4px;
-    padding: 0 10px;
+    padding: 0 8px;
     box-sizing: border-box;
     color: var(--white);
+    margin: 5px 0;
 }
 
 .formulario_input:focus {
@@ -137,7 +183,7 @@
     align-items: center;
     margin: 0;
     padding: 0;
-    width: 16rem;    
+    width: 16.5rem;    
     background-color: var(--lightyGray);
     font: var(--default-font);
     border-radius: 4px;
@@ -146,7 +192,6 @@
 }
 
 .toggleButton {
-    /* padding: 0px 10px; */
     color: white;
     border-radius: 4px;
     cursor: pointer;
@@ -157,7 +202,23 @@
     margin:0 0.5rem;
     text-align: center;
 }
-
+.toggleeButton {
+    color: var(--black);
+    border-radius: 4px;
+    cursor: pointer;
+    font: var(--default-font);
+    font-size: 0.50rem;
+    transition: background-color 0.3s;
+    width: 6rem;
+    margin: 0.5rem;
+    margin-bottom: 0px;
+    text-align: center;
+    background-color: var(--lightyGray);
+  }
+  
+  .toggleeButton:hover {
+    background-color: var(--gray);
+  }
 .input_botton {
     text-align: center;
     font: var(--default-font);
@@ -210,15 +271,29 @@
     padding: 0;
     font-size: 1rem;
 }
-@media (max-width: 500px) {
-    .formulario {
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;    
-        justify-content: space-around;
-        gap: 5px;        
-    }
-    .type_check{
-        margin:0;
-    }   
-}
+
+.clipboard {
+    width: 15px;
+    padding: 0;
+    margin: 0;
+    margin-left: 5px;
+    cursor: pointer;
+    z-index: 10;
+    color: var(--darkGray);
+  }
+  
+  .clipboard:hover {
+    color: black;
+    transform: scale(1.1);
+  }
+  
+  
+  .text_copied {
+    background-color: var(--darkGray);
+    color: white;
+    padding: 0 5px;
+    border-radius: 5px;
+    font: var(--default-font);
+    font-size: 0.5rem;
+    margin-left: 5px;
+  }

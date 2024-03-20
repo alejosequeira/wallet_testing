@@ -9,7 +9,6 @@ const links = [
     { route: '/sendTransaction', label: 'Send Transaction' },
     { route: '/scamTest', label: 'Scam Test' },
     { route: '/checkSumValidation', label: 'Address Checksum Validation' },
-    { route: '/addressDetection', label: 'Unknown Address Detection' },
     { route: '/signInWithEthereum', label: 'EIP-4361 (SIWE)' },
     { route: '/phishingSites', label: 'Phishing Sites' },
 ];

@@ -1,4 +1,4 @@
-.bouton {
+/* .bouton {
     font: var(--default-font);
     font-size: 0.7rem;
     padding: 0px 5px;
@@ -10,7 +10,20 @@
     cursor: pointer;
     box-shadow: black 0px 1px 5px;    
     width: 9rem;
-  }
+  } */
+  .bouton {
+    font: var(--default-font);
+    font-size: 0.7rem;
+    padding: 0px 5px;
+    border: 1px solid var(--black);
+    border-radius: 5px;
+    background-color: var(--lightBlue);
+    color: var(--ligtherGray);
+    cursor: pointer;
+    box-shadow: black 0px 1px 5px;
+    width: 9rem;
+    margin: 10px;
+}
 .formu{
     display: flex;
     flex-direction: column;

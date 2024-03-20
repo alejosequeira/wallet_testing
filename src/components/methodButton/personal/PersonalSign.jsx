@@ -2,28 +2,14 @@
 import React, { useState } from 'react';
 import { Alert,AlertTitle } from '@mui/material';
 import style from './personal_custom.module.css';
+import { handleCopyAccountClick } from '@/utils/buttons';
 
 const Personal_custom = ({ address, challenge }) => {
     const [personal_customResult, setPersonal_customResult] = useState('');
-
     const [toggleHashZero, setToggleHashZero] = useState(false);
-
     const [isCopied, setIsCopied] = useState(false)
-    const handleCopyAccountClick = async () => {
-      if (!navigator.clipboard) {
-        console.error('Clipboard API not available.');
-        return;
-      }
-      try {
-        await navigator.clipboard.writeText(personal_customResult);
-        setIsCopied(true);
-        setTimeout(() => setIsCopied(false), 2000);
-      } catch (err) {
-        console.error('Failed to copy text:', err);
-      }
-    };
+    
     const handlePersonal_custom = async () => {
-
         try {
             const provider = window.ethereum;
             const msg = `0x${Buffer.from(challenge, 'utf8').toString('hex')}`;
@@ -86,7 +72,7 @@ const Personal_custom = ({ address, challenge }) => {
                                 }}>
                                 Error
                                 {!isCopied &&
-                                    <svg onClick={handleCopyAccountClick} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 15 15" fill="currentColor" className={style.clipboard}>
+                                    <svg onClick={() => handleCopyAccountClick(personal_customResult, setIsCopied)} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 15 15" fill="currentColor" className={style.clipboard}>
                                         <path d="M5.5 3.5A1.5 1.5 0 0 1 7 2h2.879a1.5 1.5 0 0 1 1.06.44l2.122 2.12a1.5 1.5 0 0 1 .439 1.061V9.5A1.5 1.5 0 0 1 12 11V8.621a3 3 0 0 0-.879-2.121L9 4.379A3 3 0 0 0 6.879 3.5H5.5Z" />
                                         <path d="M4 5a1.5 1.5 0 0 0-1.5 1.5v6A1.5 1.5 0 0 0 4 14h5a1.5 1.5 0 0 0 1.5-1.5V8.621a1.5 1.5 0 0 0-.44-1.06L7.94 5.439A1.5 1.5 0 0 0 6.878 5H4Z" />
                                     </svg>

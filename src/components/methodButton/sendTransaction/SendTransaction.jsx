@@ -1,7 +1,7 @@
 "use client"
 import React from 'react'
 import { useEffect, useState } from 'react';
-import style from './unknown.module.css'
+import style from './sendTransaction.module.css'
 import Web3 from 'web3';
 import { Alert, AlertTitle } from '@mui/material';
 import * as Web3Utils from '@/utils/web3';
@@ -11,7 +11,7 @@ import { handleCopyAccountClick } from '@/utils/buttons';
 const SendTransaction = ({ viewForm, viewScamButton, viewCheckSum }) => {
     const [from, setFrom] = useState('');
     const [to, setTo] = useState('0x873050043AF661fe9D5633369B10139eb7b4Da54');
-    const [toScan, setToScan] = useState('0x873050043AF661fAAA5633369B10139eb7b4Da54');
+    const [toScan, setToScan] = useState('0x873050043AF661fE9d5611369B10139eB7B4Da54');
     const [toSUM, setToSUM] = useState('0xA62A0d4fE4C2b10aadFBD4628f697d09a76Cd954');
     const [toScamAddress, setToScamAddress] = useState('0x592340957eBC9e4Afb0E9Af221d06fDDDF789de9');
     const [gasLimit, setGasLimit] = useState('19000');
@@ -131,7 +131,7 @@ const SendTransaction = ({ viewForm, viewScamButton, viewCheckSum }) => {
                 params: [
                     {
                         from: from,
-                        to: to,
+                        to: viewCheckSum ? toSUM : to,
                         value: valueInHex,
                         gasLimit: gasLimit,
                         type: selectedOption,
@@ -219,12 +219,12 @@ const SendTransaction = ({ viewForm, viewScamButton, viewCheckSum }) => {
                 <>
                     {toggleScam ? (
                         <div className={style.formulario_one}>
-                            <h4>Zero Value Transfer Scam Prevention</h4>
+                            <h4>Zero Value Transfer Scam</h4>
                             <div className={style.align_fetchh}>
                                 <h5>1st step-</h5>
                                 <h7>Send transaction to some address</h7>
                                 <h5>2nd step-</h5>
-                                <h7>Send transaction to another address with same beginning/ending bytes</h7>                                
+                                <h7>Send transaction to another address with same beginning/ending bytes</h7>
                             </div>
                         </div>
                     ) : (
@@ -233,6 +233,9 @@ const SendTransaction = ({ viewForm, viewScamButton, viewCheckSum }) => {
                             <h6>Attempt sending a transaction to well-known scam/attacker address</h6>
                         </div>
                     )}
+                    <button onClick={toggleScamZero} style={{ color: "blue" }} className={style.toggleeButton}>
+                        {toggleScam ? 'switch to scam address' : 'switch to zero value'}
+                    </button>
                 </>
             )}
             {!showScamButton && (<>
@@ -259,7 +262,7 @@ const SendTransaction = ({ viewForm, viewScamButton, viewCheckSum }) => {
                             severity=""
 
                             sx={{
-                                width: "10rem",
+                                width: "17.5rem",
                                 fontSize: '13px',
                                 color: 'black',
                                 backgroundColor: 'lightgray',
@@ -323,10 +326,6 @@ const SendTransaction = ({ viewForm, viewScamButton, viewCheckSum }) => {
                 )}
             </>)}
 
-            <button onClick={toggleScamZero} style={{ color: "blue" }} className={style.toggleeButton}>
-                {toggleScam ? 'ZERO VALUE' : 'SCAM ADDRESS'}
-            </button>
-
             <button onClick={toggleFormDisplay} className={style.toggleeButton}>
                 {showForm ? 'Hide Tx Params' : 'Show Tx Params'}
             </button>
@@ -339,58 +338,62 @@ const SendTransaction = ({ viewForm, viewScamButton, viewCheckSum }) => {
                     value={from}
                     onChange={(e) => setFrom(e.target.value)}
                 />
-
-                <label htmlFor="toInput">To: </label>
-                <input
-                    type="text"
-                    className={style.formulario_input}
-                    id="toInput"
-                    value={
-                        viewCheckSum ? toSUM : to
-                    }
-                    placeholder={to}
-                    onChange={(e) => {
-                        const inputValue = e.target.value;
-                        setTo(inputValue);
-                        if (inputValue.length >= 18) {
-                            const start = inputValue.substring(0, 17);
-                            const end = inputValue.substring(20);
-                            const modifiedValue = `${start}AAA${end}`;
-                            let firstChar = inputValue.charAt(2);
-                            if (viewCheckSum) {
-                                if (isNaN(firstChar)) {
-                                    if (firstChar === firstChar.toUpperCase()) {
-                                        firstChar = firstChar.toLowerCase();
-                                    }
-                                    else { firstChar = firstChar.toUpperCase(); }
-                                } else { firstChar = 'A'; }
-                                setTo(`0x${firstChar}${inputValue.slice(2)}`)
+                {toggleScam && (
+                    <>
+                        <label htmlFor="toInput">To: </label>
+                        <input
+                            type="text"
+                            className={style.formulario_input}
+                            id="toInput"
+                            value={
+                                viewCheckSum ? toSUM : to
                             }
-                            setToScan(modifiedValue);
-                        } else {
-                            setToScan(inputValue);
-                        }
-                    }}
-                />
+                            placeholder={to}
+                            onChange={(e) => {
+                                const inputValue = e.target.value;
+                                setTo(inputValue);
+                                if (inputValue.length >= 18) {
+                                    const start = inputValue.substring(0, 17);
+                                    const end = inputValue.substring(20);
+                                    const modifiedValue = `${start}AAA${end}`;
+                                    let firstChar = inputValue.charAt(2);
+                                    if (viewCheckSum) {
+                                        if (isNaN(firstChar)) {
+                                            if (firstChar === firstChar.toUpperCase()) {
+                                                firstChar = firstChar.toLowerCase();
+                                            }
+                                            else { firstChar = firstChar.toUpperCase(); }
+                                        } else { firstChar = 'A'; }
+                                        setTo(`0x${firstChar}${inputValue.slice(2)}`)
+                                    }
+                                    setToScan(modifiedValue);
+                                } else {
+                                    setToScan(inputValue);
+                                }
+                            }}
+                        />
+                    </>
+                )}
             </div>)}
             {showScamButton && (
                 <>
-                    <div className={style.formulario_oneZ}>
-                        {selectedOption === '0x2' ? (
-                            <button
-                                className={style.bouton}
-                                onClick={handleSendEIP1559Transacction}
-                            >SEND TRANSACTION
-                            </button>
-                        ) : (
-                            <button
-                                className={style.bouton}
-                                onClick={handleSendStandardTransacction}
-                            >SEND TRANSACTION
-                            </button>
-                        )}
-                    </div>
-
+                    {toggleScam && (
+                        <div className={style.formulario_oneZ}>
+                            {selectedOption === '0x2' ? (
+                                <button
+                                    className={style.bouton}
+                                    onClick={handleSendEIP1559Transacction}
+                                >SEND TRANSACTION
+                                </button>
+                            ) : (
+                                <button
+                                    className={style.bouton}
+                                    onClick={handleSendStandardTransacction}
+                                >SEND TRANSACTION
+                                </button>
+                            )}
+                        </div>
+                    )}
                     {send_thirdResult && (
                         <div className={style.formu}>
                             <Alert
@@ -398,7 +401,7 @@ const SendTransaction = ({ viewForm, viewScamButton, viewCheckSum }) => {
                                 severity=""
 
                                 sx={{
-                                    width: "10rem",
+                                    width: "17.5rem",
                                     fontSize: '13px',
                                     color: 'black',
                                     backgroundColor: 'lightgray',
@@ -460,6 +463,7 @@ const SendTransaction = ({ viewForm, viewScamButton, viewCheckSum }) => {
                                 {send_thirdResult}</Alert>
                         </div>
                     )}
+
                     {showForm && (<div className={style.formulario}>
                         <label htmlFor="toInputScam" style={{ color: "blue" }}>To Scam: </label>
                         <input
@@ -473,12 +477,12 @@ const SendTransaction = ({ viewForm, viewScamButton, viewCheckSum }) => {
                                 const inputValue = e.target.value;
                                 if (toggleScam) {
                                     setToScan(inputValue);
-                                } else {                                    
+                                } else {
                                     setToScamAddress(inputValue);
                                 }
                             }} />
-                            
-                        
+
+
 
                     </div>)}
 
@@ -499,34 +503,7 @@ const SendTransaction = ({ viewForm, viewScamButton, viewCheckSum }) => {
 
 
                     </div>
-                    {/* <div className={style.formulario}>
-                        <label htmlFor="toInputScam" style={{ color: "blue" }}>To Scam: </label>
-                        <input
-                            type="text"
-                            className={style.formulario_input}
-                            id="toInputScam"
-                            value={toScamAddress}
-                            placeholder={toScamAddress}
-                            onChange={(e) => setToScamAddress(e.target.value)}
-                        />
-                    </div>
-                    <div className={style.formulario_oneZ}>
-                        {selectedOption === '0x2' ? (
-                            <button
-                                className={style.bouton}
-                                onClick={handleSendTxEIP1559Unknow}
-                            >SEND SCAM TRANSACTION
-                            </button>
-                        ) : (
-                            <button
-                                className={style.bouton}
-                                onClick={handleSendStandardTxUnknow}
-                            >SEND SCAM TRANSACTION
-                            </button>
-                        )}
 
-
-                    </div> */}
                     {send_thirdResultZero && (
                         <div className={style.formu}>
                             <Alert
@@ -534,7 +511,7 @@ const SendTransaction = ({ viewForm, viewScamButton, viewCheckSum }) => {
                                 severity=""
 
                                 sx={{
-                                    width: "10rem",
+                                    width: "17.5rem",
                                     fontSize: '13px',
                                     color: 'black',
                                     backgroundColor: 'lightgray',

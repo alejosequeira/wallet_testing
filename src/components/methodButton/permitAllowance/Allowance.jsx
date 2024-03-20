@@ -212,59 +212,7 @@ const Juan2pepito = () => {
                     </div>
                 )}
             </div>
-            <div className={style.formu}>
-                <button className={style.bouton} onClick={checkERC20Allowance}>ERC20 VERIFY</button>
-                {erc20Check && (
-                    <div className={style.formu}>
-                        <Alert
-
-                            severity=""
-
-                            sx={{
-                                width: "20rem",
-                                maxWidth: "19.5rem",
-                                fontSize: '13px',
-                                color: 'black',
-                                backgroundColor: 'lightgray',
-                                border: '3px solid gray',
-                                borderRadius: '5px',
-                                padding: '0 10px 0px 0px',
-                                textAlign: 'center',
-                                margin: '0 5px',
-                                marginTop: '5px',
-                                boxShadow: 'white 3px 3px 3px 0px inset, white -3px -3px 3px 0px inset',
-                                display: 'flex',
-                                justifyContent: 'center'
-                            }}
-
-                        >
-                            {toggleCheck ? (
-                                <AlertTitle
-                                    sx={{
-                                        fontSize: '13px',
-                                        fontWeight: '600',
-                                        margin: '0',
-                                        color: 'blue',
-                                        textAlign: 'center',
-                                    }}>
-                                    Success: </AlertTitle>
-
-                            ) : (
-                                <AlertTitle
-                                    sx={{
-                                        fontSize: '13px',
-                                        fontWeight: '600',
-                                        margin: '0',
-                                        color: '#ad0424',
-                                        textAlign: 'center',
-                                    }}>
-                                    Error: </AlertTitle>)}
-
-                            {erc20Check}
-                        </Alert>
-                    </div>
-                )}
-            </div>
+            
             <button onClick={toggleFormDisplay} className={style.toggleButton}>
                 {showForm ? 'Hide ERC20 Params' : 'Show ERC20 Params'}
             </button>
@@ -350,6 +298,59 @@ const Juan2pepito = () => {
                     />
 
                 </div>) : ""}
+                <div className={style.formu}>
+                <button className={style.bouton} onClick={checkERC20Allowance}>ERC20 VERIFY</button>
+                {erc20Check && (
+                    <div className={style.formu}>
+                        <Alert
+
+                            severity=""
+
+                            sx={{
+                                width: "20rem",
+                                maxWidth: "19.5rem",
+                                fontSize: '13px',
+                                color: 'black',
+                                backgroundColor: 'lightgray',
+                                border: '3px solid gray',
+                                borderRadius: '5px',
+                                padding: '0 10px 0px 0px',
+                                textAlign: 'center',
+                                margin: '0 5px',
+                                marginTop: '5px',
+                                boxShadow: 'white 3px 3px 3px 0px inset, white -3px -3px 3px 0px inset',
+                                display: 'flex',
+                                justifyContent: 'center'
+                            }}
+
+                        >
+                            {toggleCheck ? (
+                                <AlertTitle
+                                    sx={{
+                                        fontSize: '13px',
+                                        fontWeight: '600',
+                                        margin: '0',
+                                        color: 'blue',
+                                        textAlign: 'center',
+                                    }}>
+                                    Success: </AlertTitle>
+
+                            ) : (
+                                <AlertTitle
+                                    sx={{
+                                        fontSize: '13px',
+                                        fontWeight: '600',
+                                        margin: '0',
+                                        color: '#ad0424',
+                                        textAlign: 'center',
+                                    }}>
+                                    Error: </AlertTitle>)}
+
+                            {erc20Check}
+                        </Alert>
+                    </div>
+                )}
+            </div>
             <div className={style.formu}>
                 <button className={style.bouton} onClick={setERC721Allowance}>ERC721 ALLOWANCE</button>
                 {erc721Allow && (

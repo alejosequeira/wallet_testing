@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import Web3 from 'web3';
 import style from './checkSum.module.css';
 import { Alert, TextField, AlertTitle } from '@mui/material';
-import SendTransaction from '../addressDetection/SendTransaction';
+import SendTransaction from '../sendTransaction/SendTransaction';
 import { handleGetEthAccounts } from '@/utils/web3';
 
 export default function CheckSum() {

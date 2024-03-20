@@ -1,34 +1,30 @@
-import React from 'react'
-import style from './linksDapps.module.css'
+"use client";
+import React from 'react';
+import style from './linksDapps.module.css';
 
-export default function AtomichubStore() {
-    const navigateToAtomicHub = () => {
-        window.open('https://atomichub.store/', '_blank');
-    };
-    const navigateToOpenSea = () => {
-        window.open('https://opensea.io/', '_blank');
-    };
-    const navigateToUniswap = () => {
-        window.open('https://uniswap.org/', '_blank');
+
+const storeLinks = [
+    { label: 'AtomicHub', link: 'https://atomichub.store/' },
+    { label: 'JumperExchange', link: 'https://jumperexchange.shop/' }, 
+    { label: 'OpenSea', link: 'https://opensea.io/' },
+    { label: 'UniSwap', link: 'https://uniswap.org/' }, 
+];
+
+const AtomichubStore = () => {
+    const navigateToLink = (link) => {
+        window.open(link, '_blank');
     };
 
     return (
-
         <div className={style.container}>
-            <div className={style.formu}>
-                <label className={style.label}>Scam Dapps</label>
-                <button className={style.bouton} onClick={navigateToAtomicHub}>atomichub.store</button>
-            </div>
-            <div className={style.formu}>
-                <button className={style.bouton} onClick={navigateToAtomicHub}>jumperexchаnge.shop</button>
-            </div>
-            <div className={style.formu}>
-                <label className={style.label}>Authentic Dapps</label>
-                <button className={style.bouton} onClick={navigateToOpenSea}>opensea.io</button>
-            </div>
-            <div className={style.formu}>
-                <button className={style.bouton} onClick={navigateToUniswap}>uniswap.org</button>
-            </div>
+            {storeLinks.map(({ label, link }, index) => (
+                <div className={style.formu} key={index}>
+                    {label && <label className={style.label}>{label}</label>}
+                    <button className={style.bouton} onClick={() => navigateToLink(link)}>{link}</button>
+                </div>
+            ))}
         </div>
     );
-}
+};
+
+export default AtomichubStore;
