@@ -120,8 +120,7 @@
 }
 
 .formulario_input {
-  text-align: center;
-  width: 16rem;
+  width: 17rem;
   background-color: var(--darkGray);
   font: var(--default-font);
   font-size: 0.6rem;
@@ -130,7 +129,6 @@
   padding: 0 10px;
   box-sizing: border-box;
   color: var(--white);
-  overflow: hidden;
 
 }
 

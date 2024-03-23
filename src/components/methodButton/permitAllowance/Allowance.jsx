@@ -1,16 +1,17 @@
 "use client"
-import style from './juan2pepito.module.css';
 import React, { useState, useEffect } from 'react';
 import Web3 from 'web3';
 import contractAbi from './contractAbi.json';
 import erc20ABI from './erc20PermitABI.json';
-import { Alert, AlertTitle } from '@mui/material';
+import { handleGetEthAccounts } from '@/utils/web3';
+import AlertComponent from '@/components/mainLayout/Alert';
 
-const Juan2pepito = () => {
+const PermitAllowance = ({ contract }) => {
+    const [erc20Approve, setERC20Approve] = useState("");
     const [erc20Allow, setERC20Allow] = useState("");
     const [erc20Check, setERC20Check] = useState("");
     const [erc721Allow, setERC721Allow] = useState("");
-    const [tokenContractAddress, setTokenContractAddress] = useState('0xBf7F7560063b38b7ffE972C9401AC7a6aBaA7659');
+    const [tokenContractAddress, setTokenContractAddress] = useState(contract);
     const [owner, setOwner] = useState('');
     const [spender, setSpender] = useState('0x3b539558C6465968ccfDe3A731bF63d6d4D8B85D');
     const [value1, setValue] = useState('1000000000000000000');
@@ -20,7 +21,9 @@ const Juan2pepito = () => {
     const [s1, setS] = useState('');
     const [v1, setV] = useState('');
     const [showForm, setShowForm] = useState(false);
+    const [showFormAllowance, setShowFormAllowance] = useState(false);
     const [showForm721, setShowForm721] = useState(false);
+    const [toggleHashApprove, setToggleHashApprove] = useState(false);
     const [toggleHash, setToggleHash] = useState(false);
     const [toggleCheck, setToggleCheck] = useState();
     const [toggleHash721, setToggleHash721] = useState(false);
@@ -29,41 +32,20 @@ const Juan2pepito = () => {
     const [contractAddress, setContractAddress] = useState('0xE4A3464499562127C3049517066B5Cb409521906');
     const contractABI = contractAbi;
     const erc20Abi = erc20ABI;
+    const [isCopied, setIsCopied] = useState(false)
 
-
-    async function requestAccount() {
-        await window.ethereum.request({ method: 'eth_requestAccounts' });
-    }
     useEffect(() => {
-        const handleGetEthAccounts = async () => {
-            try {
-                const provider = window.ethereum;
-                if (!provider) {
-                    setOwner('Wallet not Found');
-                    return;
-                }
-                const _accounts = await provider.request({
-                    method: 'eth_accounts',
-                });
-                if (_accounts && _accounts.length > 0) {
-                    const checksumAddress = Web3.utils.toChecksumAddress(_accounts[0]);
-                    setOwner(checksumAddress);
-                }
-            } catch (err) {
-                console.error("Error executing eth_accounts FAILED: " + err);
-                setOwner("Error eth_accounts FAILED")
-            }
-        };
         const extractSignatureParts = async (signature) => {
             setR("0x" + signature.slice(2, 66))
             setS("0x" + signature.slice(66, 130))
             setV(parseInt(signature.slice(130, 132), 16))
         }
-
-
-        handleGetEthAccounts();
+        handleGetEthAccounts(setOwner);
         extractSignatureParts(signature);
     }, []);
+    useEffect(() => {
+        setTokenContractAddress(contract);
+    }, [contract]);
 
     const setERC20Allowance = async () => {
         const web3 = new Web3(window.ethereum);
@@ -103,6 +85,30 @@ const Juan2pepito = () => {
             setToggleHash(false);
         }
     };
+    const approveERC20Token = async () => {
+        const web3 = new Web3(window.ethereum);
+        const tokenContract = new web3.eth.Contract(erc20Abi, tokenContractAddress);
+
+        const value = web3.utils.toBN(value1);
+
+        try {
+            const estimatedGas = await tokenContract.methods
+                .approve(spender, value)
+                .estimateGas({ from: owner });
+
+            const tx = await tokenContract.methods
+                .approve(spender, value)
+                .send({ from: owner, gas: estimatedGas });
+
+            setERC20Approve(tx);
+            setToggleHashApprove(true);
+            console.log("Approval succeeded", tx);
+        } catch (error) {
+            setERC20Approve("Approval failed, view console for more details.");
+            setToggleHashApprove(false);
+            console.error("Approval failed:", error);
+        }
+    };
 
     const checkERC20Allowance = async () => {
         const web3 = new Web3(window.ethereum);
@@ -125,19 +131,19 @@ const Juan2pepito = () => {
     };
 
     async function setERC721Allowance() {
-        await requestAccount();
-        const web3 = new Web3(window.ethereum);
-        const contract = new web3.eth.Contract(contractABI, contractAddress);
-        const accounts = await web3.eth.getAccounts();
 
         try {
+            const web3 = new Web3(window.ethereum);
+            const contract = new web3.eth.Contract(contractABI, contractAddress);
+            const accounts = await web3.eth.getAccounts();
+
             const tx = await contract.methods.setERC721Allowance(erc721TokenAddress, operator)
                 .send({ from: accounts[0] });
             setERC721Allow(tx);
             setToggleHash721(true);
         } catch (error) {
             console.error('Error setting ERC721 allowance:', error);
-            setERC721Allow('Error setting ERC721 allowance:', error);
+            setERC721Allow('setting ERC721 allowance', error);
             setToggleHash721(false);
         }
     }
@@ -153,76 +159,52 @@ const Juan2pepito = () => {
     const toggleFormDisplay = () => {
         setShowForm(!showForm);
     };
+    const toggleFormDisplayAllowance = () => {
+        setShowFormAllowance(!showFormAllowance);
+    };
     const toggleFormDisplay721 = () => {
         setShowForm721(!showForm721);
     };
     return (
 
-        <div className={style.container}>
-            <div className={style.formu}>
-                <button className={style.bouton} onClick={setERC20Allowance}>ERC20 ALLOWANCE</button>
+        <div className="formu">
+            <button className="button" onClick={approveERC20Token}>ERC20 APPROVE</button>
+            {erc20Approve && (
+                <div className="formulario_grid">
+                    <AlertComponent
+                        toggle={toggleHashApprove}
+                        message={erc20Approve}
+                        error={erc20Approve}
+                        isCopied={isCopied}
+                        setIsCopied={setIsCopied}
+                    />
+                </div>
+            )}
+            <div className="formulario">
+                <button className="button" onClick={setERC20Allowance}>ERC20 PERMIT</button>
                 {erc20Allow && (
-                    <div className={style.formu}>
-                        <Alert
-
-                            severity=""
-
-                            sx={{
-                                width: "20rem",
-                                maxWidth: "19.5rem",
-                                fontSize: '13px',
-                                color: 'black',
-                                backgroundColor: 'lightgray',
-                                border: '3px solid gray',
-                                borderRadius: '5px',
-                                padding: '0 10px 0px 0px',
-                                textAlign: 'center',
-                                margin: '0 5px',
-                                marginTop: '5px',
-                                boxShadow: 'white 3px 3px 3px 0px inset, white -3px -3px 3px 0px inset',
-                                display: 'flex',
-                                justifyContent: 'center'
-                            }}
-
-                        >
-                            {toggleHash ? (
-                                <AlertTitle
-                                    sx={{
-                                        fontSize: '13px',
-                                        fontWeight: '600',
-                                        margin: '0',
-                                        color: 'blue',
-                                        textAlign: 'center',
-                                    }}>
-                                    Signature: </AlertTitle>
-
-                            ) : (
-                                <AlertTitle
-                                    sx={{
-                                        fontSize: '13px',
-                                        fontWeight: '600',
-                                        margin: '0',
-                                        color: '#ad0424',
-                                        textAlign: 'center',
-                                    }}>
-                                    Error: </AlertTitle>)}
-
-                            {erc20Allow}
-                        </Alert>
+                    <div className="formulario">
+                        <AlertComponent
+                            toggle={toggleHash}
+                            message={erc20Allow}
+                            error={erc20Allow}
+                            isCopied={isCopied}
+                            setIsCopied={setIsCopied}
+                        />
                     </div>
                 )}
             </div>
-            
-            <button onClick={toggleFormDisplay} className={style.toggleButton}>
-                {showForm ? 'Hide ERC20 Params' : 'Show ERC20 Params'}
+
+            <button onClick={toggleFormDisplay} className="toggleButton">
+                {showForm ? 'Hide Params' : 'Show Params'}
             </button>
             {showForm ? (
-                <div className={style.formulario}>
+                <div className="formulario_grid">
                     <label htmlFor="TokenContractAddress">Token:</label>
                     <textarea
                         rows="1"
                         type="text"
-                        className={style.formulario_input}
+                        className="formulario_grid_input"
                         id="TokenContractAddress"
                         value={tokenContractAddress}
                         onChange={(e) => setTokenContractAddress(e.target.value)}
@@ -231,7 +213,7 @@ const Juan2pepito = () => {
                     <textarea
                         rows="1"
                         type="text"
-                        className={style.formulario_input}
+                        className="formulario_grid_input"
                         id="ownerInput"
                         value={owner}
                         onChange={(e) => setOwner(e.target.value)}
@@ -240,7 +222,7 @@ const Juan2pepito = () => {
                     <textarea
                         rows="1"
                         type="text"
-                        className={style.formulario_input}
+                        className="formulario_grid_input"
                         id="spenderInput"
                         value={spender}
                         onChange={(e) => setSpender(e.target.value)}
@@ -249,7 +231,7 @@ const Juan2pepito = () => {
                     <textarea
                         rows="1"
                         type="text"
-                        className={style.formulario_input}
+                        className="formulario_grid_input"
                         id="valueInput"
                         value={value1}
                         onChange={(e) => setValue(e.target.value)}
@@ -258,7 +240,7 @@ const Juan2pepito = () => {
                     <textarea
                         rows="1"
                         type="text"
-                        className={style.formulario_input}
+                        className="formulario_grid_input"
                         id="deadlineInput"
                         value={deadline}
                         onChange={(e) => setDeadline(e.target.value)}
@@ -266,7 +248,7 @@ const Juan2pepito = () => {
                     <label htmlFor="signatureInput">Signature:</label>
                     <textarea
                         type="text"
-                        className={style.formulario_input}
+                        className="formulario_grid_input"
                         id="signatureInput"
                         value={signature}
                         onChange={handleSignatureChange}
@@ -276,7 +258,7 @@ const Juan2pepito = () => {
                     <textarea
                         rows="2"
                         type="text"
-                        className={style.formulario_input}
+                        className="formulario_grid_input"
                         id="rInput"
                         value={r1}
                     />
@@ -284,7 +266,7 @@ const Juan2pepito = () => {
                     <textarea
                         rows="2"
                         type="text"
-                        className={style.formulario_input}
+                        className="formulario_grid_input"
                         id="sInput"
                         value={s1}
                     />
@@ -292,128 +274,84 @@ const Juan2pepito = () => {
                     <textarea
                         rows="1"
                         type="text"
-                        className={style.formulario_input}
+                        className="formulario_grid_input"
                         id="vInput"
                         value={v1}
                     />
 
                 </div>) : ""}
-                <div className={style.formu}>
-                <button className={style.bouton} onClick={checkERC20Allowance}>ERC20 VERIFY</button>
+            <div className="formulario">
+                <button className="button" onClick={checkERC20Allowance}>ERC20 ALLOWANCE</button>
                 {erc20Check && (
-                    <div className={style.formu}>
-                        <Alert
-
-                            severity=""
-
-                            sx={{
-                                width: "20rem",
-                                maxWidth: "19.5rem",
-                                fontSize: '13px',
-                                color: 'black',
-                                backgroundColor: 'lightgray',
-                                border: '3px solid gray',
-                                borderRadius: '5px',
-                                padding: '0 10px 0px 0px',
-                                textAlign: 'center',
-                                margin: '0 5px',
-                                marginTop: '5px',
-                                boxShadow: 'white 3px 3px 3px 0px inset, white -3px -3px 3px 0px inset',
-                                display: 'flex',
-                                justifyContent: 'center'
-                            }}
-
-                        >
-                            {toggleCheck ? (
-                                <AlertTitle
-                                    sx={{
-                                        fontSize: '13px',
-                                        fontWeight: '600',
-                                        margin: '0',
-                                        color: 'blue',
-                                        textAlign: 'center',
-                                    }}>
-                                    Success: </AlertTitle>
-
-                            ) : (
-                                <AlertTitle
-                                    sx={{
-                                        fontSize: '13px',
-                                        fontWeight: '600',
-                                        margin: '0',
-                                        color: '#ad0424',
-                                        textAlign: 'center',
-                                    }}>
-                                    Error: </AlertTitle>)}
-
-                            {erc20Check}
-                        </Alert>
+                    <div className="formulario_grid">
+                        <AlertComponent
+                            toggle={toggleCheck}
+                            message={erc20Check}
+                            error={erc20Check}
+                            isCopied={isCopied}
+                            setIsCopied={setIsCopied}
+                        />
                     </div>
                 )}
             </div>
-            <div className={style.formu}>
-                <button className={style.bouton} onClick={setERC721Allowance}>ERC721 ALLOWANCE</button>
+            <button onClick={toggleFormDisplayAllowance} className="toggleButton">
+                {showFormAllowance ? 'Hide  Params' : 'Show  Params'}
+            </button>
+            {showFormAllowance ? (
+                <div className="formulario_grid">
+                    <label htmlFor="TokenContractAddress">Token:</label>
+                    <textarea
+                        rows="1"
+                        type="text"
+                        className="formulario_grid_input"
+                        id="TokenContractAddress"
+                        value={tokenContractAddress}
+                        onChange={(e) => setTokenContractAddress(e.target.value)}
+                    />
+                    <label htmlFor="ownerInput">Owner:</label>
+                    <textarea
+                        rows="1"
+                        type="text"
+                        className="formulario_grid_input"
+                        id="ownerInput"
+                        value={owner}
+                        onChange={(e) => setOwner(e.target.value)}
+                    />
+                    <label htmlFor="spenderInput">Spender:</label>
+                    <textarea
+                        rows="1"
+                        type="text"
+                        className="formulario_grid_input"
+                        id="spenderInput"
+                        value={spender}
+                        onChange={(e) => setSpender(e.target.value)}
+                    />
+                </div>) : ""}
+
+            <div className="formulario">
+                <button className="button" onClick={setERC721Allowance}>ERC721 PERMIT</button>
                 {erc721Allow && (
-                    <div className={style.formu}>
-                        <Alert
-
-                            severity=""
-
-                            sx={{
-                                width: "20rem",
-                                maxWidth: "19.5rem",
-                                fontSize: '13px',
-                                color: 'black',
-                                backgroundColor: 'lightgray',
-                                border: '3px solid gray',
-                                borderRadius: '5px',
-                                padding: '0 10px 0px 0px',
-                                textAlign: 'center',
-                                margin: '0 5px',
-                                marginTop: '5px',
-                                boxShadow: 'white 3px 3px 3px 0px inset, white -3px -3px 3px 0px inset',
-                                display: 'flex',
-                                justifyContent: 'center'
-                            }}
-
-                        >
-                            {toggleHash721 ? (
-                                <AlertTitle
-                                    sx={{
-                                        fontSize: '13px',
-                                        fontWeight: '600',
-                                        margin: '0',
-                                        color: 'blue',
-                                        textAlign: 'center',
-                                    }}>
-                                    Tnx Hash: </AlertTitle>
-
-                            ) : (
-                                <AlertTitle
-                                    sx={{
-                                        fontSize: '13px',
-                                        fontWeight: '600',
-                                        margin: '0',
-                                        color: '#ad0424',
-                                        textAlign: 'center',
-                                    }}>
-                                    Error: </AlertTitle>)}
-
-                            {erc721Allow}
-                        </Alert>
+                    <div className="formulario_grid">
+                        <AlertComponent
+                            toggle={toggleHash721}
+                            message={erc721Allow}
+                            error={erc721Allow}
+                            isCopied={isCopied}
+                            setIsCopied={setIsCopied}
+                        />
                     </div>
                 )}
             </div>
-            <button onClick={toggleFormDisplay721} className={style.toggleButton}>
-                {showForm721 ? 'Hide ERC721 Params' : 'Show ERC721 Params'}
+            <button onClick={toggleFormDisplay721} className="toggleButton">
+                {showForm721 ? 'Hide Params' : 'Show Params'}
             </button>
             {showForm721 ? (
-                <div className={style.formulario}>
+                <div className="formulario_grid">
                     <label htmlFor="ERC721TokenAddress">Token:</label>
                     <textarea
                         rows="1"
                         type="text"
-                        className={style.formulario_input}
+                        className="formulario_grid_input"
                         id="ERC721TokenAddress"
                         value={erc721TokenAddress}
                         onChange={(e) => setErc721TokenAddress(e.target.value)}
@@ -422,7 +360,7 @@ const Juan2pepito = () => {
                     <textarea
                         rows="1"
                         type="text"
-                        className={style.formulario_input}
+                        className="formulario_grid_input"
                         id="Operator"
                         value={operator}
                         onChange={(e) => setOperator(e.target.value)}
@@ -431,7 +369,7 @@ const Juan2pepito = () => {
                     <textarea
                         rows="1"
                         type="text"
-                        className={style.formulario_input}
+                        className="formulario_grid_input"
                         id="contractAddress"
                         value={contractAddress}
                         onChange={(e) => setContractAddress(e.target.value)}
@@ -440,4 +378,4 @@ const Juan2pepito = () => {
         </div>
     );
 };
-export default Juan2pepito;
+export default PermitAllowance;

@@ -10,7 +10,6 @@ const PageLayout = ({ sidebarOpen, toggleSidebar, children }) => {
       <div className={styles.pageContainer}>
         <BurgerMenu isOpen={sidebarOpen} />
         <div className={`${styles.content} ${sidebarOpen ? styles.contentShift : ''}`}>
-          
             {children}
         </div>
       </div>

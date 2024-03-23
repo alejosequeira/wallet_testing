@@ -1,9 +1,9 @@
 {
   "domain": {
     "name": "ERC20token",
-    "version": "1",
+    "version": "137",
     "chainId": 11155111,
-    "verifyingContract": "0xBf7F7560063b38b7ffE972C9401AC7a6aBaA7659"
+    "verifyingContract": "0x3c499c542cef5e3811e1192ce70d8cc03d5c3359"
   },
   "types": {
     "EIP712Domain": [

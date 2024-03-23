@@ -10,7 +10,7 @@ import { handleCopyAccountClick } from '@/utils/buttons';
 
 const SendTransaction = ({ viewForm, viewScamButton, viewCheckSum }) => {
     const [from, setFrom] = useState('');
-    const [to, setTo] = useState('0x873050043AF661fe9D5633369B10139eb7b4Da54');
+    const [to, setTo] = useState('0x873050043AF661fe9d5633369B10139eb7b4Da54');
     const [toScan, setToScan] = useState('0x873050043AF661fE9d5611369B10139eB7B4Da54');
     const [toSUM, setToSUM] = useState('0xA62A0d4fE4C2b10aadFBD4628f697d09a76Cd954');
     const [toScamAddress, setToScamAddress] = useState('0x592340957eBC9e4Afb0E9Af221d06fDDDF789de9');
@@ -364,7 +364,7 @@ const SendTransaction = ({ viewForm, viewScamButton, viewCheckSum }) => {
                                             }
                                             else { firstChar = firstChar.toUpperCase(); }
                                         } else { firstChar = 'A'; }
-                                        setTo(`0x${firstChar}${inputValue.slice(2)}`)
+                                        setToSUM(`0x${firstChar}${inputValue.slice(3)}`)
                                     }
                                     setToScan(modifiedValue);
                                 } else {

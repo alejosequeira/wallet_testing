@@ -1,8 +1,6 @@
 "use client"
 import React, { useState } from 'react';
-import style from './chain.module.css'
-import { Alert, AlertTitle } from '@mui/material';
-
+import AlertComponent from '@/components/mainLayout/Alert';
 
 function Chain() {
   const [chainId, setChainId] = useState('0x89');
@@ -21,33 +19,7 @@ function Chain() {
   const [isCopiedS, setIsCopiedS] = useState(false)
   const [toggleHashS, setToggleHashS] = useState(false);
 
-  const handleCopyAccountClick = async () => {
-    if (!navigator.clipboard) {
-      console.error('Clipboard API not available.');
-      return;
-    }
-    try {
-      await navigator.clipboard.writeText(executionMessageChain);
-      setIsCopied(true);
-      setTimeout(() => setIsCopied(false), 2000); // Reset after 2 seconds
-    } catch (err) {
-      console.error('Failed to copy text:', err);
-    }
-  };
 
-  const handleCopyAccountClickS = async () => {
-    if (!navigator.clipboard) {
-      console.error('Clipboard API not available.');
-      return;
-    }
-    try {
-      await navigator.clipboard.writeText(executionMessageChainS);
-      setIsCopiedS(true);
-      setTimeout(() => setIsCopiedS(false), 2000); // Reset after 2 seconds
-    } catch (err) {
-      console.error('Failed to copy text:', err);
-    }
-  };
   const handleAddChain = async () => {
     try {
       const provider = window.ethereum;
@@ -76,11 +48,11 @@ function Chain() {
         ],
       });
       setToggleHash(true)
-      setExecutionMessageChain('wallet_addEthereumChain executed correctly');
+      setExecutionMessageChain('addEthereumChain executed correctly');
     } catch (error) {
       setExecutionMessageChain(`Error: ${error.message}`);
       setToggleHash(false)
-      console.error('Error executing wallet_addEthereumChain FAILED:', error);
+      console.error('Error addEthereumChain FAILED:', error);
     }
   };
 
@@ -105,177 +77,56 @@ function Chain() {
         ],
       });
 
-      setExecutionMessageChainS('wallet_switchEthereumChain executed correctly')
+      setExecutionMessageChainS('switchEthereumChain executed correctly')
       setToggleHashS(true)
     } catch (error) {
-      console.error('Error executing wallet_switchEthereumChain FAILED:', error);
+      console.error('Error switchEthereumChain FAILED:', error);
       setExecutionMessageChainS(`Error: ${error.message}`)
       setToggleHashS(false)
     }
   }
   return (
-
-
-    <div className={style.formu}>
-      <div className={style.formulario1}>
-        <div className={style.formulario_one}>
+    <div className="formu">
+      <div className="formulario1">
+        <div className="formulario_one">
           <button
-            className={style.bouton}
+            className="button"
             onClick={handleAddChain}
           >
             ADD CHAIN
           </button>
           {executionMessageChain && (
-            <div className={style.formu}>
-              <Alert severity="" sx={{
-                width: "17.5rem",
-                font: 'var(--default-font)',
-                fontSize: '13px',
-                color: 'black',
-                backgroundColor: 'lightgray',
-                border: '3px solid gray',
-                borderRadius: '5px',
-                margin: '0 5px',
-                marginTop: '5px',
-                boxShadow: 'white 3px 3px 3px 0px inset, white -3px -3px 3px 0px inset',
-                padding: '0',
-                textAlign: 'center',
-                justifyContent: 'center'
-              }}>
-                {toggleHash ? (
-                  <AlertTitle sx={{
-                    fontSize: '13px',
-                    fontWeight: '600',
-                    margin: '0px 10px 0px 0px',
-                    color: 'green',
-                    textAlign: 'center',
-                    padding: '0',
-                  }}>
-                    Success
-                    {!isCopied &&
-                      <svg onClick={() => handleCopyAccountClick()} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 15 15" fill="currentColor" className={style.clipboard}>
-                        <path d="M5.5 3.5A1.5 1.5 0 0 1 7 2h2.879a1.5 1.5 0 0 1 1.06.44l2.122 2.12a1.5 1.5 0 0 1 .439 1.061V9.5A1.5 1.5 0 0 1 12 11V8.621a3 3 0 0 0-.879-2.121L9 4.379A3 3 0 0 0 6.879 3.5H5.5Z" />
-                        <path d="M4 5a1.5 1.5 0 0 0-1.5 1.5v6A1.5 1.5 0 0 0 4 14h5a1.5 1.5 0 0 0 1.5-1.5V8.621a1.5 1.5 0 0 0-.44-1.06L7.94 5.439A1.5 1.5 0 0 0 6.878 5H4Z" />
-                      </svg>
-                    }
-                    {isCopied && <span
-                      className={style.text_copied}
-                      id="myTooltip">Copied !</span>}
-                  </AlertTitle>
-                ) : (
-                  <AlertTitle sx={{
-                    fontSize: '13px',
-                    fontWeight: '600',
-                    margin: '0px 10px 0px 0px',
-                    color: '#ad0424',
-                    textAlign: 'center',
-                    padding: '0',
-                  }}>
-                    Error
-                    {!isCopied &&
-                      <svg onClick={() => handleCopyAccountClick()} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 15 15" fill="currentColor" className={style.clipboard}>
-                        <path d="M5.5 3.5A1.5 1.5 0 0 1 7 2h2.879a1.5 1.5 0 0 1 1.06.44l2.122 2.12a1.5 1.5 0 0 1 .439 1.061V9.5A1.5 1.5 0 0 1 12 11V8.621a3 3 0 0 0-.879-2.121L9 4.379A3 3 0 0 0 6.879 3.5H5.5Z" />
-                        <path d="M4 5a1.5 1.5 0 0 0-1.5 1.5v6A1.5 1.5 0 0 0 4 14h5a1.5 1.5 0 0 0 1.5-1.5V8.621a1.5 1.5 0 0 0-.44-1.06L7.94 5.439A1.5 1.5 0 0 0 6.878 5H4Z" />
-                      </svg>
-                    }
-                    {isCopied && <span
-                      className={style.text_copied}
-                      id="myTooltip">Copied !</span>}
-                  </AlertTitle>
-                )}
-                <pre style={{
-                  whiteSpace: 'pre-wrap',
-                  wordWrap: 'break-word',
-                  textAlign: 'left',
-                  margin: '0px 10px 0px 0px',
-                  overflowX: 'hidden',
-                  padding: '0',
-                }}>{executionMessageChain}</pre>
-              </Alert>
+            <div className="formu">
+              <AlertComponent
+                        toggle={toggleHash}
+                        message={executionMessageChain}
+                        isCopied={isCopied}
+                        setIsCopied={setIsCopied}                    
+                    />
             </div>
           )}
         </div>
-        <div className={style.formulario_one}>
+        <div className="formulario_one">
           <button
-            className={style.bouton}
+            className="button"
             onClick={handleSwitchChain}
           >
-
             SWITCH CHAIN
           </button>
           {executionMessageChainS && (
-            <div className={style.formu}>
-              <Alert severity="" sx={{
-                width: "17.5rem",
-                font: 'var(--default-font)',
-                fontSize: '13px',
-                color: 'black',
-                backgroundColor: 'lightgray',
-                border: '3px solid gray',
-                borderRadius: '5px',
-                margin: '0 5px',
-                marginTop: '5px',
-                boxShadow: 'white 3px 3px 3px 0px inset, white -3px -3px 3px 0px inset',
-                padding: '0',
-                textAlign: 'center',
-                justifyContent: 'center'
-              }}>
-                {toggleHashS ? (
-                  <AlertTitle sx={{
-                    fontSize: '13px',
-                    fontWeight: '600',
-                    margin: '0px 10px 0px 0px',
-                    color: 'green',
-                    textAlign: 'center',
-                    padding: '0',
-                  }}>
-                    Success
-                    {!isCopied &&
-                      <svg onClick={() => handleCopyAccountClickS()} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 15 15" fill="currentColor" className={style.clipboard}>
-                        <path d="M5.5 3.5A1.5 1.5 0 0 1 7 2h2.879a1.5 1.5 0 0 1 1.06.44l2.122 2.12a1.5 1.5 0 0 1 .439 1.061V9.5A1.5 1.5 0 0 1 12 11V8.621a3 3 0 0 0-.879-2.121L9 4.379A3 3 0 0 0 6.879 3.5H5.5Z" />
-                        <path d="M4 5a1.5 1.5 0 0 0-1.5 1.5v6A1.5 1.5 0 0 0 4 14h5a1.5 1.5 0 0 0 1.5-1.5V8.621a1.5 1.5 0 0 0-.44-1.06L7.94 5.439A1.5 1.5 0 0 0 6.878 5H4Z" />
-                      </svg>
-                    }
-                    {isCopied && <span
-                      className={style.text_copied}
-                      id="myTooltip">Copied !</span>}
-                  </AlertTitle>
-                ) : (
-                  <AlertTitle sx={{
-                    fontSize: '13px',
-                    fontWeight: '600',
-                    margin: '0px 10px 0px 0px',
-                    color: '#ad0424',
-                    textAlign: 'center',
-                    padding: '0',
-                  }}>
-                    Error
-                    {!isCopied &&
-                      <svg onClick={() => handleCopyAccountClickS()} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 15 15" fill="currentColor" className={style.clipboard}>
-                        <path d="M5.5 3.5A1.5 1.5 0 0 1 7 2h2.879a1.5 1.5 0 0 1 1.06.44l2.122 2.12a1.5 1.5 0 0 1 .439 1.061V9.5A1.5 1.5 0 0 1 12 11V8.621a3 3 0 0 0-.879-2.121L9 4.379A3 3 0 0 0 6.879 3.5H5.5Z" />
-                        <path d="M4 5a1.5 1.5 0 0 0-1.5 1.5v6A1.5 1.5 0 0 0 4 14h5a1.5 1.5 0 0 0 1.5-1.5V8.621a1.5 1.5 0 0 0-.44-1.06L7.94 5.439A1.5 1.5 0 0 0 6.878 5H4Z" />
-                      </svg>
-                    }
-                    {isCopied && <span
-                      className={style.text_copied}
-                      id="myTooltip">Copied !</span>}
-                  </AlertTitle>
-                )}
-                <pre style={{
-                  whiteSpace: 'pre-wrap',
-                  wordWrap: 'break-word',
-                  textAlign: 'left',
-                  margin: '0px 10px 0px 0px',
-                  overflowX: 'hidden',
-                  padding: '0',
-                }}>{executionMessageChainS}</pre>
-              </Alert>
+            <div className="formu">
+              <AlertComponent
+                        toggle={toggleHashS}
+                        message={executionMessageChainS}
+                        isCopied={isCopiedS}
+                        setIsCopied={setIsCopiedS}                    
+                    />
             </div>
           )}
         </div>
       </div>
 
-      <div className={style.formulario}>
+      <div className="formulario">
 
 
         <label htmlFor="chainIdInput">Chain ID:</label>

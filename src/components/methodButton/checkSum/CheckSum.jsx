@@ -1,25 +1,25 @@
 "use client";
 import React, { useState, useEffect } from 'react';
 import Web3 from 'web3';
-import style from './checkSum.module.css';
-import { Alert, TextField, AlertTitle } from '@mui/material';
+import { TextField } from '@mui/material';
 import SendTransaction from '../sendTransaction/SendTransaction';
 import { handleGetEthAccounts } from '@/utils/web3';
+import AlertComponent from '@/components/mainLayout/Alert';
 
 export default function CheckSum() {
     const [address, setAddress] = useState('');
-    const [isValid, setIsValid] = useState(true);
+    const [toggle, setToggle] = useState();
+    const [isValid, setIsValid] = useState("");
     useEffect(() => {
         handleGetEthAccounts(setAddress);
     }, []);
-
     const validateAddressChecksum = () => {
         try {
             const isValidChecksum = Web3.utils.checkAddressChecksum(address);
-            setIsValid(isValidChecksum);
+            setToggle(isValidChecksum);
+            setIsValid(isValidChecksum ? "Address has a valid EIP-55 checksum." : "Address has an invalid EIP-55 checksum.");
         } catch (error) {
-            console.error('Validation error:', error);
-            setIsValid(false);
+            setToggle(false);
         }
     };
     const handleAddressChange = (e) => {
@@ -27,17 +27,21 @@ export default function CheckSum() {
     }
 
     return (
-        <div className={style.container}>
-            <SendTransaction
-                viewForm={true}
-                viewCheckSum={true}
-            />
-            <div className={style.containerCheckSum}>
+        <div className="formulario_one">
+            
                 <button
-                    className={style.boutonSUM}
+                    className="button"
                     onClick={validateAddressChecksum}
                 > VALIDATE CHECKSUM
                 </button>
+                {isValid && (
+                    <div>
+                        <AlertComponent
+                            toggle={toggle}
+                            message={isValid}
+                        />
+                    </div>)
+                }
                 <TextField
                     type="text"
                     id="addressInput_eht"
@@ -56,7 +60,7 @@ export default function CheckSum() {
                             boxShadow: '#666666 1px 1px 1px 0px inset, #666666 -1px -1px 1px 0px inset',
                             textDecoration: 'none',
                             padding: '0 5px',
-                            marginTop: '10px',
+                            margin: '15px 0',
                             '&:focus': {
                                 border: '1px solid #434343',
                             },
@@ -70,66 +74,13 @@ export default function CheckSum() {
                     }}
                 />
 
-                {isValid ? (
-                    <div>
-                        <Alert severity="success" sx={{
-                            width: "17rem",
-                            fontSize: '13px',
-                            color: 'black',
-                            backgroundColor: 'transparent',
-                            border: '3px solid transparent',
-                            borderRadius: '5px',
-                            padding: '0 10px 0px 0px',
-                            textAlign: 'center',
-                            margin: '0 5px',
-                            boxShadow: 'transparent 3px 3px 3px 0px inset, transparent -3px -3px 3px 0px inset',
-                            display: 'flex',
-                            justifyContent: 'center',
-                            alignItems: 'center'
-                        }}>
-
-                            <AlertTitle
-                                sx={{
-                                    fontSize: '13px',
-                                    fontWeight: '600',
-                                    margin: '0',
-                                    color: 'green',
-                                    textAlign: 'center',
-                                }}>
-                                Address has a valid EIP-55 checksum. </AlertTitle>
-                        </Alert>
-                    </div>
-                ) :
-                    <div>
-                        <Alert severity="error" sx={{
-                            width: "17rem",
-                            fontSize: '13px',
-                            color: 'black',
-                            backgroundColor: 'transparent',
-                            border: '3px solid transparent',
-                            borderRadius: '5px',
-                            padding: '0 10px 0px 0px',
-                            textAlign: 'center',
-                            margin: '0 5px',
-                            boxShadow: 'transparent 3px 3px 3px 0px inset, transparent -3px -3px 3px 0px inset',
-                            display: 'flex',
-                            justifyContent: 'center',
-                            alignItems: 'center'
-                        }}>
-                            <AlertTitle
-                                sx={{
-                                    fontSize: '13px',
-                                    fontWeight: '600',
-                                    margin: '0',
-                                    color: '#ad0424',
-                                    textAlign: 'center',
-                                }}>
-                                Address CheckSum is invalid. </AlertTitle>
-
-                        </Alert>
-                    </div>
-                }
-            </div>
+                
+            
+            <SendTransaction
+                viewForm={true}
+                viewCheckSum={true}
+            />
+            
         </div>
     );
 }

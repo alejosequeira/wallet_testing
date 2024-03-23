@@ -162,3 +162,298 @@ a {
     color-scheme: dark;
   }
 }
+
+/* Path: src/components/mainLayout/layoutParams/Params.css */
+.header_one_params {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  flex-direction: column;
+  gap: 0.7rem;
+}
+.header_two_params {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+.header_gral_params {
+  display: flex;
+  justify-content: center;
+  align-items: baseline;
+  gap: 10px;
+  margin: 0.5rem 0;
+  margin-top: 2rem;
+}
+.card_title_params {
+  font-weight: 600;
+  color: var(--gray);
+  font-family: var(--default-font);
+  margin: 0;
+  padding: 0;
+  font-size: 0.6em;
+  text-align: flex-start;
+}
+.title_params {
+  color: var(--gray);
+  font-family: var(--default-font);
+  margin: 0;
+  padding: 0;
+  font-size: 0.7em;
+  font-weight: bold;
+}
+@media (max-width: 650px) {
+  .header_gral_params  {
+      flex-direction: column;
+      align-items: center;
+      gap: 0;
+  }
+  .header_one_params  {
+      flex-direction: row;
+      align-items: center;
+  }
+}
+@media (max-width: 470px) {
+  .header_gral_params  {
+      margin-top: 6rem;
+  }  
+}
+/* Path: src/components/mainLayout/Alert */
+.text_copied {
+  background-color: var(--darkGray);
+  color: white;
+  padding: 0 5px;
+  border-radius: 5px;
+  font: var(--default-font);
+  font-size: 0.5rem;
+  margin-left: 5px;
+}
+.clipboard {
+  width: 15px;
+  padding: 0;
+  margin: 0;
+  margin-left: 5px;
+  cursor: pointer;
+  z-index: 10;
+  color: var(--darkGray);
+}
+.clipboard:hover {
+  color: black;
+  transform: scale(1.1);
+}
+/* menu */
+.form_test {
+  margin-top: 30px;
+  display: flex;
+  justify-content: space-around;
+  align-items: flex-start;
+}
+.block {
+  border: 1px solid black;
+  font-family: var(--default-font);
+  border: 1px solid var(--black);
+  background-color: var(--lightGray);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-radius: 1%;
+  box-sizing: border-box;
+  gap: 15px;
+  padding: 10px 0;
+  margin-bottom: 25px;
+  height: 100%;
+  width:fit-content;
+}
+.formu{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  border-radius: 1%;
+  box-sizing: border-box;
+  margin-top:5px;
+}
+.formulario1 {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 0;
+  font-size: 25px;
+  background-color: var(--lightGray);
+  gap: 15px;
+  margin: 5px 0 0;
+}
+.formulario_one {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+}
+
+.formulario {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 0;
+  font-size: 25px;
+  background-color: var(--lightGray);
+  margin: 10px;
+}
+
+
+.formulario label, .formulario_label {
+  display: block;
+  color: var(--darkGray);
+  font: var(--default-font);
+  font-size: 0.75rem;
+}
+
+.formulario input[type="text"],
+.formulario input[type="number"] {
+  text-align: center;
+  width: 185px;
+  background-color: var(--darkGray);
+  font: var(--default-font);
+  font-size: 0.6rem;
+  margin: 0 5px;
+  border: 2px solid #ddd;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+.formulario input[type="text"]:focus,
+.formulario input[type="number"]:focus {
+  outline: none;
+  border-color: #7cabf9;
+  box-shadow: 0 0 0 3px rgba(124, 171, 249, 0.1);
+}
+
+/* FORM GRID SEND TRANSACTION, SHOW PARAMS */
+.formulario_grid {
+  display: grid;
+  grid-template-columns: 0.1fr 1fr;
+  row-gap: 15px;
+  margin-top: 0.5rem;
+  margin-left: 10px;
+  margin-right: 10px;
+  align-items: center;
+}
+.formulario_grid label {
+  display: block;
+  color: var(--darkGray);
+  font: var(--default-font);
+  font-size: 0.70rem;
+  font-weight: 600;
+  width: 3.5rem;
+}
+
+.formulario_grid_input {
+  text-align: center;
+  width: 16.5rem;
+  background-color: var(--darkGray);
+  font: var(--default-font);
+  font-size: 0.6rem;
+  border: 2px solid var(--lightyGray);
+  border-radius: 4px;
+  padding: 0 10px;
+  box-sizing: border-box;
+  color: var(--white);
+}
+
+.formulario_grid_input:focus {
+  outline: none;
+  border-color: #7cabf9;
+  box-shadow: 0 0 0 3px rgba(124, 172, 249, 0.1);
+}
+
+@media (max-width: 1200px) {
+  .form_test {
+      flex-direction: column;
+      align-items: center;
+  }
+}
+@media (max-width: 1200px) {
+  .formulario {
+      display: grid;
+      grid-template-columns: 0.1fr 1fr;
+      row-gap: 15px;
+      margin-top: 1rem;
+      margin-left: 10px;
+      margin-right: 10px;
+      align-items: stretch;
+  }
+
+  .formulario label {
+      display: block;
+      color: var(--darkGray);
+      font: var(--default-font);
+      font-size: 0.70rem;
+      font-weight: 600;
+      
+  }
+
+  .formulario_input {
+      text-align: center;
+      width: 16rem;
+      background-color: var(--darkGray);
+      font: var(--default-font);
+      font-size: 0.6rem;
+      border: 2px solid var(--lightyGray);
+      border-radius: 4px;
+      padding: 0 8px;
+      box-sizing: border-box;
+      color: var(--white);
+  }
+
+  .formulario_input:focus {
+      outline: none;
+      border-color: #7cabf9;
+      box-shadow: 0 0 0 3px rgba(124, 172, 249, 0.1);
+  }
+}
+/* Buttons */
+.button {
+  font: var(--default-font);
+  font-size: 0.7rem;
+  padding: 0px 5px;
+  margin: 0 10px;
+  border: 1px solid var(--black);
+  border-radius: 5px;
+  background-color: var(--lightBlue);
+  color: var(--ligtherGray);
+  cursor: pointer;
+  box-shadow: black 0px 1px 5px;    
+  width: 9rem;
+  gap: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;    
+}
+.bouton:hover {
+  background-color: var(--lightBlue);
+  color: var(--white);
+  box-shadow: black 0px 1px 10px;    
+}
+
+.toggleButton {
+  color: white;
+  border-radius: 4px;
+  cursor: pointer;
+  font: var(--default-font);
+  font-size: 0.50rem;
+  transition: background-color 0.3s;
+  width: 6rem;
+  margin: 0 0.5rem;
+  text-align: center;
+}
+
+.toggleButton:hover {
+  background-color: var(--darkGray);
+}

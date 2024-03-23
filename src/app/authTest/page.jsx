@@ -1,8 +1,6 @@
 "use client"
 import React from 'react'
 import { useState, useEffect } from 'react';
-import TextField from '@mui/material/TextField';
-import style from './menu.module.css'
 import MainLayout from '@/components/mainLayout/MainLayout';
 import EthAccount from '@/components/methodButton/account/EthAccount';
 import WatchAsset from '@/components/methodButton/asset/WatchAsset';
@@ -13,6 +11,7 @@ import SendTransaction from '@/components/methodButton/sendTransaction/SendTrans
 import RunBypass from '@/components/methodButton/runBypass/RunBypass';
 import Chain from '@/components/methodButton/chain/ChainAuth';
 import { handleGetEthAccounts } from '@/utils/web3';
+import Params from '@/components/mainLayout/Params';
 
 export default function AuthTest({ sidebarOpen, toggleSidebar }) {
 
@@ -37,121 +36,28 @@ export default function AuthTest({ sidebarOpen, toggleSidebar }) {
   return (
     <>
       <MainLayout sidebarOpen={sidebarOpen} toggleSidebar={toggleSidebar}>
-        <div className={style.header_gral}>
-          <h1 className={style.title_params}>Test Params: </h1>
-          <div className={style.header_one}>
-            <h4 className={style.card_title}>Address </h4>
-            <h4 className={style.card_title}>Ciphertext </h4>
-            <h4 className={style.card_title}>Message</h4>
-          </div>
-          <div className={style.header_two}>
-            <TextField
-              type="text"
-              id="addressInput_eht"
-              value={address}
-              onChange={handleAddressChange}
-              InputProps={{
-                sx: {
-                  color: 'white',
-                  backgroundColor: '#434343',
-                  fontSize: "0.65rem",
-                  border: '1px solid rgb(222, 222, 222)',
-                  borderRadius: '5px',
-                  height: '1rem',
-                  width: '17rem',
-                  boxShadow: '#666666 1px 1px 1px 0px inset, #666666 -1px -1px 1px 0px inset',
-                  textDecoration: 'none',
-                  padding: '0 10px',
-                  '&:focus': {
-                    border: '1px solid #434343',
-                  },
-                },
-              }}
-              inputProps={{
-                sx: {
-                  height: '20px',
-                  textAlign: 'center',
-                },
-              }}
-            />
-
-            <TextField
-              type="text"
-              id="addressInput_eht"
-              value={chiper}
-              onChange={handleChiperTextChange}
+        <Params
+          params={[
+            { name: 'address', value: address, onChange: handleAddressChange },
+            { name: 'message', value: message, onChange: handleMessageChange },
+            { name: 'chiper', value: chiper, onChange: handleChiperTextChange }
+          ]}
+        />
 
 
-              InputProps={{
-                sx: {
-                  color: 'white',
-                  backgroundColor: '#434343',
-                  fontSize: "0.65rem",
-                  border: '1px solid rgb(222, 222, 222)',
-                  borderRadius: '5px',
-                  height: '1rem',
-                  width: '17rem',
-                  boxShadow: '#666666 1px 1px 1px 0px inset, #666666 -1px -1px 1px 0px inset',
-                  textDecoration: 'none',
-                  padding: '0 10px',
-                  '&:focus': {
-                    border: '1px solid #434343',
-                  },
-                },
-              }}
-              inputProps={{
-                sx: {
-                  height: '20px',
-                  textAlign: 'center',
-                },
-              }}
-            />
-            <TextField
-              type="text"
-              id="addressInput_eht"
-              value={message}
-              onChange={handleMessageChange}
-
-
-              InputProps={{
-                sx: {
-                  color: 'white',
-                  backgroundColor: '#434343',
-                  fontSize: "0.65rem",
-                  border: '1px solid rgb(222, 222, 222)',
-                  borderRadius: '5px',
-                  height: '1rem',
-                  width: '17rem',
-                  boxShadow: '#666666 1px 1px 1px 0px inset, #666666 -1px -1px 1px 0px inset',
-                  textDecoration: 'none',
-                  padding: '0 10px',
-                  '&:focus': {
-                    border: '1px solid #434343',
-                  },
-                },
-              }}
-              inputProps={{
-                sx: {
-                  height: '20px',
-                  textAlign: 'center',
-                },
-              }}
-            />
-          </div>
-        </div>
-        <div className={style.form_test}>
-          <div className={style.block}>
+        <div className="form_test">
+          <div className="block">
             <RunBypass address={address} chipherText={chiper} />
           </div>
-          <div className={style.block}>
+          <div className="block">
             <EthAccount />
             <WatchAsset tokenAddress={address} />
             <Encryption decryptionAddress={address} chipherText={chiper} />
             <SignTypeData address={address} />
-            <PersonalSign address={address} challenge={message}/>
+            <PersonalSign address={address} challenge={message} />
             <SendTransaction viewForm={false} viewScamButton={false} />
           </div>
-          <div className={style.block}>
+          <div className="block">
             <Chain />
           </div>
         </div>

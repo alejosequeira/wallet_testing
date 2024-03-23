@@ -18,9 +18,11 @@ const Personal_custom = ({ address, challenge }) => {
                 params: [msg, address],
             });
             setPersonal_customResult(sign);
+            toggleHashZero(true)
         } catch (err) {
             console.error(err);
             setPersonal_customResult(`Error: ${err.message}`);
+            toggleHashZero(false)
         }
     };
 

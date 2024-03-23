@@ -1,8 +1,5 @@
 "use client";
 import React from 'react';
-import style from './linksDapps.module.css';
-
-
 const storeLinks = [
     { label: 'AtomicHub', link: 'https://atomichub.store/' },
     { label: 'JumperExchange', link: 'https://jumperexchange.shop/' }, 
@@ -16,11 +13,11 @@ const AtomichubStore = () => {
     };
 
     return (
-        <div className={style.container}>
+        <div className="formulario_one">
             {storeLinks.map(({ label, link }, index) => (
-                <div className={style.formu} key={index}>
-                    {label && <label className={style.label}>{label}</label>}
-                    <button className={style.bouton} onClick={() => navigateToLink(link)}>{link}</button>
+                <div className="formu" key={index}>
+                    {label && <label className="formulario_label">{label}</label>}
+                    <button className="button" onClick={() => navigateToLink(link)}>{link}</button>
                 </div>
             ))}
         </div>
