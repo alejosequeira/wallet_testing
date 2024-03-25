@@ -372,7 +372,29 @@ a {
   border-color: #7cabf9;
   box-shadow: 0 0 0 3px rgba(124, 172, 249, 0.1);
 }
+/* Form GRID SEND TRANSACTION, SHOW PARAMS */
 
+/* Form RunBypass */
+.form_run_bypass {
+  font-family: var(--default-font);    
+  background-color: var(--lightGray);
+  padding: 2% 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  box-sizing: border-box;
+}
+.sub_title {
+  font-size: 0.8rem;
+  font-weight: 400;
+  color: var(--black);
+  font-family: var(--heading-font);
+  margin: 0;
+  padding: 0;
+}
+/* Form RunBypass */
 @media (max-width: 1200px) {
   .form_test {
       flex-direction: column;

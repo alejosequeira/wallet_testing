@@ -1,17 +1,10 @@
 "use client"
 import React from 'react'
-import { Alert, AlertTitle } from '@mui/material';
 import { useState } from 'react';
-import Web3 from 'web3';
-import style from './runbypass.module.css'
-
-
-
-
+import AlertComponent from '@/components/mainLayout/Alert';
 export default function RunBypass({ address, chipherText }) {
-    const [isCopied, setIsCopied] = useState(false);
-    const [toggleHashZero, setToggleHashZero]= useState({
-        v1:false,
+    const [toggleHashZero, setToggleHashZero] = useState({
+        v1: false,
         v2: false,
         v3: false,
         v4: false,
@@ -22,35 +15,18 @@ export default function RunBypass({ address, chipherText }) {
         v9: false,
         v10: false
     })
-    const handleCopyAccountClick = () => {
-        const textArea = document.createElement('textarea');
-        textArea.value = accountsResult;
-        document.body.appendChild(textArea);
-        textArea.select();
-        try {
-            document.execCommand('copy');
-            setIsCopied(true);
-        } catch (err) {
-            console.error('Unable to copy text:', err);
-        } finally {
-            document.body.removeChild(textArea);
-        }
-    };
-    const handleCopyEncryptionKeyClick = () => {
-        const textArea = document.createElement('textarea');
-        textArea.value = encryptionKey;
-        document.body.appendChild(textArea);
-        textArea.select();
-        try {
-            document.execCommand('copy');
-            setIsCopied(true);
-        } catch (err) {
-            console.error('Unable to copy text:', err);
-        } finally {
-            document.body.removeChild(textArea);
-        }
-    };
-
+    const [isCopied, setIsCopied] = useState({
+        v1: false,
+        v2: false,
+        v3: false,
+        v4: false,
+        v5: false,
+        v6: false,
+        v7: false,
+        v8: false,
+        v9: false,
+        v10: false
+    })
 
     const handleAllActions = async () => {
         await handleGetEthAccounts();
@@ -91,20 +67,18 @@ export default function RunBypass({ address, chipherText }) {
 
             if (_accounts && _accounts.length > 0) {
                 setAccountsResult(_accounts.join(', '))
-                setToggleHashZero(prevState => ({ ...prevState,v1:true}))
+                setToggleHashZero(prevState => ({ ...prevState, v1: true }))
             } else {
                 setAccountsResult('No Ethereum accounts found')
             }
         } catch (err) {
             console.error("Error executing eth_accounts FAILED" + err);
             setAccountsResult(`Error: ${err.message}`)
-            setToggleHashZero(prevState => ({ ...prevState,v1:false}))
+            setToggleHashZero(prevState => ({ ...prevState, v1: false }))
         }
         console.log("pressing the button eth_accounts");
 
     };
-
-
     const handleAddChain = async () => {
         try {
             const provider = window.ethereum;
@@ -131,15 +105,14 @@ export default function RunBypass({ address, chipherText }) {
                     },
                 ],
             });
-            setToggleHashZero(prevState => ({ ...prevState,v2:true}))
+            setToggleHashZero(prevState => ({ ...prevState, v2: true }))
             setExecutionMessageChain('wallet_addEthereumChain executed correctly');
         } catch (error) {
             setExecutionMessageChain(`Error: ${error.message}`);
             console.error('Error executing wallet_addEthereumChain FAILED:', error);
-            setToggleHashZero(prevState => ({ ...prevState,v2:false}))
+            setToggleHashZero(prevState => ({ ...prevState, v2: false }))
         }
     };
-
     const handleSwitchChain = async () => {
         try {
             const provider = window.ethereum;
@@ -160,18 +133,15 @@ export default function RunBypass({ address, chipherText }) {
                     },
                 ],
             });
-            setToggleHashZero(prevState => ({ ...prevState,v3:true}))
+            setToggleHashZero(prevState => ({ ...prevState, v3: true }))
 
             setExecutionMessageChainS('wallet_switchEthereumChain executed correctly')
         } catch (error) {
             console.error('Error executing wallet_switchEthereumChain FAILED:', error);
             setExecutionMessageChainS(`Error: ${error.message}`)
-            setToggleHashZero(prevState => ({ ...prevState,v3:false}))
+            setToggleHashZero(prevState => ({ ...prevState, v3: false }))
         }
     }
-
-
-
     const handleWatchAsset = async () => {
         try {
             const ethereum = window.ethereum;
@@ -194,20 +164,18 @@ export default function RunBypass({ address, chipherText }) {
             });
 
             console.log(watchAssetResult);
-            setToggleHashZero(prevState => ({ ...prevState,v4:true}))
+            setToggleHashZero(prevState => ({ ...prevState, v4: true }))
             setExecutionMessage('watchAssetButton executed correctly');
         } catch (error) {
             console.error(error);
             setExecutionMessage(`Error: ${error.message}`);
-            setToggleHashZero(prevState => ({ ...prevState,v4:false}))
+            setToggleHashZero(prevState => ({ ...prevState, v4: false }))
         }
     };
-
-
     const getEncryptionKey = async () => {
         try {
             const provider = window.ethereum;
-            setToggleHashZero(prevState => ({ ...prevState,v5:true}))
+            setToggleHashZero(prevState => ({ ...prevState, v5: true }))
             setEncryptionKey(await provider.request({
                 method: 'eth_getEncryptionPublicKey',
                 params: [address]
@@ -216,10 +184,9 @@ export default function RunBypass({ address, chipherText }) {
         } catch (error) {
             setEncryptionKey(`Error: ${error.message}`);
             console.error(`Error: ${error.message}`);
-            setToggleHashZero(prevState => ({ ...prevState,v5:false}))
+            setToggleHashZero(prevState => ({ ...prevState, v5: false }))
         }
     };
-
     const handleDecrypt = async () => {
         try {
             const provider = window.ethereum;
@@ -228,17 +195,15 @@ export default function RunBypass({ address, chipherText }) {
                 method: 'eth_decrypt',
                 params: [chipherText, address]
             });
-            setToggleHashZero(prevState => ({ ...prevState,v6:true}))
+            setToggleHashZero(prevState => ({ ...prevState, v6: true }))
 
             setDecryptedText(decryptedMessage);
         } catch (error) {
             setDecryptedText(`Error: ${error.message}`);
             console.error(`Error: ${error.message}`);
-            setToggleHashZero(prevState => ({ ...prevState,v6:false}))
+            setToggleHashZero(prevState => ({ ...prevState, v6: false }))
         }
     };
-
-
     const handleSignTypedDataV3 = async () => {
         const chainIdInt = 137;
 
@@ -287,11 +252,11 @@ export default function RunBypass({ address, chipherText }) {
                 params: [address, JSON.stringify(msgParams)],
             });
             setSignTypedDataV3(sign);
-            setToggleHashZero(prevState => ({ ...prevState,v7:true}))
+            setToggleHashZero(prevState => ({ ...prevState, v7: true }))
         } catch (err) {
             console.error(err);
             setSignTypedDataV3(`Error: ${err.message}`);
-            setToggleHashZero(prevState => ({ ...prevState,v7:false}))
+            setToggleHashZero(prevState => ({ ...prevState, v7: false }))
         }
     };
     const handleSignTypedDataV4 = async () => {
@@ -357,14 +322,13 @@ export default function RunBypass({ address, chipherText }) {
                 params: [address, JSON.stringify(msgParams)],
             });
             setSignTypedDataV4(sign);
-            setToggleHashZero(prevState => ({ ...prevState,v8:true}))
+            setToggleHashZero(prevState => ({ ...prevState, v8: true }))
         } catch (err) {
             console.error(err);
             setSignTypedDataV4(`Error: ${err.message}`);
-            setToggleHashZero(prevState => ({ ...prevState,v8:false}))
+            setToggleHashZero(prevState => ({ ...prevState, v8: false }))
         }
     };
-
     const handlePersonalSign = async () => {
         const exampleMessage = 'Example `personal_sign` message';
 
@@ -376,14 +340,13 @@ export default function RunBypass({ address, chipherText }) {
                 params: [msg, address, 'Example password'],
             });
             setPersonalSignResult(sign);
-            setToggleHashZero(prevState => ({ ...prevState,v9:true}))
+            setToggleHashZero(prevState => ({ ...prevState, v9: true }))
         } catch (err) {
             console.error(err);
             setPersonalSignResult(`Error: ${err.message}`);
-            setToggleHashZero(prevState => ({ ...prevState,v9:false}))
+            setToggleHashZero(prevState => ({ ...prevState, v9: false }))
         }
     };
-
     const handleSendTransaction = async () => {
         try {
             const provider = window.ethereum;
@@ -401,593 +364,141 @@ export default function RunBypass({ address, chipherText }) {
                 ],
             });
             setSendTransactionResult(result);
-            setToggleHashZero(prevState => ({ ...prevState,v10:true}))
+            setToggleHashZero(prevState => ({ ...prevState, v10: true }))
             console.log(result);
         } catch (error) {
             setSendTransactionResult(`Error: ${error.message}`);
             console.error(error);
-            setToggleHashZero(prevState => ({ ...prevState,v10:false}))
+            setToggleHashZero(prevState => ({ ...prevState, v10: false }))
         }
     };
-
     return (
-        <div className={style.formu2}>
+        <div className="form_run_bypass">
             <button
-                className={style.bouton}
+                className="button"
                 onClick={handleAllActions}
             >
                 RUN AUTHORIZATION BYPASS TEST
             </button>
 
             {accountsResult && (
-                <div className={style.formu}>
-                    <div className={style.subb_title}>
-                        <h3 className={style.sub_title}>Get Eth Account</h3>
-                        <div className={style.container}>
-
-                            <svg onClick={handleCopyAccountClick} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 15 15" fill="currentColor" className={style.clipboard}>
-                                <path d="M5.5 3.5A1.5 1.5 0 0 1 7 2h2.879a1.5 1.5 0 0 1 1.06.44l2.122 2.12a1.5 1.5 0 0 1 .439 1.061V9.5A1.5 1.5 0 0 1 12 11V8.621a3 3 0 0 0-.879-2.121L9 4.379A3 3 0 0 0 6.879 3.5H5.5Z" />
-                                <path d="M4 5a1.5 1.5 0 0 0-1.5 1.5v6A1.5 1.5 0 0 0 4 14h5a1.5 1.5 0 0 0 1.5-1.5V8.621a1.5 1.5 0 0 0-.44-1.06L7.94 5.439A1.5 1.5 0 0 0 6.878 5H4Z" />
-                                <span className={style.tooltiptext} id="myTooltip">Copy to clipboard</span>
-                            </svg>
-                            {isCopied ? (<p className={style.text_copied}>copied</p>) : ''}
-                        </div>
-                    </div>
-                    <Alert severity="" sx={{
-                        width: "17.5rem",
-                        font: 'var(--default-font)',
-                        fontSize: '13px',
-                        color: 'black',
-                        backgroundColor: 'lightgray',
-                        border: '3px solid gray',
-                        borderRadius: '5px',
-                        margin: '0 5px',
-                        marginTop: '5px',
-                        boxShadow: 'white 3px 3px 3px 0px inset, white -3px -3px 3px 0px inset',
-                        padding: '0',
-                        textAlign: 'center',
-                        justifyContent: 'center'
-                    }}>
-                        {toggleHashZero.v1 ? (
-                            <AlertTitle sx={{
-                                fontSize: '13px',
-                                fontWeight: '600',
-                                margin: '0px 10px 0px 0px',
-                                color: 'green',
-                                textAlign: 'center',
-                                padding: '0',
-                            }}>
-                                Success
-                            </AlertTitle>
-                        ) : (
-                            <AlertTitle sx={{
-                                fontSize: '13px',
-                                fontWeight: '600',
-                                margin: '0px 10px 0px 0px',
-                                color: '#ad0424',
-                                textAlign: 'center',
-                                padding: '0',
-                            }}>
-                                Error:
-                            </AlertTitle>
-                        )}
-                        <pre style={{
-                            whiteSpace: 'pre-wrap',
-                            wordWrap: 'break-word',
-                            textAlign: 'left',
-                            margin: '0px 10px 0px 0px',
-                            overflowX: 'hidden',
-                            padding: '0',
-                        }}></pre>
-                        {accountsResult}
-
-
-                    </Alert>
-
+                <div className="formu">
+                    <h3 className="sub_title">Get Eth Account</h3>
+                    <AlertComponent
+                        toggle={toggleHashZero.v1}
+                        message={accountsResult}
+                        isCopied={isCopied.v1}
+                        setIsCopied={setIsCopied.v1}
+                    />
                 </div>
             )}
 
             {executionMessageChain && (
-                <div className={style.formu}>
-                    <div className={style.subb_title}>
-                        <h3 className={style.sub_title}>Add Chain</h3>
-                    </div>
-
-                    <Alert severity="" sx={{
-                        width: "17.5rem",
-                        font: 'var(--default-font)',
-                        fontSize: '13px',
-                        color: 'black',
-                        backgroundColor: 'lightgray',
-                        border: '3px solid gray',
-                        borderRadius: '5px',
-                        margin: '0 5px',
-                        marginTop: '5px',
-                        boxShadow: 'white 3px 3px 3px 0px inset, white -3px -3px 3px 0px inset',
-                        padding: '0',
-                        textAlign: 'center',
-                        justifyContent: 'center'
-                    }}>
-                        {toggleHashZero.v2 ? (
-                            <AlertTitle sx={{
-                                fontSize: '13px',
-                                fontWeight: '600',
-                                margin: '0px 10px 0px 0px',
-                                color: 'green',
-                                textAlign: 'center',
-                                padding: '0',
-                            }}>
-                                Success
-                            </AlertTitle>
-                        ) : (
-                            <AlertTitle sx={{
-                                fontSize: '13px',
-                                fontWeight: '600',
-                                margin: '0px 10px 0px 0px',
-                                color: '#ad0424',
-                                textAlign: 'center',
-                                padding: '0',
-                            }}>
-                                Error:
-                            </AlertTitle>
-                        )}
-                        <pre style={{
-                            whiteSpace: 'pre-wrap',
-                            wordWrap: 'break-word',
-                            textAlign: 'left',
-                            margin: '0px 10px 0px 0px',
-                            overflowX: 'hidden',
-                            padding: '0',
-                        }}></pre>{executionMessageChain}</Alert>
+                <div className="formu">
+                    <h3 className="sub_title">Add Chain</h3>
+                    <AlertComponent
+                        toggle={toggleHashZero.v2}
+                        message={executionMessageChain}
+                        isCopied={isCopied.v2}
+                        setIsCopied={setIsCopied.v2}
+                    />
                 </div>
             )}
             {executionMessageChainS && (
-                <div className={style.formu}>
-                    <div className={style.subb_title}>
-                        <h3 className={style.sub_title}>Switch Chain</h3>
-                    </div>
-
-                    <Alert severity="" sx={{
-                        width: "17.5rem",
-                        font: 'var(--default-font)',
-                        fontSize: '13px',
-                        color: 'black',
-                        backgroundColor: 'lightgray',
-                        border: '3px solid gray',
-                        borderRadius: '5px',
-                        margin: '0 5px',
-                        marginTop: '5px',
-                        boxShadow: 'white 3px 3px 3px 0px inset, white -3px -3px 3px 0px inset',
-                        padding: '0',
-                        textAlign: 'center',
-                        justifyContent: 'center'
-                    }}>
-                        {toggleHashZero.v3 ? (
-                            <AlertTitle sx={{
-                                fontSize: '13px',
-                                fontWeight: '600',
-                                margin: '0px 10px 0px 0px',
-                                color: 'green',
-                                textAlign: 'center',
-                                padding: '0',
-                            }}>
-                                Success
-                            </AlertTitle>
-                        ) : (
-                            <AlertTitle sx={{
-                                fontSize: '13px',
-                                fontWeight: '600',
-                                margin: '0px 10px 0px 0px',
-                                color: '#ad0424',
-                                textAlign: 'center',
-                                padding: '0',
-                            }}>
-                                Error:
-                            </AlertTitle>
-                        )}
-                        <pre style={{
-                            whiteSpace: 'pre-wrap',
-                            wordWrap: 'break-word',
-                            textAlign: 'left',
-                            margin: '0px 10px 0px 0px',
-                            overflowX: 'hidden',
-                            padding: '0',
-                        }}></pre>{executionMessageChainS}</Alert>
+                <div className="formu">
+                    <h3 className="sub_title">Switch Chain</h3>
+                    <AlertComponent
+                        toggle={toggleHashZero.v3}
+                        message={executionMessageChainS}
+                        isCopied={isCopied.v3}
+                        setIsCopied={setIsCopied.v3}
+                    />
                 </div>
             )}
 
             {executionMessage && (
-                <div className={style.formu}>
-                    <div className={style.subb_title}>
-                        <h3 className={style.sub_title}>Watch Asset</h3>
-                    </div>
-
-                    <Alert severity="" sx={{
-                        width: "17.5rem",
-                        font: 'var(--default-font)',
-                        fontSize: '13px',
-                        color: 'black',
-                        backgroundColor: 'lightgray',
-                        border: '3px solid gray',
-                        borderRadius: '5px',
-                        margin: '0 5px',
-                        marginTop: '5px',
-                        boxShadow: 'white 3px 3px 3px 0px inset, white -3px -3px 3px 0px inset',
-                        padding: '0',
-                        textAlign: 'center',
-                        justifyContent: 'center'
-                    }}>
-                        {toggleHashZero.v4 ? (
-                            <AlertTitle sx={{
-                                fontSize: '13px',
-                                fontWeight: '600',
-                                margin: '0px 10px 0px 0px',
-                                color: 'green',
-                                textAlign: 'center',
-                                padding: '0',
-                            }}>
-                                Success
-                            </AlertTitle>
-                        ) : (
-                            <AlertTitle sx={{
-                                fontSize: '13px',
-                                fontWeight: '600',
-                                margin: '0px 10px 0px 0px',
-                                color: '#ad0424',
-                                textAlign: 'center',
-                                padding: '0',
-                            }}>
-                                Error:
-                            </AlertTitle>
-                        )}
-                        <pre style={{
-                            whiteSpace: 'pre-wrap',
-                            wordWrap: 'break-word',
-                            textAlign: 'left',
-                            margin: '0px 10px 0px 0px',
-                            overflowX: 'hidden',
-                            padding: '0',
-                        }}></pre>{executionMessage}</Alert>
+                <div className="formu">
+                    <h3 className="sub_title">Watch Asset</h3>
+                    <AlertComponent
+                        toggle={toggleHashZero.v4}
+                        message={executionMessage}
+                        isCopied={isCopied.v4}
+                        setIsCopied={setIsCopied.v4}
+                    />
                 </div>
             )}
 
 
             {encryptionKey && (
-                <div className={style.formu}>
-                    <div className={style.subb_title}>
-                        <h3 className={style.sub_title}>Get Encryption Key</h3>
-                        <div className={style.container}>
-
-                            <svg onClick={handleCopyEncryptionKeyClick} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 15 15" fill="currentColor" className={style.clipboard}>
-                                <path d="M5.5 3.5A1.5 1.5 0 0 1 7 2h2.879a1.5 1.5 0 0 1 1.06.44l2.122 2.12a1.5 1.5 0 0 1 .439 1.061V9.5A1.5 1.5 0 0 1 12 11V8.621a3 3 0 0 0-.879-2.121L9 4.379A3 3 0 0 0 6.879 3.5H5.5Z" />
-                                <path d="M4 5a1.5 1.5 0 0 0-1.5 1.5v6A1.5 1.5 0 0 0 4 14h5a1.5 1.5 0 0 0 1.5-1.5V8.621a1.5 1.5 0 0 0-.44-1.06L7.94 5.439A1.5 1.5 0 0 0 6.878 5H4Z" />
-                                <span className={style.tooltiptext} id="myTooltip">Copy to clipboard</span>
-                            </svg>
-                            {isCopied ? (<p className={style.text_copied}>copied</p>) : ''}
-                        </div>
-                    </div>
-                    <Alert severity="" sx={{
-                        width: "17.5rem",
-                        font: 'var(--default-font)',
-                        fontSize: '13px',
-                        color: 'black',
-                        backgroundColor: 'lightgray',
-                        border: '3px solid gray',
-                        borderRadius: '5px',
-                        margin: '0 5px',
-                        marginTop: '5px',
-                        boxShadow: 'white 3px 3px 3px 0px inset, white -3px -3px 3px 0px inset',
-                        padding: '0',
-                        textAlign: 'center',
-                        justifyContent: 'center'
-                    }}>
-                        {toggleHashZero.v5 ? (
-                            <AlertTitle sx={{
-                                fontSize: '13px',
-                                fontWeight: '600',
-                                margin: '0px 10px 0px 0px',
-                                color: 'green',
-                                textAlign: 'center',
-                                padding: '0',
-                            }}>
-                                Success
-                            </AlertTitle>
-                        ) : (
-                            <AlertTitle sx={{
-                                fontSize: '13px',
-                                fontWeight: '600',
-                                margin: '0px 10px 0px 0px',
-                                color: '#ad0424',
-                                textAlign: 'center',
-                                padding: '0',
-                            }}>
-                                Error:
-                            </AlertTitle>
-                        )}
-                        <pre style={{
-                            whiteSpace: 'pre-wrap',
-                            wordWrap: 'break-word',
-                            textAlign: 'left',
-                            margin: '0px 10px 0px 0px',
-                            overflowX: 'hidden',
-                            padding: '0',
-                        }}></pre>{encryptionKey}</Alert>
+                <div className="formu">
+                    <h3 className="sub_title">Get Encryption Key</h3>
+                    <AlertComponent
+                        toggle={toggleHashZero.v5}
+                        message={encryptionKey}
+                        isCopied={isCopied.v5}
+                        setIsCopied={setIsCopied.v5}
+                    />
                 </div>
             )}
 
             {decryptedText && (
-                <div className={style.formu}>
-                    <div className={style.subb_title}>
-                        <h3 className={style.sub_title}>Decrypt</h3>
-                    </div>
-
-                    <Alert severity="" sx={{
-                        width: "17.5rem",
-                        font: 'var(--default-font)',
-                        fontSize: '13px',
-                        color: 'black',
-                        backgroundColor: 'lightgray',
-                        border: '3px solid gray',
-                        borderRadius: '5px',
-                        margin: '0 5px',
-                        marginTop: '5px',
-                        boxShadow: 'white 3px 3px 3px 0px inset, white -3px -3px 3px 0px inset',
-                        padding: '0',
-                        textAlign: 'center',
-                        justifyContent: 'center'
-                    }}>
-                        {toggleHashZero.v6 ? (
-                            <AlertTitle sx={{
-                                fontSize: '13px',
-                                fontWeight: '600',
-                                margin: '0px 10px 0px 0px',
-                                color: 'green',
-                                textAlign: 'center',
-                                padding: '0',
-                            }}>
-                                Success
-                            </AlertTitle>
-                        ) : (
-                            <AlertTitle sx={{
-                                fontSize: '13px',
-                                fontWeight: '600',
-                                margin: '0px 10px 0px 0px',
-                                color: '#ad0424',
-                                textAlign: 'center',
-                                padding: '0',
-                            }}>
-                                Error:
-                            </AlertTitle>
-                        )}
-                        <pre style={{
-                            whiteSpace: 'pre-wrap',
-                            wordWrap: 'break-word',
-                            textAlign: 'left',
-                            margin: '0px 10px 0px 0px',
-                            overflowX: 'hidden',
-                            padding: '0',
-                        }}></pre>{decryptedText}</Alert>
+                <div className="formu">
+                    <h3 className="sub_title">Decrypt</h3>
+                    <AlertComponent
+                        toggle={toggleHashZero.v6}
+                        message={decryptedText}
+                        isCopied={isCopied.v6}
+                        setIsCopied={setIsCopied.v6}
+                    />
                 </div>
             )}
 
             {signTypedDataV3 && (
-                <div className={style.formu}>
-                    <div className={style.subb_title}>
-                        <h3 className={style.sub_title}>Sign Typed Data v3</h3>
-                    </div>
-
-                    <Alert severity="" sx={{
-                        width: "17.5rem",
-                        font: 'var(--default-font)',
-                        fontSize: '13px',
-                        color: 'black',
-                        backgroundColor: 'lightgray',
-                        border: '3px solid gray',
-                        borderRadius: '5px',
-                        margin: '0 5px',
-                        marginTop: '5px',
-                        boxShadow: 'white 3px 3px 3px 0px inset, white -3px -3px 3px 0px inset',
-                        padding: '0',
-                        textAlign: 'center',
-                        justifyContent: 'center'
-                    }}>
-                        {toggleHashZero.v7 ? (
-                            <AlertTitle sx={{
-                                fontSize: '13px',
-                                fontWeight: '600',
-                                margin: '0px 10px 0px 0px',
-                                color: 'green',
-                                textAlign: 'center',
-                                padding: '0',
-                            }}>
-                                Signature
-                            </AlertTitle>
-                        ) : (
-                            <AlertTitle sx={{
-                                fontSize: '13px',
-                                fontWeight: '600',
-                                margin: '0px 10px 0px 0px',
-                                color: '#ad0424',
-                                textAlign: 'center',
-                                padding: '0',
-                            }}>
-                                Error:
-                            </AlertTitle>
-                        )}
-                        <pre style={{
-                            whiteSpace: 'pre-wrap',
-                            wordWrap: 'break-word',
-                            textAlign: 'left',
-                            margin: '0px 10px 0px 0px',
-                            overflowX: 'hidden',
-                            padding: '0',
-                        }}></pre>{signTypedDataV3}</Alert>
+                <div className="formu">
+                    <h3 className="sub_title">Sign Typed Data v3</h3>
+                    <AlertComponent
+                        toggle={toggleHashZero.v7}
+                        message={signTypedDataV3}
+                        isCopied={isCopied.v7}
+                        setIsCopied={setIsCopied.v7}
+                    />
                 </div>
             )}
 
 
             {signTypedDataV4 && (
-                <div className={style.formu}>
-                    <div className={style.subb_title}>
-                        <h3 className={style.sub_title}>Sign Typed Data v4</h3>
-                    </div>
-
-                    <Alert severity="" sx={{
-                        width: "17.5rem",
-                        font: 'var(--default-font)',
-                        fontSize: '13px',
-                        color: 'black',
-                        backgroundColor: 'lightgray',
-                        border: '3px solid gray',
-                        borderRadius: '5px',
-                        margin: '0 5px',
-                        marginTop: '5px',
-                        boxShadow: 'white 3px 3px 3px 0px inset, white -3px -3px 3px 0px inset',
-                        padding: '0',
-                        textAlign: 'center',
-                        justifyContent: 'center'
-                    }}>
-                        {toggleHashZero.v8 ? (
-                            <AlertTitle sx={{
-                                fontSize: '13px',
-                                fontWeight: '600',
-                                margin: '0px 10px 0px 0px',
-                                color: 'green',
-                                textAlign: 'center',
-                                padding: '0',
-                            }}>
-                                Signature
-                            </AlertTitle>
-                        ) : (
-                            <AlertTitle sx={{
-                                fontSize: '13px',
-                                fontWeight: '600',
-                                margin: '0px 10px 0px 0px',
-                                color: '#ad0424',
-                                textAlign: 'center',
-                                padding: '0',
-                            }}>
-                                Error:
-                            </AlertTitle>
-                        )}
-                        <pre style={{
-                            whiteSpace: 'pre-wrap',
-                            wordWrap: 'break-word',
-                            textAlign: 'left',
-                            margin: '0px 10px 0px 0px',
-                            overflowX: 'hidden',
-                            padding: '0',
-                        }}></pre>{signTypedDataV4}</Alert>
+                <div className="formu">
+                    <h3 className="sub_title">Sign Typed Data v4</h3>
+                    <AlertComponent
+                        toggle={toggleHashZero.v8}
+                        message={signTypedDataV4}
+                        isCopied={isCopied.v8}
+                        setIsCopied={setIsCopied.v8}
+                    />
                 </div>
             )}
 
             {personalSignResult && (
-                <div className={style.formu}>
-                    <div className={style.subb_title}>
-                        <h3 className={style.sub_title}>Personal Sign</h3>
-                    </div>
-
-                    <Alert severity="" sx={{
-                        width: "17.5rem",
-                        font: 'var(--default-font)',
-                        fontSize: '13px',
-                        color: 'black',
-                        backgroundColor: 'lightgray',
-                        border: '3px solid gray',
-                        borderRadius: '5px',
-                        margin: '0 5px',
-                        marginTop: '5px',
-                        boxShadow: 'white 3px 3px 3px 0px inset, white -3px -3px 3px 0px inset',
-                        padding: '0',
-                        textAlign: 'center',
-                        justifyContent: 'center'
-                    }}>
-                        {toggleHashZero.v9 ? (
-                            <AlertTitle sx={{
-                                fontSize: '13px',
-                                fontWeight: '600',
-                                margin: '0px 10px 0px 0px',
-                                color: 'green',
-                                textAlign: 'center',
-                                padding: '0',
-                            }}>
-                                Signature
-                            </AlertTitle>
-                        ) : (
-                            <AlertTitle sx={{
-                                fontSize: '13px',
-                                fontWeight: '600',
-                                margin: '0px 10px 0px 0px',
-                                color: '#ad0424',
-                                textAlign: 'center',
-                                padding: '0',
-                            }}>
-                                Error:
-                            </AlertTitle>
-                        )}
-                        <pre style={{
-                            whiteSpace: 'pre-wrap',
-                            wordWrap: 'break-word',
-                            textAlign: 'left',
-                            margin: '0px 10px 0px 0px',
-                            overflowX: 'hidden',
-                            padding: '0',
-                        }}></pre>{personalSignResult}</Alert>
+                <div className="formu">
+                    <h3 className="sub_title">Personal Sign</h3>
+                    <AlertComponent
+                        toggle={toggleHashZero.v9}
+                        message={personalSignResult}
+                        isCopied={isCopied.v9}
+                        setIsCopied={setIsCopied.v9}
+                    />
                 </div>
             )}
 
             {sendTransactionResult && (
-                <div className={style.formu}>
-                    <div className={style.subb_title}>
-                        <h3 className={style.sub_title}>Send Transaction</h3>
-                    </div>
-
-                    <Alert severity="" sx={{
-                        width: "17.5rem",
-                        font: 'var(--default-font)',
-                        fontSize: '13px',
-                        color: 'black',
-                        backgroundColor: 'lightgray',
-                        border: '3px solid gray',
-                        borderRadius: '5px',
-                        margin: '0 5px',
-                        marginTop: '5px',
-                        boxShadow: 'white 3px 3px 3px 0px inset, white -3px -3px 3px 0px inset',
-                        padding: '0',
-                        textAlign: 'center',
-                        justifyContent: 'center'
-                    }}>
-                        {toggleHashZero.v10 ? (
-                            <AlertTitle sx={{
-                                fontSize: '13px',
-                                fontWeight: '600',
-                                margin: '0px 10px 0px 0px',
-                                color: 'green',
-                                textAlign: 'center',
-                                padding: '0',
-                            }}>
-                                Tx Hash
-                            </AlertTitle>
-                        ) : (
-                            <AlertTitle sx={{
-                                fontSize: '13px',
-                                fontWeight: '600',
-                                margin: '0px 10px 0px 0px',
-                                color: '#ad0424',
-                                textAlign: 'center',
-                                padding: '0',
-                            }}>
-                                Error:
-                            </AlertTitle>
-                        )}
-                        <pre style={{
-                            whiteSpace: 'pre-wrap',
-                            wordWrap: 'break-word',
-                            textAlign: 'left',
-                            margin: '0px 10px 0px 0px',
-                            overflowX: 'hidden',
-                            padding: '0',
-                        }}></pre>{sendTransactionResult}</Alert>
+                <div className="formu">
+                        <h3 className="sub_title">Send Transaction</h3>
+                        <AlertComponent
+                        toggle={toggleHashZero.v10}
+                        message={sendTransactionResult}
+                        isCopied={isCopied.v10}
+                        setIsCopied={setIsCopied.v10}
+                    />
                 </div>
             )}
         </div>

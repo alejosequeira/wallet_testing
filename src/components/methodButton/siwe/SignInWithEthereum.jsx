@@ -130,7 +130,7 @@ export default function SignInWithEthereum (){
                     id="fromInput"
                     value={from}
                     onChange={(e) => setFrom(e.target.value)}
-                    rows="1"
+                    // rows="1"
                 />
                 
                 <label htmlFor="description">Message:</label>
@@ -140,7 +140,7 @@ export default function SignInWithEthereum (){
                     id="description"
                     value={messages}
                     onChange={(e) => setMessages(e.target.value)}
-                    rows="10"
+                    // rows="10"
                 />
                 
             </div>

@@ -6,9 +6,10 @@
     width: 100%;
     border-radius: 1%;
     box-sizing: border-box;
+    margin-top:5px;
 }
 
-.formu2 {
+.form_run_bypass {
     font-family: var(--default-font);    
     background-color: var(--lightGray);
     padding: 2% 0;

@@ -34,7 +34,6 @@ export const handleGetEthAccounts = async (setFrom) => {
   try {
     const provider = window.ethereum;
     if (!provider) {
-      setFrom('Wallet not Found');
       return;
     }
     const _accounts = await provider.request({ method: 'eth_accounts' });

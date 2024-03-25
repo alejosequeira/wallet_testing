@@ -1,8 +1,8 @@
 "use client"
 import React, { useState, useEffect } from 'react';
 import Web3 from 'web3';
-import contractAbi from './contractAbi.json';
-import erc20ABI from './erc20PermitABI.json';
+import contractAbi from '../../../api/abiContractFunction.json';
+import erc20ABI from '../../../api/abiContractErc20.json';
 import { handleGetEthAccounts } from '@/utils/web3';
 import AlertComponent from '@/components/mainLayout/Alert';
 
@@ -174,7 +174,6 @@ const PermitAllowance = ({ contract }) => {
                     <AlertComponent
                         toggle={toggleHashApprove}
                         message={erc20Approve}
-                        error={erc20Approve}
                         isCopied={isCopied}
                         setIsCopied={setIsCopied}
                     />
@@ -187,7 +186,6 @@ const PermitAllowance = ({ contract }) => {
                         <AlertComponent
                             toggle={toggleHash}
                             message={erc20Allow}
-                            error={erc20Allow}
                             isCopied={isCopied}
                             setIsCopied={setIsCopied}
                         />
@@ -287,7 +285,6 @@ const PermitAllowance = ({ contract }) => {
                         <AlertComponent
                             toggle={toggleCheck}
                             message={erc20Check}
-                            error={erc20Check}
                             isCopied={isCopied}
                             setIsCopied={setIsCopied}
                         />
@@ -335,7 +332,6 @@ const PermitAllowance = ({ contract }) => {
                         <AlertComponent
                             toggle={toggleHash721}
                             message={erc721Allow}
-                            error={erc721Allow}
                             isCopied={isCopied}
                             setIsCopied={setIsCopied}
                         />

@@ -55,7 +55,6 @@ const Encryption = ({ decryptionAddress, chipherText }) => {
             <AlertComponent
               toggle={toggleHashE}
               message={encryptionKey}
-              error={encryptionKey}
               isCopied={isCopiedE}
               setIsCopied={setIsCopiedE}
             />
@@ -73,7 +72,6 @@ const Encryption = ({ decryptionAddress, chipherText }) => {
             <AlertComponent
               toggle={toggleHashD}
               message={decryptedText}
-              error={decryptedText}
               isCopied={isCopiedD}
               setIsCopied={setIsCopiedD}
             />

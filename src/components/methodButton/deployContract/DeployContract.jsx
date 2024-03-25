@@ -1,8 +1,8 @@
 "use client"
 import React, { useState , useMemo} from 'react';
 import Web3 from 'web3';
-import MyTokenABI from './abi.json';
-import MyTokenBytecode from './bytecode.json';
+import MyTokenABI from '../../../api/abiDeployContract.json';
+import MyTokenBytecode from '../../../api/bytecodeDeployContract.json';
 import PermitAllowance from '../permitAllowance/Allowance';
 import AlertComponent from '@/components/mainLayout/Alert';
 
@@ -40,7 +40,8 @@ const MyTokenDeployer = () => {
             setLoading(false);
         }
     };
-    // toggleHash721 erc721Allow isCopied setIsCopied
+    //decryptedText isCopied setIsCopied
+  
     return (
         <div className="formulario1">
             <button className="button" onClick={deployContract} disabled={loading}>

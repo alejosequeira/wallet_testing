@@ -55,7 +55,6 @@ function WatchAsset({ tokenAddress }) {
           <AlertComponent
                         toggle={toggleHashZero}
                         message={executionMessage}
-                        error={executionMessage}
                         isCopied={isCopied}
                         setIsCopied={setIsCopied}                    
                     />

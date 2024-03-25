@@ -40,7 +40,7 @@ export default function AuthTest({ sidebarOpen, toggleSidebar }) {
           params={[
             { name: 'address', value: address, onChange: handleAddressChange },
             { name: 'message', value: message, onChange: handleMessageChange },
-            { name: 'chiper', value: chiper, onChange: handleChiperTextChange }
+            { name: 'cipher', value: chiper, onChange: handleChiperTextChange }
           ]}
         />
 
