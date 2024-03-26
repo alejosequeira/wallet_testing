@@ -2,9 +2,9 @@
 import React from 'react'
 import { useEffect, useState } from 'react';
 import MainLayout from '@/components/mainLayout/MainLayout';
-import Sign from '@/components/methodButton/sign/Sign';
-import Personal_custom from '@/components/methodButton/personal/PersonalSign';
-import Sign_typedData from '@/components/methodButton/signTypedData/SignTypedData';
+import Sign from '@/components/methodButton/Sign';
+import Personal_custom from '@/components/methodButton/PersonalSign';
+import Sign_typedData from '@/components/methodButton/SignTypedData';
 import { handleGetEthAccounts } from '@/utils/web3';
 import Params from '@/components/mainLayout/Params';
 

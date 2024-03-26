@@ -1,5 +1,5 @@
 import React from 'react'
-import SignInWithEthereum from '@/components/methodButton/siwe/SignInWithEthereum'
+import SignInWithEthereum from '@/components/methodButton/SignInWithEthereum'
 import MainLayout from '@/components/mainLayout/MainLayout'
 
 export default function signInWithEthereum({ sidebarOpen, toggleSidebar }) {

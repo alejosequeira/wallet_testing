@@ -1,7 +1,8 @@
 "use client"
 import React from 'react'
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import AlertComponent from '@/components/mainLayout/Alert';
+import * as Web3Utils from '@/utils/web3';
 export default function RunBypass({ address, chipherText }) {
     const [toggleHashZero, setToggleHashZero] = useState({
         v1: false,
@@ -29,17 +30,18 @@ export default function RunBypass({ address, chipherText }) {
     })
 
     const handleAllActions = async () => {
-        await handleGetEthAccounts();
+        await handleGetEthAccountss();
         await handleAddChain();
         await handleSwitchChain();
         await handleWatchAsset();
         await getEncryptionKey();
         await handleDecrypt();
+        await handleSendTransaction();
         await handleSignTypedDataV3();
         await handleSignTypedDataV4();
-        await handlePersonalSign();
-        await handleSendTransaction();
+        await handlePersonalSign();        
     };
+
     const [accountsResult, setAccountsResult] = useState('');
 
     const [executionMessageChain, setExecutionMessageChain] = useState('');
@@ -55,10 +57,23 @@ export default function RunBypass({ address, chipherText }) {
     const [signTypedDataV4, setSignTypedDataV4] = useState('');
 
     const [personalSignResult, setPersonalSignResult] = useState('');
-
     const [sendTransactionResult, setSendTransactionResult] = useState('');
-
-    const handleGetEthAccounts = async () => {
+    const [from, setFrom]= useState('');
+    const [maxFeePerGas, setMaxFeePerGas] = useState('');
+    const [gasLimit, setGasLimit] = useState('19000');
+    const [nonce, setNonce] = useState('0x0');
+    const [chainId, setChainId] = useState(0);
+    useEffect(() => {
+        const fetchData = async () => {
+            const fromResult = await Web3Utils.handleGetEthAccounts(setFrom);
+            await Web3Utils.getNonce(fromResult, setNonce);
+            await Web3Utils.fetchGasLimit(fromResult, "0x873050043AF661fe9d5633369B10139eb7b4Da54", 0, "0x", setGasLimit);
+            await Web3Utils.fetchMaxFees(setMaxFeePerGas);
+            await Web3Utils.getBlockchainData(setChainId)
+        };
+        fetchData();
+    }, []);
+    const handleGetEthAccountss = async () => {
         try {
             const provider = window.ethereum;
             const _accounts = await provider.request({
@@ -68,28 +83,27 @@ export default function RunBypass({ address, chipherText }) {
             if (_accounts && _accounts.length > 0) {
                 setAccountsResult(_accounts.join(', '))
                 setToggleHashZero(prevState => ({ ...prevState, v1: true }))
-            } else {
-                setAccountsResult('No Ethereum accounts found')
+            } 
+            else {
+                setAccountsResult('No Ethereum Accounts Found')
             }
         } catch (err) {
             console.error("Error executing eth_accounts FAILED" + err);
-            setAccountsResult(`Error: ${err.message}`)
+            setAccountsResult(` ${err.message}`)
             setToggleHashZero(prevState => ({ ...prevState, v1: false }))
         }
-        console.log("pressing the button eth_accounts");
-
     };
     const handleAddChain = async () => {
         try {
-            const provider = window.ethereum;
-            if (!provider) {
-                setExecutionMessageChain('No Ethereum provider found');
-                return;
-            }
+            // const provider = window.ethereum;
+            // if (!provider) {
+            //     setExecutionMessageChain('No Ethereum provider found');
+            //     return;
+            // }
 
             await new Promise((resolve) => setTimeout(resolve, 1000));
 
-            await provider.request({
+            await window.ethereum.request({
                 method: 'wallet_addEthereumChain',
                 params: [
                     {
@@ -108,24 +122,24 @@ export default function RunBypass({ address, chipherText }) {
             setToggleHashZero(prevState => ({ ...prevState, v2: true }))
             setExecutionMessageChain('wallet_addEthereumChain executed correctly');
         } catch (error) {
-            setExecutionMessageChain(`Error: ${error.message}`);
+            setExecutionMessageChain(` ${error.message}`);
             console.error('Error executing wallet_addEthereumChain FAILED:', error);
             setToggleHashZero(prevState => ({ ...prevState, v2: false }))
         }
     };
     const handleSwitchChain = async () => {
         try {
-            const provider = window.ethereum;
+            // const provider = window.ethereum;
 
-            if (!provider) {
-                setExecutionMessageChainS('No Ethereum provider found')
-                console.error('No Ethereum provider found');
-                return;
-            }
+            // if (!provider) {
+            //     setExecutionMessageChainS('No Ethereum provider found')
+            //     console.error('No Ethereum provider found');
+            //     return;
+            // }
 
             await new Promise((resolve) => setTimeout(resolve, 1000));
 
-            await provider.request({
+            await window.ethereum.request({
                 method: 'wallet_switchEthereumChain',
                 params: [
                     {
@@ -138,19 +152,20 @@ export default function RunBypass({ address, chipherText }) {
             setExecutionMessageChainS('wallet_switchEthereumChain executed correctly')
         } catch (error) {
             console.error('Error executing wallet_switchEthereumChain FAILED:', error);
-            setExecutionMessageChainS(`Error: ${error.message}`)
+            setExecutionMessageChainS(` ${error.message}`)
             setToggleHashZero(prevState => ({ ...prevState, v3: false }))
         }
     }
     const handleWatchAsset = async () => {
+        
         try {
-            const ethereum = window.ethereum;
-            if (!ethereum) {
-                setExecutionMessage('No Ethereum provider found');
-                return;
-            }
+            // const ethereum = window.ethereum;
+            // if (!ethereum) {
+            //     setExecutionMessage('No Ethereum provider found');
+            //     return;
+            // }
 
-            const watchAssetResult = await ethereum.request({
+            const watchAssetResult = await window.ethereum.request({
                 method: 'wallet_watchAsset',
                 params: {
                     type: 'ERC20',
@@ -168,7 +183,7 @@ export default function RunBypass({ address, chipherText }) {
             setExecutionMessage('watchAssetButton executed correctly');
         } catch (error) {
             console.error(error);
-            setExecutionMessage(`Error: ${error.message}`);
+            setExecutionMessage(`${error.message}`);
             setToggleHashZero(prevState => ({ ...prevState, v4: false }))
         }
     };
@@ -182,15 +197,15 @@ export default function RunBypass({ address, chipherText }) {
             }));
 
         } catch (error) {
-            setEncryptionKey(`Error: ${error.message}`);
-            console.error(`Error: ${error.message}`);
+            setEncryptionKey(` ${error.message}`);
+            console.error(` ${error.message}`);
             setToggleHashZero(prevState => ({ ...prevState, v5: false }))
         }
     };
     const handleDecrypt = async () => {
+        
         try {
             const provider = window.ethereum;
-
             const decryptedMessage = await provider.request({
                 method: 'eth_decrypt',
                 params: [chipherText, address]
@@ -199,14 +214,13 @@ export default function RunBypass({ address, chipherText }) {
 
             setDecryptedText(decryptedMessage);
         } catch (error) {
-            setDecryptedText(`Error: ${error.message}`);
-            console.error(`Error: ${error.message}`);
+            setDecryptedText(` ${error.message}`);
+            console.error(` ${error.message}`);
             setToggleHashZero(prevState => ({ ...prevState, v6: false }))
         }
     };
     const handleSignTypedDataV3 = async () => {
-        const chainIdInt = 137;
-
+        
         const msgParams = {
             types: {
                 EIP712Domain: [
@@ -229,7 +243,7 @@ export default function RunBypass({ address, chipherText }) {
             domain: {
                 name: 'Ether Mail',
                 version: '1',
-                chainId: chainIdInt,
+                chainId: chainId,
                 verifyingContract: '0xCcCCccccCCCCcCCCCCCcCcCccCcCCCcCcccccccC',
             },
             message: {
@@ -246,25 +260,27 @@ export default function RunBypass({ address, chipherText }) {
         };
 
         try {
-            const provider = window.ethereum;
-            const sign = await provider.request({
+            // const provider = ;
+            // if (!provider) {
+            //     setSignTypedDataV3('No Ethereum provider found');
+            //     return;
+            //   }
+            const sign = await window.ethereum.request({
                 method: 'eth_signTypedData_v3',
                 params: [address, JSON.stringify(msgParams)],
             });
             setSignTypedDataV3(sign);
             setToggleHashZero(prevState => ({ ...prevState, v7: true }))
         } catch (err) {
-            console.error(err);
-            setSignTypedDataV3(`Error: ${err.message}`);
+            console.error(err.message);
+            setSignTypedDataV3(`${err.message}`);
             setToggleHashZero(prevState => ({ ...prevState, v7: false }))
         }
     };
     const handleSignTypedDataV4 = async () => {
-        const chainIdInt = 137;
-
         const msgParams = {
             domain: {
-                chainId: chainIdInt.toString(),
+                chainId: chainId,
                 name: 'Ether Mail',
                 verifyingContract: '0xCcCCccccCCCCcCCCCCCcCcCccCcCCCcCcccccccC',
                 version: '1',
@@ -314,10 +330,13 @@ export default function RunBypass({ address, chipherText }) {
                 ],
             },
         };
-
         try {
-            const provider = window.ethereum;
-            const sign = await provider.request({
+            // const provider = window.ethereum;
+            // if (!provider) {
+            //     setSignTypedDataV4('No Ethereum provider found');
+            //     return;
+            //   }
+            const sign = await window.ethereum.request({
                 method: 'eth_signTypedData_v4',
                 params: [address, JSON.stringify(msgParams)],
             });
@@ -325,7 +344,7 @@ export default function RunBypass({ address, chipherText }) {
             setToggleHashZero(prevState => ({ ...prevState, v8: true }))
         } catch (err) {
             console.error(err);
-            setSignTypedDataV4(`Error: ${err.message}`);
+            setSignTypedDataV4(`${err.message}`);
             setToggleHashZero(prevState => ({ ...prevState, v8: false }))
         }
     };
@@ -333,9 +352,13 @@ export default function RunBypass({ address, chipherText }) {
         const exampleMessage = 'Example `personal_sign` message';
 
         try {
-            const provider = window.ethereum;
+            // const provider = window.ethereum;
+            // if (!provider) {
+            //     setPersonalSignResult('No Ethereum provider found');
+            //     return;
+            //   }
             const msg = `0x${Buffer.from(exampleMessage, 'utf8').toString('hex')}`;
-            const sign = await provider.request({
+            const sign = await window.ethereum.request({
                 method: 'personal_sign',
                 params: [msg, address, 'Example password'],
             });
@@ -343,23 +366,32 @@ export default function RunBypass({ address, chipherText }) {
             setToggleHashZero(prevState => ({ ...prevState, v9: true }))
         } catch (err) {
             console.error(err);
-            setPersonalSignResult(`Error: ${err.message}`);
+            setPersonalSignResult(` ${err.message}`);
             setToggleHashZero(prevState => ({ ...prevState, v9: false }))
         }
     };
     const handleSendTransaction = async () => {
+        
+        Web3Utils.fetchMaxFees(setMaxFeePerGas);
+        Web3Utils.fetchGasLimit(address, "0x873050043AF661fe9d5633369B10139eb7b4Da54", 0, "0x", setGasLimit);        
         try {
-            const provider = window.ethereum;
-            const result = await provider.request({
+            // const provider = window.ethereum;
+            // if (!provider) {
+            //     setSendTransactionResult('No Ethereum provider found');
+            //     return;
+            //   }
+            const result = await window.ethereum.request({
                 method: 'eth_sendTransaction',
                 params: [
                     {
                         from: address,
-                        to: '0x0c54FcCd2e384b4BB6f2E405Bf5Cbc15a017AaFb',
-                        value: '0x0',
-                        gasLimit: '0x5208',
-                        gasPrice: '0x2540be370',
-                        type: '0x0',
+                        to: '0x873050043AF661fe9d5633369B10139eb7b4Da54',
+                        value: '0',
+                        gasLimit: gasLimit,
+                        maxFeePerGas: maxFeePerGas,
+                        type: '0',
+                        chainId: chainId,
+                        nonce: nonce,
                     },
                 ],
             });
@@ -367,7 +399,7 @@ export default function RunBypass({ address, chipherText }) {
             setToggleHashZero(prevState => ({ ...prevState, v10: true }))
             console.log(result);
         } catch (error) {
-            setSendTransactionResult(`Error: ${error.message}`);
+            setSendTransactionResult(` ${error.message}`);
             console.error(error);
             setToggleHashZero(prevState => ({ ...prevState, v10: false }))
         }
@@ -492,8 +524,8 @@ export default function RunBypass({ address, chipherText }) {
 
             {sendTransactionResult && (
                 <div className="formu">
-                        <h3 className="sub_title">Send Transaction</h3>
-                        <AlertComponent
+                    <h3 className="sub_title">Send Transaction</h3>
+                    <AlertComponent
                         toggle={toggleHashZero.v10}
                         message={sendTransactionResult}
                         isCopied={isCopied.v10}

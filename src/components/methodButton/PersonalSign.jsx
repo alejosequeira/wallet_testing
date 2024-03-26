@@ -9,9 +9,9 @@ const Personal_custom = ({ address, challenge }) => {
     
     const handlePersonal_custom = async () => {
         try {
-            const provider = window.ethereum;
+            // const provider = window.ethereum;
             const msg = `0x${Buffer.from(challenge, 'utf8').toString('hex')}`;
-            const sign = await provider.request({
+            const sign = await window.ethereum.request({
                 method: 'personal_sign',
                 params: [msg, address],
             });
@@ -19,7 +19,7 @@ const Personal_custom = ({ address, challenge }) => {
             setToggleHashZero(true)
         } catch (err) {
             console.error(err);
-            setPersonal_customResult(`Error: ${err.message}`);
+            setPersonal_customResult(err.message);
             setToggleHashZero(false)
         }
     };

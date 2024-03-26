@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import Web3 from 'web3';
 import { TextField } from '@mui/material';
-import SendTransaction from '../sendTransaction/SendTransaction';
+import SendTransaction from './SendTransaction';
 import { handleGetEthAccounts } from '@/utils/web3';
 import AlertComponent from '@/components/mainLayout/Alert';
 

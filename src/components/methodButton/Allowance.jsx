@@ -1,8 +1,8 @@
 "use client"
 import React, { useState, useEffect } from 'react';
 import Web3 from 'web3';
-import contractAbi from '../../../api/abiContractFunction.json';
-import erc20ABI from '../../../api/abiContractErc20.json';
+import contractAbi from '../.././api/abiContractFunction.json';
+import erc20ABI from '../.././api/abiContractErc20.json';
 import { handleGetEthAccounts } from '@/utils/web3';
 import AlertComponent from '@/components/mainLayout/Alert';
 
@@ -167,7 +167,7 @@ const PermitAllowance = ({ contract }) => {
     };
     return (
 
-        <div className="formu">
+        <div className="formulario1">
             <button className="button" onClick={approveERC20Token}>ERC20 APPROVE</button>
             {erc20Approve && (
                 <div className="formulario_grid">
@@ -179,7 +179,7 @@ const PermitAllowance = ({ contract }) => {
                     />
                 </div>
             )}
-            <div className="formulario">
+            {/* <div className="formulario"> */}
                 <button className="button" onClick={setERC20Allowance}>ERC20 PERMIT</button>
                 {erc20Allow && (
                     <div className="formulario">
@@ -191,7 +191,7 @@ const PermitAllowance = ({ contract }) => {
                         />
                     </div>
                 )}
-            </div>
+            {/* </div> */}
 
             <button onClick={toggleFormDisplay} className="toggleButton">
                 {showForm ? 'Hide Params' : 'Show Params'}
@@ -278,7 +278,7 @@ const PermitAllowance = ({ contract }) => {
                     />
 
                 </div>) : ""}
-            <div className="formulario">
+            {/* <div className="formulario"> */}
                 <button className="button" onClick={checkERC20Allowance}>ERC20 ALLOWANCE</button>
                 {erc20Check && (
                     <div className="formulario_grid">
@@ -290,7 +290,7 @@ const PermitAllowance = ({ contract }) => {
                         />
                     </div>
                 )}
-            </div>
+            {/* </div> */}
             <button onClick={toggleFormDisplayAllowance} className="toggleButton">
                 {showFormAllowance ? 'Hide  Params' : 'Show  Params'}
             </button>
@@ -325,7 +325,7 @@ const PermitAllowance = ({ contract }) => {
                     />
                 </div>) : ""}
 
-            <div className="formulario">
+            {/* <div className="formulario"> */}
                 <button className="button" onClick={setERC721Allowance}>ERC721 PERMIT</button>
                 {erc721Allow && (
                     <div className="formulario_grid">
@@ -337,7 +337,7 @@ const PermitAllowance = ({ contract }) => {
                         />
                     </div>
                 )}
-            </div>
+            {/* </div> */}
             <button onClick={toggleFormDisplay721} className="toggleButton">
                 {showForm721 ? 'Hide Params' : 'Show Params'}
             </button>

@@ -11,13 +11,13 @@ function WatchAsset({ tokenAddress }) {
  
   const handleWatchAsset = async () => {
     try {
-      const ethereum = window.ethereum;
-      if (!ethereum) {
-        setExecutionMessage('No Ethereum provider found');
-        return;
-      }
+      // const ethereum = window.ethereum;
+      // if (!ethereum) {
+      //   setExecutionMessage('No Ethereum provider found');
+      //   return;
+      // }
 
-      const watchAssetResult = await ethereum.request({
+      const watchAssetResult = await window.ethereum.request({
         method: 'wallet_watchAsset',
         params: {
           type: 'ERC20',
@@ -35,7 +35,7 @@ function WatchAsset({ tokenAddress }) {
       setToggleHashZero(true)
     } catch (error) {
       console.error(error);
-      setExecutionMessage(`Error: ${error.message}`);
+      setExecutionMessage(`${error.message}`);
       setToggleHashZero(false)
     }
   };

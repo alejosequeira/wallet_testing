@@ -2,14 +2,14 @@
 import React from 'react'
 import { useState, useEffect } from 'react';
 import MainLayout from '@/components/mainLayout/MainLayout';
-import EthAccount from '@/components/methodButton/account/EthAccount';
-import WatchAsset from '@/components/methodButton/asset/WatchAsset';
-import Encryption from '@/components/methodButton/encrypt/Encryption';
-import SignTypeData from '@/components/methodButton/signTypedData/SignTypedData';
-import PersonalSign from '@/components/methodButton/personal/PersonalSign';
-import SendTransaction from '@/components/methodButton/sendTransaction/SendTransaction';
-import RunBypass from '@/components/methodButton/runBypass/RunBypass';
-import Chain from '@/components/methodButton/chain/ChainAuth';
+import EthAccount from '@/components/methodButton/EthAccount';
+import WatchAsset from '@/components/methodButton/WatchAsset';
+import Encryption from '@/components/methodButton/Encryption';
+import SignTypeData from '@/components/methodButton/SignTypedData';
+import PersonalSign from '@/components/methodButton/PersonalSign';
+import SendTransaction from '@/components/methodButton/SendTransaction';
+import RunBypass from '@/components/methodButton/RunBypass';
+import Chain from '@/components/methodButton/ChainAuth';
 import { handleGetEthAccounts } from '@/utils/web3';
 import Params from '@/components/mainLayout/Params';
 
@@ -52,10 +52,10 @@ export default function AuthTest({ sidebarOpen, toggleSidebar }) {
           <div className="block">
             <EthAccount />
             <WatchAsset tokenAddress={address} />
-            <Encryption decryptionAddress={address} chipherText={chiper} />
+            <Encryption address={address} chipherText={chiper} />
             <SignTypeData address={address} />
             <PersonalSign address={address} challenge={message} />
-            <SendTransaction viewForm={false} viewScamButton={false} />
+            <SendTransaction address={address} viewForm={false} viewScamButton={false} />
           </div>
           <div className="block">
             <Chain />

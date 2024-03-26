@@ -1,5 +1,5 @@
 import React from 'react'
-import CheckSum from '../../components/methodButton/checkSum/CheckSum';
+import CheckSum from '../../components/methodButton/CheckSum';
 import MainLayout from '@/components/mainLayout/MainLayout';
 
 export default function checkSumValidation({ sidebarOpen, toggleSidebar }) {

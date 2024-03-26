@@ -1,15 +1,12 @@
 "use client"
 import React from 'react'
 import { useEffect, useState } from 'react';
-import style from './sendTransaction.module.css'
 import Web3 from 'web3';
-import { Alert, AlertTitle } from '@mui/material';
 import * as Web3Utils from '@/utils/web3';
-import { handleCopyAccountClick } from '@/utils/buttons';
+import AlertComponent from '@/components/mainLayout/Alert';
 
-
-const SendTransaction = ({ viewForm, viewScamButton, viewCheckSum }) => {
-    const [from, setFrom] = useState('');
+const SendTransaction = ({ address, viewForm, viewScamButton, viewCheckSum }) => {
+    const [from, setFrom] = useState();
     const [to, setTo] = useState('0x873050043AF661fe9d5633369B10139eb7b4Da54');
     const [toScan, setToScan] = useState('0x873050043AF661fE9d5611369B10139eB7B4Da54');
     const [toSUM, setToSUM] = useState('0xA62A0d4fE4C2b10aadFBD4628f697d09a76Cd954');
@@ -91,6 +88,11 @@ const SendTransaction = ({ viewForm, viewScamButton, viewCheckSum }) => {
     };
 
     const handleSendStandardTransacction = async () => {
+        if (!window.ethereum) {
+            setSend_thirdResult("No Ethereum Wallet Found");
+            setToggleHash(false);
+            return;
+        }
         Web3Utils.fetchGasPrice(setGasPrice);
         Web3Utils.fetchGasLimit(from, to, valueInHex, data, setGasLimit);
         try {
@@ -116,11 +118,20 @@ const SendTransaction = ({ viewForm, viewScamButton, viewCheckSum }) => {
             setToggleHash(true)
         } catch (error) {
             setSend_thirdResult(`${error.message}`);
+            setToggleHash(false);
             console.error(error);
         }
     };
 
     const handleSendEIP1559Transacction = async () => {
+        if (!window.ethereum) {
+            setSend_thirdResult("No Ethereum Wallet Found");
+            setToggleHash(false);
+            return;
+        }
+        if (from == null) {
+            setFrom(address);
+        }
         Web3Utils.fetchMaxFees(setMaxFeePerGas);
         Web3Utils.fetchGasLimit(from, to, valueInHex, data, setGasLimit);
         try {
@@ -130,7 +141,7 @@ const SendTransaction = ({ viewForm, viewScamButton, viewCheckSum }) => {
                 method: 'eth_sendTransaction',
                 params: [
                     {
-                        from: from,
+                        from: from || address,
                         to: viewCheckSum ? toSUM : to,
                         value: valueInHex,
                         gasLimit: gasLimit,
@@ -148,10 +159,16 @@ const SendTransaction = ({ viewForm, viewScamButton, viewCheckSum }) => {
             setToggleHash(true)
         } catch (error) {
             setSend_thirdResult(error.message);
+            setToggleHash(false)
             console.error(error);
         }
     };
     const handleSendStandardTxUnknow = async () => {
+        if (!window.ethereum) {
+            setSend_thirdResultZero("No Ethereum Wallet Found");
+            setToggleHashZero(false);
+            return;
+        }
         Web3Utils.fetchGasPrice(setGasPrice);
         Web3Utils.fetchGasLimit(from, to, valueInHex, data, setGasLimit);
         try {
@@ -182,6 +199,11 @@ const SendTransaction = ({ viewForm, viewScamButton, viewCheckSum }) => {
         }
     };
     const handleSendTxEIP1559Unknow = async () => {
+        if (!window.ethereum) {
+            setSend_thirdResultZero("No Ethereum Wallet Found");
+            setToggleHashZero(false);
+            return;
+        }
         Web3Utils.fetchMaxFees(setMaxFeePerGas);
         Web3Utils.fetchGasLimit(from, to, valueInHex, data, setGasLimit);
         try {
@@ -214,41 +236,40 @@ const SendTransaction = ({ viewForm, viewScamButton, viewCheckSum }) => {
         }
     };
     return (
-        <div className={style.formu}>
+        <div className="formulario1">
             {showScamButton && (
                 <>
                     {toggleScam ? (
-                        <div className={style.formulario_one}>
+                        <div className="formulario">
                             <h4>Zero Value Transfer Scam</h4>
-                            <div className={style.align_fetchh}>
-                                <h5>1st step-</h5>
-                                <h7>Send transaction to some address</h7>
-                                <h5>2nd step-</h5>
-                                <h7>Send transaction to another address with same beginning/ending bytes</h7>
-                            </div>
+                                <h5>1st step</h5>
+                                <h6>Send transaction to some address</h6>
+                                <h5>2nd step</h5>
+                                <h6>Send transaction to another address with same beginning/ending bytes</h6>
+                            
                         </div>
                     ) : (
-                        <div className={style.formulario_one}>
+                        <div className="formulario">
                             <h4>Transfer to Attacker/Scam Address</h4>
                             <h6>Attempt sending a transaction to well-known scam/attacker address</h6>
                         </div>
                     )}
-                    <button onClick={toggleScamZero} style={{ color: "blue" }} className={style.toggleeButton}>
-                        {toggleScam ? 'switch to scam address' : 'switch to zero value'}
+                    <button onClick={toggleScamZero} className="toggleButton">
+                        {toggleScam ? 'Switch To Scam Address' : 'Switch To Zero Value'}
                     </button>
                 </>
             )}
             {!showScamButton && (<>
-                <div className={style.formulario_oneZ}>
+                <div className="formulario_one">
                     {selectedOption === '0x2' ? (
                         <button
-                            className={style.bouton}
+                            className="button"
                             onClick={handleSendEIP1559Transacction}
                         >SEND TRANSACTION
                         </button>
                     ) : (
                         <button
-                            className={style.bouton}
+                            className="button"
                             onClick={handleSendStandardTransacction}
                         >SEND TRANSACTION
                         </button>
@@ -256,84 +277,25 @@ const SendTransaction = ({ viewForm, viewScamButton, viewCheckSum }) => {
                 </div>
 
                 {send_thirdResult && (
-                    <div className={style.formu}>
-                        <Alert
-
-                            severity=""
-
-                            sx={{
-                                width: "17.5rem",
-                                fontSize: '13px',
-                                color: 'black',
-                                backgroundColor: 'lightgray',
-                                border: '3px solid gray',
-                                borderRadius: '5px',
-                                padding: '0 10px 0px 0px',
-                                textAlign: 'center',
-                                margin: '0 5px',
-                                marginTop: '5px',
-                                boxShadow: 'white 3px 3px 3px 0px inset, white -3px -3px 3px 0px inset',
-                                display: 'flex',
-                                justifyContent: 'center',
-                            }}
-
-                        >
-                            {toggleHash ? (
-                                <AlertTitle
-                                    sx={{
-                                        fontSize: '13px',
-                                        fontWeight: '600',
-                                        margin: '0',
-                                        color: 'blue',
-                                        textAlign: 'center',
-                                    }}>
-                                    Tnx Hash:
-                                    {!isCopied &&
-                                        <svg onClick={() => handleCopyAccountClick(send_thirdResult, setIsCopied)} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 15 15" fill="currentColor" className={style.clipboard}>
-                                            <path d="M5.5 3.5A1.5 1.5 0 0 1 7 2h2.879a1.5 1.5 0 0 1 1.06.44l2.122 2.12a1.5 1.5 0 0 1 .439 1.061V9.5A1.5 1.5 0 0 1 12 11V8.621a3 3 0 0 0-.879-2.121L9 4.379A3 3 0 0 0 6.879 3.5H5.5Z" />
-                                            <path d="M4 5a1.5 1.5 0 0 0-1.5 1.5v6A1.5 1.5 0 0 0 4 14h5a1.5 1.5 0 0 0 1.5-1.5V8.621a1.5 1.5 0 0 0-.44-1.06L7.94 5.439A1.5 1.5 0 0 0 6.878 5H4Z" />
-                                        </svg>
-                                    }
-                                    {isCopied && <span
-                                        className={style.text_copied}
-                                        id="myTooltip">Copied !</span>}
-                                </AlertTitle>
-
-                            ) : (
-                                <AlertTitle
-                                    sx={{
-                                        fontSize: '13px',
-                                        fontWeight: '600',
-                                        margin: '0',
-                                        color: '#ad0424',
-                                        textAlign: 'center',
-                                    }}>
-                                    Error:
-                                    {!isCopied &&
-                                        <svg onClick={() => handleCopyAccountClick(send_thirdResult, setIsCopied)} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 15 15" fill="currentColor" className={style.clipboard}>
-                                            <path d="M5.5 3.5A1.5 1.5 0 0 1 7 2h2.879a1.5 1.5 0 0 1 1.06.44l2.122 2.12a1.5 1.5 0 0 1 .439 1.061V9.5A1.5 1.5 0 0 1 12 11V8.621a3 3 0 0 0-.879-2.121L9 4.379A3 3 0 0 0 6.879 3.5H5.5Z" />
-                                            <path d="M4 5a1.5 1.5 0 0 0-1.5 1.5v6A1.5 1.5 0 0 0 4 14h5a1.5 1.5 0 0 0 1.5-1.5V8.621a1.5 1.5 0 0 0-.44-1.06L7.94 5.439A1.5 1.5 0 0 0 6.878 5H4Z" />
-                                        </svg>
-                                    }
-                                    {isCopied && <span
-                                        className={style.text_copied}
-                                        id="myTooltip">Copied !</span>}
-                                </AlertTitle>)}
-
-
-                            {send_thirdResult}</Alert>
+                    <div className="formu">
+                        <AlertComponent
+                            toggle={toggleHash}
+                            message={send_thirdResult}
+                            isCopied={isCopied}
+                            setIsCopied={setIsCopied}
+                        />
                     </div>
                 )}
             </>)}
 
-            <button onClick={toggleFormDisplay} className={style.toggleeButton}>
-                {showForm ? 'Hide Tx Params' : 'Show Tx Params'}
+            <button onClick={toggleFormDisplay} className="toggleButton">
+                {showForm ? 'Hide Params' : 'Show Params'}
             </button>
-            {showForm && (<div className={style.formulario}>
+            {showForm && (<div className="formulario_grid">
                 <label htmlFor="fromInput">From:</label>
                 <input
                     type="text"
-                    className={style.formulario_input}
+                    className="formulario_grid_input"
                     id="fromInput"
                     value={from}
                     onChange={(e) => setFrom(e.target.value)}
@@ -343,7 +305,7 @@ const SendTransaction = ({ viewForm, viewScamButton, viewCheckSum }) => {
                         <label htmlFor="toInput">To: </label>
                         <input
                             type="text"
-                            className={style.formulario_input}
+                            className="formulario_grid_input"
                             id="toInput"
                             value={
                                 viewCheckSum ? toSUM : to
@@ -378,16 +340,16 @@ const SendTransaction = ({ viewForm, viewScamButton, viewCheckSum }) => {
             {showScamButton && (
                 <>
                     {toggleScam && (
-                        <div className={style.formulario_oneZ}>
+                        <div className="formulario_one">
                             {selectedOption === '0x2' ? (
                                 <button
-                                    className={style.bouton}
+                                    className="button"
                                     onClick={handleSendEIP1559Transacction}
                                 >SEND TRANSACTION
                                 </button>
                             ) : (
                                 <button
-                                    className={style.bouton}
+                                    className="button"
                                     onClick={handleSendStandardTransacction}
                                 >SEND TRANSACTION
                                 </button>
@@ -395,80 +357,21 @@ const SendTransaction = ({ viewForm, viewScamButton, viewCheckSum }) => {
                         </div>
                     )}
                     {send_thirdResult && (
-                        <div className={style.formu}>
-                            <Alert
-
-                                severity=""
-
-                                sx={{
-                                    width: "17.5rem",
-                                    fontSize: '13px',
-                                    color: 'black',
-                                    backgroundColor: 'lightgray',
-                                    border: '3px solid gray',
-                                    borderRadius: '5px',
-                                    padding: '0 10px 0px 0px',
-                                    textAlign: 'center',
-                                    margin: '0 5px',
-                                    marginTop: '5px',
-                                    boxShadow: 'white 3px 3px 3px 0px inset, white -3px -3px 3px 0px inset',
-                                    display: 'flex',
-                                    justifyContent: 'center',
-                                }}
-
-                            >
-                                {toggleHash ? (
-                                    <AlertTitle
-                                        sx={{
-                                            fontSize: '13px',
-                                            fontWeight: '600',
-                                            margin: '0',
-                                            color: 'blue',
-                                            textAlign: 'center',
-                                        }}>
-                                        Tnx Hash:
-                                        {!isCopied &&
-                                            <svg onClick={() => handleCopyAccountClick(send_thirdResult, setIsCopied)} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 15 15" fill="currentColor" className={style.clipboard}>
-                                                <path d="M5.5 3.5A1.5 1.5 0 0 1 7 2h2.879a1.5 1.5 0 0 1 1.06.44l2.122 2.12a1.5 1.5 0 0 1 .439 1.061V9.5A1.5 1.5 0 0 1 12 11V8.621a3 3 0 0 0-.879-2.121L9 4.379A3 3 0 0 0 6.879 3.5H5.5Z" />
-                                                <path d="M4 5a1.5 1.5 0 0 0-1.5 1.5v6A1.5 1.5 0 0 0 4 14h5a1.5 1.5 0 0 0 1.5-1.5V8.621a1.5 1.5 0 0 0-.44-1.06L7.94 5.439A1.5 1.5 0 0 0 6.878 5H4Z" />
-                                            </svg>
-                                        }
-                                        {isCopied && <span
-                                            className={style.text_copied}
-                                            id="myTooltip">Copied !</span>}
-                                    </AlertTitle>
-
-                                ) : (
-                                    <AlertTitle
-                                        sx={{
-                                            fontSize: '13px',
-                                            fontWeight: '600',
-                                            margin: '0',
-                                            color: '#ad0424',
-                                            textAlign: 'center',
-                                        }}>
-                                        Error:
-                                        {!isCopied &&
-                                            <svg onClick={() => handleCopyAccountClick(send_thirdResult, setIsCopied)} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 15 15" fill="currentColor" className={style.clipboard}>
-                                                <path d="M5.5 3.5A1.5 1.5 0 0 1 7 2h2.879a1.5 1.5 0 0 1 1.06.44l2.122 2.12a1.5 1.5 0 0 1 .439 1.061V9.5A1.5 1.5 0 0 1 12 11V8.621a3 3 0 0 0-.879-2.121L9 4.379A3 3 0 0 0 6.879 3.5H5.5Z" />
-                                                <path d="M4 5a1.5 1.5 0 0 0-1.5 1.5v6A1.5 1.5 0 0 0 4 14h5a1.5 1.5 0 0 0 1.5-1.5V8.621a1.5 1.5 0 0 0-.44-1.06L7.94 5.439A1.5 1.5 0 0 0 6.878 5H4Z" />
-                                            </svg>
-                                        }
-                                        {isCopied && <span
-                                            className={style.text_copied}
-                                            id="myTooltip">Copied !</span>}
-                                    </AlertTitle>)}
-
-
-                                {send_thirdResult}</Alert>
+                        <div className="formu">
+                            <AlertComponent
+                                toggle={toggleHash}
+                                message={send_thirdResult}
+                                isCopied={isCopied}
+                                setIsCopied={setIsCopied}
+                            />
                         </div>
                     )}
 
-                    {showForm && (<div className={style.formulario}>
+                    {showForm && (<div className="formulario_grid">
                         <label htmlFor="toInputScam" style={{ color: "blue" }}>To Scam: </label>
                         <input
                             type="text"
-                            className={style.formulario_input}
+                            className="formulario_grid_input"
                             id="toInputScam"
                             value={
                                 toggleScam ? (toScan) : (toScamAddress)
@@ -486,16 +389,16 @@ const SendTransaction = ({ viewForm, viewScamButton, viewCheckSum }) => {
 
                     </div>)}
 
-                    <div className={style.formulario_oneZ}>
+                    <div className="formulario_one">
                         {selectedOption === '0x2' ? (
                             <button
-                                className={style.bouton}
+                                className="button"
                                 onClick={handleSendTxEIP1559Unknow}
                             >SEND SCAM TRANSACTION
                             </button>
                         ) : (
                             <button
-                                className={style.bouton}
+                                className="button"
                                 onClick={handleSendStandardTxUnknow}
                             >SEND SCAM TRANSACTION
                             </button>
@@ -505,85 +408,25 @@ const SendTransaction = ({ viewForm, viewScamButton, viewCheckSum }) => {
                     </div>
 
                     {send_thirdResultZero && (
-                        <div className={style.formu}>
-                            <Alert
-
-                                severity=""
-
-                                sx={{
-                                    width: "17.5rem",
-                                    fontSize: '13px',
-                                    color: 'black',
-                                    backgroundColor: 'lightgray',
-                                    border: '3px solid gray',
-                                    borderRadius: '5px',
-                                    padding: '0 10px 0px 0px',
-                                    textAlign: 'center',
-                                    margin: '0 5px',
-                                    marginTop: '5px',
-                                    boxShadow: 'white 3px 3px 3px 0px inset, white -3px -3px 3px 0px inset',
-                                    display: 'flex',
-                                    justifyContent: 'center'
-                                }}
-
-                            >
-                                {toggleHashZero ? (
-                                    <AlertTitle
-                                        sx={{
-                                            fontSize: '13px',
-                                            fontWeight: '600',
-                                            margin: '0',
-                                            color: 'blue',
-                                            textAlign: 'center',
-                                        }}>
-                                        Tnx Hash:
-                                        {!isCopied &&
-                                            <svg onClick={() => handleCopyAccountClick()} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 15 15" fill="currentColor" className={style.clipboard}>
-                                                <path d="M5.5 3.5A1.5 1.5 0 0 1 7 2h2.879a1.5 1.5 0 0 1 1.06.44l2.122 2.12a1.5 1.5 0 0 1 .439 1.061V9.5A1.5 1.5 0 0 1 12 11V8.621a3 3 0 0 0-.879-2.121L9 4.379A3 3 0 0 0 6.879 3.5H5.5Z" />
-                                                <path d="M4 5a1.5 1.5 0 0 0-1.5 1.5v6A1.5 1.5 0 0 0 4 14h5a1.5 1.5 0 0 0 1.5-1.5V8.621a1.5 1.5 0 0 0-.44-1.06L7.94 5.439A1.5 1.5 0 0 0 6.878 5H4Z" />
-                                            </svg>
-                                        }
-                                        {isCopied && <span
-                                            className={style.text_copied}
-                                            id="myTooltip">Copied !</span>}
-                                    </AlertTitle>
-
-
-                                ) : (
-                                    <AlertTitle
-                                        sx={{
-                                            fontSize: '13px',
-                                            fontWeight: '600',
-                                            margin: '0',
-                                            color: '#ad0424',
-                                            textAlign: 'center',
-                                        }}>
-                                        Error:
-                                        {!isCopied &&
-                                            <svg onClick={() => handleCopyAccountClick()} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 15 15" fill="currentColor" className={style.clipboard}>
-                                                <path d="M5.5 3.5A1.5 1.5 0 0 1 7 2h2.879a1.5 1.5 0 0 1 1.06.44l2.122 2.12a1.5 1.5 0 0 1 .439 1.061V9.5A1.5 1.5 0 0 1 12 11V8.621a3 3 0 0 0-.879-2.121L9 4.379A3 3 0 0 0 6.879 3.5H5.5Z" />
-                                                <path d="M4 5a1.5 1.5 0 0 0-1.5 1.5v6A1.5 1.5 0 0 0 4 14h5a1.5 1.5 0 0 0 1.5-1.5V8.621a1.5 1.5 0 0 0-.44-1.06L7.94 5.439A1.5 1.5 0 0 0 6.878 5H4Z" />
-                                            </svg>
-                                        }
-                                        {isCopied && <span
-                                            className={style.text_copied}
-                                            id="myTooltip">Copied !</span>}
-                                    </AlertTitle>)}
-
-
-                                {send_thirdResultZero}</Alert>
+                        <div className="formu">
+                            <AlertComponent
+                                toggle={toggleHashZero}
+                                message={send_thirdResultZero}                               
+                                isCopied={isCopied}
+                                setIsCopied={setIsCopied}
+                            />
                         </div>
                     )}
                 </>)}
 
 
             {showForm && (
-                <div className={style.formulario}>
+                <div className="formulario_grid">
                     <label htmlFor="valueInput">Value: </label>
-                    <div className={style.botton_toggle}>
+                    <div className="input_button_toggle">
                         <input
                             type="text"
-                            className={style.input_botton}
+                            className="input_button"
                             id="valueInput"
                             value={displayWei ? valueInWei : valueInHex}
                             onChange={(e) =>
@@ -592,24 +435,21 @@ const SendTransaction = ({ viewForm, viewScamButton, viewCheckSum }) => {
                                     : setValueInHex(e.target.value)
                             }
                         />
-                        <button className={style.toggleButton} onClick={convertValue}>
+                        <button className="toggle_auto_button" onClick={convertValue}>
                             {displayWei ? 'WEI' : 'HEX'}
                         </button>
                     </div>
 
 
                     <label htmlFor="type">Type: </label>
+                    <div className="input_checkbox_type" >
+                        <div >
+                            <input type="checkbox" checked={selectedOption === '0x2'} onChange={toggleOption} />
+                            <span className="sub_title"> EIP-1559</span></div>
 
-
-                    <div className={style.type_check} >
-
-                        <div className={style.type_checkk}>
-                            <input className={style.input_check} type="checkbox" checked={selectedOption === '0x2'} onChange={toggleOption} />
-                            <span className={style.labelText}> EIP-1559</span></div>
-
-                        <div className={style.type_checkk}>
-                            <input className={style.input_check} type="checkbox" checked={selectedOption === '0x0'} onChange={toggleOption} />
-                            <span className={style.labelText}> Standard</span></div>
+                        <div >
+                            <input type="checkbox" checked={selectedOption === '0x0'} onChange={toggleOption} />
+                            <span className="sub_title"> Standard</span></div>
                     </div>
 
                     {selectedOption === '0x2' ? (
@@ -621,20 +461,20 @@ const SendTransaction = ({ viewForm, viewScamButton, viewCheckSum }) => {
 
                     )}
                     {selectedOption === '0x2' ? (
-                        <div className={style.botton_toggle}>
+                        <div className="input_button_toggle">
                             <input
                                 type="text"
                                 id="MaxFeePerGasInput"
                                 value={maxFeePerGas}
                                 onChange={(e) => setMaxFeePerGas(e.target.value)}
                                 disabled={isAutoMaxFee}
-                                className={style.input_botton}
+                                className="input_button"
                             />
                             <button
-                                className={`${style.toggleButton} ${isAutoMaxFee ? style.toggleOn : style.toggleOff}`}
+                                className={`toggle_auto_button ${isAutoMaxFee ? "toggleOn" : "toggleOff"}`}
                                 onClick={() => {
-                                    setIsAutoMaxFee(!isAutoMaxFee);
-                                    fetchMaxFees();
+                                    setIsAutoMaxFee(!isAutoMaxFee);                                    
+                                    Web3Utils.fetchMaxFees(setMaxFeePerGas);
                                 }
                                 }
                             >
@@ -642,20 +482,20 @@ const SendTransaction = ({ viewForm, viewScamButton, viewCheckSum }) => {
                             </button>
                         </div>
                     ) : (
-                        <div className={style.botton_toggle}>
+                        <div className="input_button_toggle">
                             <input
                                 type="text"
-                                className={style.input_botton}
+                                className="input_button"
                                 id="gasPriceInput"
                                 value={gasPrice}
                                 onChange={(e) => setGasPrice(e.target.value)}
                                 disabled={isToggledPrice}
                             />
                             <button
-                                className={`${style.toggleButton} ${isToggledPrice ? style.toggleOn : style.toggleOff}`}
+                                className={`toggle_auto_button ${isToggledPrice ? "toggleOn" : "toggleOff"}`}
                                 onClick={() => {
                                     setIsToggledPrice(!isToggledPrice);
-                                    fetchGasPrice();
+                                    Web3Utils.fetchGasPrice(setGasPrice);
                                 }}>
                                 {isToggledPrice ? 'AUTO' : 'AUTO'}
                             </button>
@@ -671,21 +511,21 @@ const SendTransaction = ({ viewForm, viewScamButton, viewCheckSum }) => {
                             id="MaxPriorityFeePerGasInput"
                             value={maxPriorityFeePerGas}
                             onChange={(e) => setMaxPriorityFeePerGas(e.target.value)}
-                            className={style.formulario_input}
+                            className="formulario_grid_input"
                         />
                     ) : ("")}
 
                     <label htmlFor="gasLimitInput">Gas Limit:</label>
-                    <div className={style.botton_toggle}>
+                    <div className="input_button_toggle">
                         <input
                             type="text"
                             id="gasLimitInput"
                             value={gasLimit}
                             onChange={(e) => setGasLimit(parseInt(e.target.value))}
                             disabled={isToggledLimit}
-                            className={style.input_botton}
+                            className="input_button"
                         />
-                        <button className={`${style.toggleButton} ${isToggledLimit ? style.toggleOn : style.toggleOff}`}
+                        <button className={`toggle_auto_button ${isToggledLimit ? "toggleOn" : "toggleOff"}`}
                             onClick={() => {
                                 setIsToggledLimit(!isToggledLimit);
                                 fetchGasLimit();
@@ -699,24 +539,24 @@ const SendTransaction = ({ viewForm, viewScamButton, viewCheckSum }) => {
                     <label htmlFor="data">Data: </label>
                     <input
                         type="text"
-                        className={style.formulario_input}
+                        className="formulario_grid_input"
                         id="data"
                         value={data}
                         onChange={(e) => setData(e.target.value)}
                     />
 
                     <label htmlFor="nonce">Nonce:</label>
-                    <div className={style.botton_toggle}>
+                    <div className="input_button_toggle">
                         <input
                             type="text"
-                            className={style.input_botton}
+                            className="input_button"
                             id="nonce"
                             value={nonce}
                             disabled={isToggledNonce}
                             onChange={(e) => setNonce(e.target.value)}
                         />
                         <button
-                            className={`${style.toggleButton} ${isToggledNonce ? style.toggleOn : style.toggleOff}`}
+                            className={`toggle_auto_button ${isToggledNonce ? "toggleOn" : "toggleOff"}`}
                             onClick={() => {
                                 setIsToggledNonce(!isToggledNonce);
                                 getNonce();
@@ -729,15 +569,11 @@ const SendTransaction = ({ viewForm, viewScamButton, viewCheckSum }) => {
                     <label htmlFor="chainId">Chain ID: </label>
                     <input
                         type="text"
-                        className={style.formulario_input}
+                        className="formulario_grid_input"
                         id="chainId"
                         value={chainId}
                         onChange={(e) => setChainId(e.target.value)}
                     />
-
-
-
-
                 </div>)}
 
 

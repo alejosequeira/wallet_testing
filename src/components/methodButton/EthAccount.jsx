@@ -12,8 +12,8 @@ export default function EthAccount() {
 
     const handleGetEthAccounts = async () => {
         try {
-            const provider = window.ethereum;
-            const _accounts = await provider.request({
+            // const provider = window.ethereum;
+            const _accounts = await window.ethereum.request({
                 method: 'eth_accounts',
             });
 
@@ -25,7 +25,7 @@ export default function EthAccount() {
             }
         } catch (err) {
             console.error("Error executing eth_accounts FAILED" + err);
-            setAccountsResult(`Error: ${err.message}`)
+            setAccountsResult(`${err.message}`)
             setToggleHash(false)
         }
         console.log("pressing the button eth_accounts");

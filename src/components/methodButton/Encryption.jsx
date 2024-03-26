@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import AlertComponent from '@/components/mainLayout/Alert';
 
-const Encryption = ({ decryptionAddress, chipherText }) => {
+const Encryption = ({ address, chipherText }) => {
   const [encryptionKey, setEncryptionKey] = useState('');
   const [decryptedText, setDecryptedText] = useState('');
   const [isCopiedE, setIsCopiedE] = useState(false);
@@ -11,26 +11,29 @@ const Encryption = ({ decryptionAddress, chipherText }) => {
   const [toggleHashD, setToggleHashD] = useState(false);
   const getEncryptionKey = async () => {
     try {
-      const provider = window.ethereum;
-      setEncryptionKey(await provider.request({
+      console.log('address', address);
+      // const provider = window.ethereum;
+      setEncryptionKey(await window.ethereum.request({
         method: 'eth_getEncryptionPublicKey',
-        params: [decryptionAddress]
+        params: [address]
       }));
       setToggleHashE(true)
     } catch (error) {
-      setEncryptionKey(`Error: ${error.message}`);
+      setEncryptionKey(`${error.message}`);
       console.error(`Error: ${error.message}`);
       setToggleHashE(false)
     }
   };
 
   const handleDecrypt = async () => {
-    try {
-      const provider = window.ethereum;
 
-      const decryptedMessage = await provider.request({
+    try {
+      console.log('address', address);
+      // const provider = window.ethereum;
+
+      const decryptedMessage = await window.ethereum.request({
         method: 'eth_decrypt',
-        params: [chipherText, decryptionAddress]
+        params: [chipherText, address]
       });
 
       setDecryptedText(decryptedMessage);
