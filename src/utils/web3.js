@@ -20,6 +20,7 @@ export const connectToWallet = async (setAccountsResult, setAccountsError) => {
     if (accounts.length > 0) {
       const userAccount = accounts[0];
       setAccountsResult(userAccount)
+      window.location.reload();
     } else {
       console.log('No accounts found.');
     }

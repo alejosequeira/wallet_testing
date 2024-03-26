@@ -22,12 +22,7 @@ const SignTypeData = ({ address }) => {
         setShowForm(!showForm);
     };
 
-    const handleSignTypedData = async (version) => {
-        // if (!window.ethereum) {
-        //     setSignTypedData(prev => ({ ...prev, [version]: `No Ethereum Wallet Found!` }));
-        //     setToggleHashZero(prev => ({ ...prev, [version]: false }));
-        //     return;
-        // }
+    const handleSignTypedData = async (version) => {      
         try {
             const sign = await window.ethereum.request({
                 method: `eth_signTypedData_${version}`,

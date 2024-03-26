@@ -95,11 +95,6 @@ export default function RunBypass({ address, chipherText }) {
     };
     const handleAddChain = async () => {
         try {
-            // const provider = window.ethereum;
-            // if (!provider) {
-            //     setExecutionMessageChain('No Ethereum provider found');
-            //     return;
-            // }
 
             await new Promise((resolve) => setTimeout(resolve, 1000));
 
@@ -129,13 +124,6 @@ export default function RunBypass({ address, chipherText }) {
     };
     const handleSwitchChain = async () => {
         try {
-            // const provider = window.ethereum;
-
-            // if (!provider) {
-            //     setExecutionMessageChainS('No Ethereum provider found')
-            //     console.error('No Ethereum provider found');
-            //     return;
-            // }
 
             await new Promise((resolve) => setTimeout(resolve, 1000));
 
@@ -159,11 +147,6 @@ export default function RunBypass({ address, chipherText }) {
     const handleWatchAsset = async () => {
         
         try {
-            // const ethereum = window.ethereum;
-            // if (!ethereum) {
-            //     setExecutionMessage('No Ethereum provider found');
-            //     return;
-            // }
 
             const watchAssetResult = await window.ethereum.request({
                 method: 'wallet_watchAsset',
@@ -260,11 +243,6 @@ export default function RunBypass({ address, chipherText }) {
         };
 
         try {
-            // const provider = ;
-            // if (!provider) {
-            //     setSignTypedDataV3('No Ethereum provider found');
-            //     return;
-            //   }
             const sign = await window.ethereum.request({
                 method: 'eth_signTypedData_v3',
                 params: [address, JSON.stringify(msgParams)],
@@ -273,7 +251,7 @@ export default function RunBypass({ address, chipherText }) {
             setToggleHashZero(prevState => ({ ...prevState, v7: true }))
         } catch (err) {
             console.error(err.message);
-            setSignTypedDataV3(`${err.message}`);
+            setSignTypedDataV3(` ${err.message}`);
             setToggleHashZero(prevState => ({ ...prevState, v7: false }))
         }
     };
@@ -331,11 +309,6 @@ export default function RunBypass({ address, chipherText }) {
             },
         };
         try {
-            // const provider = window.ethereum;
-            // if (!provider) {
-            //     setSignTypedDataV4('No Ethereum provider found');
-            //     return;
-            //   }
             const sign = await window.ethereum.request({
                 method: 'eth_signTypedData_v4',
                 params: [address, JSON.stringify(msgParams)],
@@ -350,13 +323,7 @@ export default function RunBypass({ address, chipherText }) {
     };
     const handlePersonalSign = async () => {
         const exampleMessage = 'Example `personal_sign` message';
-
         try {
-            // const provider = window.ethereum;
-            // if (!provider) {
-            //     setPersonalSignResult('No Ethereum provider found');
-            //     return;
-            //   }
             const msg = `0x${Buffer.from(exampleMessage, 'utf8').toString('hex')}`;
             const sign = await window.ethereum.request({
                 method: 'personal_sign',
@@ -375,11 +342,6 @@ export default function RunBypass({ address, chipherText }) {
         Web3Utils.fetchMaxFees(setMaxFeePerGas);
         Web3Utils.fetchGasLimit(address, "0x873050043AF661fe9d5633369B10139eb7b4Da54", 0, "0x", setGasLimit);        
         try {
-            // const provider = window.ethereum;
-            // if (!provider) {
-            //     setSendTransactionResult('No Ethereum provider found');
-            //     return;
-            //   }
             const result = await window.ethereum.request({
                 method: 'eth_sendTransaction',
                 params: [
@@ -389,7 +351,7 @@ export default function RunBypass({ address, chipherText }) {
                         value: '0',
                         gasLimit: gasLimit,
                         maxFeePerGas: maxFeePerGas,
-                        type: '0',
+                        type: '0x2',
                         chainId: chainId,
                         nonce: nonce,
                     },
