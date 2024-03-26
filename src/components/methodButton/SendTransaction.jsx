@@ -528,7 +528,7 @@ const SendTransaction = ({ address, viewForm, viewScamButton, viewCheckSum }) =>
                         <button className={`toggle_auto_button ${isToggledLimit ? "toggleOn" : "toggleOff"}`}
                             onClick={() => {
                                 setIsToggledLimit(!isToggledLimit);
-                                fetchGasLimit();
+                                Web3Utils.fetchGasLimit(from, to, valueInHex, data, setGasLimit);
                             }}>
                             {isToggledLimit ? 'AUTO' : 'AUTO'}
                         </button>

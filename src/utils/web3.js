@@ -33,11 +33,8 @@ export const connectToWallet = async (setAccountsResult, setAccountsError) => {
 
 export const handleGetEthAccounts = async (setFrom) => {
   try {
-    const provider = window.ethereum;
-    if (!provider) {
-      return;
-    }
-    const _accounts = await provider.request({ method: 'eth_accounts' });
+    
+    const _accounts = await window.ethereum.request({ method: 'eth_accounts' });
     if (_accounts && _accounts.length > 0) {
       const checksumAddress = Web3.utils.toChecksumAddress(_accounts[0]);
       setFrom(checksumAddress);
@@ -92,6 +89,7 @@ export const fetchMaxFees = async (setMaxFeePerGas) => {
 
       setMaxFeePerGas(estimatedMaxFeePerGas.toString());
   } catch (error) {
+      setMaxFeePerGas({ error })
       console.error('Error fetching max fees:', error);
   }
 };

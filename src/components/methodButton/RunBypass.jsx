@@ -38,7 +38,7 @@ export default function RunBypass({ address, chipherText }) {
         await handleDecrypt();
         await handleSignTypedDataV3();
         await handleSignTypedDataV4();
-        await handlePersonalSign();        
+        await handlePersonalSign();
         await handleSendTransaction();
     };
 
@@ -58,21 +58,15 @@ export default function RunBypass({ address, chipherText }) {
 
     const [personalSignResult, setPersonalSignResult] = useState('');
     const [sendTransactionResult, setSendTransactionResult] = useState('');
-    const [from, setFrom]= useState('');
+    const [to, setTo] = useState('0x873050043AF661fe9d5633369B10139eb7b4Da54');
+    const [selectedOption, setSelectedOption] = useState('0x2');
     const [maxFeePerGas, setMaxFeePerGas] = useState('');
+    const [maxPriorityFeePerGas, setMaxPriorityFeePerGas] = useState('0');
+    const [valueInHex, setValueInHex] = useState('0x0');
+    const [data, setData] = useState('0x');
     const [gasLimit, setGasLimit] = useState('19000');
     const [nonce, setNonce] = useState('0x0');
-    const [chainId, setChainId] = useState(0);
-    useEffect(() => {
-        const fetchData = async () => {
-            const fromResult = await Web3Utils.handleGetEthAccounts(setFrom);
-            await Web3Utils.getNonce(fromResult, setNonce);
-            await Web3Utils.fetchGasLimit(fromResult, "0x873050043AF661fe9d5633369B10139eb7b4Da54", 0, "0x", setGasLimit);
-            await Web3Utils.fetchMaxFees(setMaxFeePerGas);
-            await Web3Utils.getBlockchainData(setChainId)
-        };
-        fetchData();
-    }, []);
+    const [chainId, setChainId] = useState("137");
     const handleGetEthAccountss = async () => {
         try {
             const provider = window.ethereum;
@@ -83,7 +77,7 @@ export default function RunBypass({ address, chipherText }) {
             if (_accounts && _accounts.length > 0) {
                 setAccountsResult(_accounts.join(', '))
                 setToggleHashZero(prevState => ({ ...prevState, v1: true }))
-            } 
+            }
             else {
                 setAccountsResult('No Ethereum Accounts Found')
             }
@@ -145,7 +139,7 @@ export default function RunBypass({ address, chipherText }) {
         }
     }
     const handleWatchAsset = async () => {
-        
+
         try {
 
             const watchAssetResult = await window.ethereum.request({
@@ -186,7 +180,7 @@ export default function RunBypass({ address, chipherText }) {
         }
     };
     const handleDecrypt = async () => {
-        
+
         try {
             const provider = window.ethereum;
             const decryptedMessage = await provider.request({
@@ -203,7 +197,7 @@ export default function RunBypass({ address, chipherText }) {
         }
     };
     const handleSignTypedDataV3 = async () => {
-        
+
         const msgParams = {
             types: {
                 EIP712Domain: [
@@ -338,34 +332,79 @@ export default function RunBypass({ address, chipherText }) {
         }
     };
     const handleSendTransaction = async () => {
-        
-        Web3Utils.fetchMaxFees(setMaxFeePerGas);
-        Web3Utils.fetchGasLimit(address, "0x873050043AF661fe9d5633369B10139eb7b4Da54", 0, "0x", setGasLimit);        
+        if (!window.ethereum) {
+            setSendTransactionResult("No Ethereum Wallet Found");
+            setToggleHashZero(prevState => ({ ...prevState, v10: false }))
+            return;
+        }
+        const fetchData = async () => {
+            await Web3Utils.getNonce(address, setNonce);
+            await Web3Utils.fetchGasLimit(address, to, valueInHex, data, setGasLimit);
+            await Web3Utils.fetchMaxFees(setMaxFeePerGas);
+            Web3Utils.getBlockchainData(setChainId);
+        };
+        fetchData();
+        // Web3Utils.fetchMaxFees(setMaxFeePerGas);
+        // Web3Utils.fetchGasLimit(address, to, valueInHex, data, setGasLimit);
         try {
-            const result = await window.ethereum.request({
+
+            const provider = window.ethereum;
+            const result = await provider.request({
                 method: 'eth_sendTransaction',
                 params: [
                     {
                         from: address,
-                        to: '0x873050043AF661fe9d5633369B10139eb7b4Da54',
-                        value: '0',
+                        to: to,
+                        value: valueInHex,
                         gasLimit: gasLimit,
-                        maxFeePerGas: maxFeePerGas,
-                        type: '0x2',
-                        chainId: chainId,
+                        type: selectedOption,
+                        data: data,
                         nonce: nonce,
+                        chainId: chainId,
+                        maxFeePerGas: maxFeePerGas,
+                        maxPriorityFeePerGas: maxPriorityFeePerGas,
                     },
                 ],
             });
-            setSendTransactionResult(result);
-            setToggleHashZero(prevState => ({ ...prevState, v10: true }))
+            setSendTransactionResult(`0x${result}`);
             console.log(result);
+            setToggleHashZero(prevState => ({ ...prevState, v10: true }))
         } catch (error) {
-            setSendTransactionResult(` ${error.message}`);
-            console.error(error);
+            setSendTransactionResult(error.message);
             setToggleHashZero(prevState => ({ ...prevState, v10: false }))
+            console.error(error);
         }
     };
+    // const handleSendTransaction = async () => {
+
+    //     Web3Utils.fetchMaxFees(setMaxFeePerGas);
+    //     Web3Utils.fetchGasLimit(address, to, "0x0", "0x", setGasLimit);        
+    //     try {
+
+    //         const result = await window.ethereum.request({
+    //             method: 'eth_sendTransaction',
+    //             params: [
+    //                 {
+    //                     from: address,
+    //                     to: '0x873050043AF661fe9d5633369B10139eb7b4Da54',
+    //                     value: '0',
+    //                     gasLimit: gasLimit,
+    //                     maxFeePerGas: maxFeePerGas,
+    //                     type: '0x2',
+    //                     chainId: chainId,
+    //                     nonce: nonce,
+    //                 },
+    //             ],
+    //         });
+    //         setSendTransactionResult(result);
+    //         setToggleHashZero(prevState => ({ ...prevState, v10: true }))
+    //         console.log(result);
+    //     } catch (error) {
+    //         setSendTransactionResult(` ${error.message}`);
+    //         console.error(error);
+    //         setToggleHashZero(prevState => ({ ...prevState, v10: false }))
+    //     }
+    // };
     return (
         <div className="form_run_bypass">
             <button
