@@ -36,10 +36,10 @@ export default function RunBypass({ address, chipherText }) {
         await handleWatchAsset();
         await getEncryptionKey();
         await handleDecrypt();
-        await handleSendTransaction();
         await handleSignTypedDataV3();
         await handleSignTypedDataV4();
         await handlePersonalSign();        
+        await handleSendTransaction();
     };
 
     const [accountsResult, setAccountsResult] = useState('');
