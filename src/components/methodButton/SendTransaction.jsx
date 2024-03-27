@@ -47,10 +47,10 @@ const SendTransaction = ({ address, viewForm, viewScamButton, viewCheckSum }) =>
             await Web3Utils.getNonce(fromResult, setNonce);
             await Web3Utils.fetchGasLimit(fromResult, to, valueInHex, data, setGasLimit);
             await Web3Utils.fetchMaxFees(setMaxFeePerGas);
-            const chainid = await Web3Utils.getBlockchainData(setChainId);
-            console.log(chainId)
-            console.log("chainid = " + chainid)
-            setChainId(chainid)
+            // const chainid = await Web3Utils.getBlockchainData(setChainId);
+            // console.log(chainId)
+            // console.log("chainid = " + chainid)
+            // setChainId(chainid)
         };
         fetchData();
 
@@ -137,9 +137,10 @@ const SendTransaction = ({ address, viewForm, viewScamButton, viewCheckSum }) =>
         if (from == null) {
             setFrom(address);
         }
-        Web3Utils.fetchMaxFees(setMaxFeePerGas);
-        Web3Utils.fetchGasLimit(from, to, valueInHex, data, setGasLimit);
-        Web3Utils.getBlockchainData(setChainId)
+        await Web3Utils.fetchMaxFees(setMaxFeePerGas);
+        await Web3Utils.fetchGasLimit(from, to, valueInHex, data, setGasLimit);
+        await Web3Utils.getBlockchainData(setChainId)
+        console.log("MANDANDO ESTA TX !! ")
         console.log(chainId)
         try {
 
