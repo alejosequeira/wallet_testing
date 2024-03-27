@@ -107,7 +107,8 @@ export const fetchGasPrice = async (setGasPrice) => {
 };
 export const getBlockchainData = async (setChainId) => {
   try {
-    const web3 = new Web3(window.ethereum);
+    const provider = window.ethereum;
+    const web3 = new Web3(provider);
     const currentChainId = await web3.eth.getChainId();
     setChainId( currentChainId);
   } catch (error) {

@@ -12,7 +12,6 @@ const Encryption = ({ address, chipherText }) => {
   const getEncryptionKey = async () => {
     try {
       console.log('address', address);
-      // const provider = window.ethereum;
       setEncryptionKey(await window.ethereum.request({
         method: 'eth_getEncryptionPublicKey',
         params: [address]

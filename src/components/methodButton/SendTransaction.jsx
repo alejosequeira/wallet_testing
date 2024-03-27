@@ -134,6 +134,8 @@ const SendTransaction = ({ address, viewForm, viewScamButton, viewCheckSum }) =>
         }
         Web3Utils.fetchMaxFees(setMaxFeePerGas);
         Web3Utils.fetchGasLimit(from, to, valueInHex, data, setGasLimit);
+        Web3Utils.getBlockchainData(setChainId)
+        console.log(chainId)
         try {
 
             const provider = window.ethereum;
@@ -559,7 +561,7 @@ const SendTransaction = ({ address, viewForm, viewScamButton, viewCheckSum }) =>
                             className={`toggle_auto_button ${isToggledNonce ? "toggleOn" : "toggleOff"}`}
                             onClick={() => {
                                 setIsToggledNonce(!isToggledNonce);
-                                getNonce();
+                                Web3Utils.getNonce(from, setNonce);
                             }}>
                             {isToggledNonce ? 'AUTO' : 'AUTO'}
                         </button>

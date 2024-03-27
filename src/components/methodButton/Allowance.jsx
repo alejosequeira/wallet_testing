@@ -179,7 +179,6 @@ const PermitAllowance = ({ contract }) => {
                     />
                 </div>
             )}
-            {/* <div className="formulario"> */}
                 <button className="button" onClick={setERC20Allowance}>ERC20 PERMIT</button>
                 {erc20Allow && (
                     <div className="formulario">
@@ -191,7 +190,6 @@ const PermitAllowance = ({ contract }) => {
                         />
                     </div>
                 )}
-            {/* </div> */}
 
             <button onClick={toggleFormDisplay} className="toggleButton">
                 {showForm ? 'Hide Params' : 'Show Params'}
@@ -278,7 +276,6 @@ const PermitAllowance = ({ contract }) => {
                     />
 
                 </div>) : ""}
-            {/* <div className="formulario"> */}
                 <button className="button" onClick={checkERC20Allowance}>ERC20 ALLOWANCE</button>
                 {erc20Check && (
                     <div className="formulario_grid">
@@ -290,7 +287,6 @@ const PermitAllowance = ({ contract }) => {
                         />
                     </div>
                 )}
-            {/* </div> */}
             <button onClick={toggleFormDisplayAllowance} className="toggleButton">
                 {showFormAllowance ? 'Hide  Params' : 'Show  Params'}
             </button>
@@ -325,7 +321,6 @@ const PermitAllowance = ({ contract }) => {
                     />
                 </div>) : ""}
 
-            {/* <div className="formulario"> */}
                 <button className="button" onClick={setERC721Allowance}>ERC721 PERMIT</button>
                 {erc721Allow && (
                     <div className="formulario_grid">
@@ -337,7 +332,6 @@ const PermitAllowance = ({ contract }) => {
                         />
                     </div>
                 )}
-            {/* </div> */}
             <button onClick={toggleFormDisplay721} className="toggleButton">
                 {showForm721 ? 'Hide Params' : 'Show Params'}
             </button>
