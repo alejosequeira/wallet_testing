@@ -577,13 +577,14 @@ const SendTransaction = ({ address, viewForm, viewScamButton, viewCheckSum }) =>
                     </div>
 
 
-                    <label htmlFor="chainaid">Chain ID: </label>
+                    <label htmlFor="chain">Chain ID: </label>
                     <div className="input_button_toggle">
                         <input
-                            type="text"
+                            type="number"
                             className="input_button"
-                            id="chainaid"
-                            value={chainRight}
+                            id="chain"
+                            value={chainId}
+                            
                             disabled={isToggledChain}
                             onChange={(e) => setChain(e.target.value)}
                         />

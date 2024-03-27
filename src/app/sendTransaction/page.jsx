@@ -2,6 +2,7 @@ import React from 'react'
 import MainLayout from '@/components/mainLayout/MainLayout'
 import SendTransaction from '@/components/methodButton/SendTransaction'
 import DeployContract from '@/components/methodButton/DeployContract'
+import SendTransactionTX from '@/components/methodButton/senddddd/SenddddTx'
 
 
 export default function sendTransaction({ sidebarOpen, toggleSidebar }) {
@@ -16,6 +17,10 @@ export default function sendTransaction({ sidebarOpen, toggleSidebar }) {
             <SendTransaction
               viewForm={true}
               viewScamButton={false}
+            />
+          </div>
+          <div className="block">
+          <SendTransactionTX
             />
           </div>
 
