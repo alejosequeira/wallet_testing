@@ -127,7 +127,7 @@ export const getBlockchainData = async (setChainId) => {
 
     const web3 = new Web3(ethereum);
     const currentChainId = await web3.eth.getChainId();
-
+    setChainId(currentChainId)
     console.log('currentChainId', currentChainId);
     return currentChainId;
   } catch (error) {
