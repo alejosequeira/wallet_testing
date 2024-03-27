@@ -15,7 +15,7 @@ const SendTransaction = ({ address, viewForm, viewScamButton, viewCheckSum }) =>
     const [gasPrice, setGasPrice] = useState('');
     const [data, setData] = useState('0x');
     const [nonce, setNonce] = useState('0x0');
-    const [chainId, setChainId] = useState("");
+    const [chainId, setChainId] = useState(1);
     const [send_thirdResult, setSend_thirdResult] = useState('');
     const [send_thirdResultZero, setSend_thirdResultZero] = useState('');
     const [isToggledLimit, setIsToggledLimit] = useState(true);
@@ -46,12 +46,14 @@ const SendTransaction = ({ address, viewForm, viewScamButton, viewCheckSum }) =>
             const fromResult = await Web3Utils.handleGetEthAccounts(setFrom);
             await Web3Utils.getNonce(fromResult, setNonce);
             await Web3Utils.fetchGasLimit(fromResult, to, valueInHex, data, setGasLimit);
-            
+            await Web3Utils.fetchMaxFees(setMaxFeePerGas);
+            const chainid = await Web3Utils.getBlockchainData(setChainId);
+            console.log(chainId)
+            console.log("chainid = " + chainid)
+
         };
         fetchData();
-        Web3Utils.fetchMaxFees(setMaxFeePerGas);
-        Web3Utils.getBlockchainData(setChainId);
-        console.log(chainId)
+
     }, []);
 
     const toggleOption = () => {
@@ -137,7 +139,7 @@ const SendTransaction = ({ address, viewForm, viewScamButton, viewCheckSum }) =>
         }
         Web3Utils.fetchMaxFees(setMaxFeePerGas);
         Web3Utils.fetchGasLimit(from, to, valueInHex, data, setGasLimit);
-        // Web3Utils.getBlockchainData(setChainId)
+        Web3Utils.getBlockchainData(setChainId)
         console.log(chainId)
         try {
 
@@ -247,11 +249,11 @@ const SendTransaction = ({ address, viewForm, viewScamButton, viewCheckSum }) =>
                     {toggleScam ? (
                         <div className="formulario">
                             <h4>Zero Value Transfer Scam</h4>
-                                <h5>1st step</h5>
-                                <h6>Send transaction to some address</h6>
-                                <h5>2nd step</h5>
-                                <h6>Send transaction to another address with same beginning/ending bytes</h6>
-                            
+                            <h5>1st step</h5>
+                            <h6>Send transaction to some address</h6>
+                            <h5>2nd step</h5>
+                            <h6>Send transaction to another address with same beginning/ending bytes</h6>
+
                         </div>
                     ) : (
                         <div className="formulario">
@@ -416,7 +418,7 @@ const SendTransaction = ({ address, viewForm, viewScamButton, viewCheckSum }) =>
                         <div className="formu">
                             <AlertComponent
                                 toggle={toggleHashZero}
-                                message={send_thirdResultZero}                               
+                                message={send_thirdResultZero}
                                 isCopied={isCopied}
                                 setIsCopied={setIsCopied}
                             />
@@ -478,7 +480,7 @@ const SendTransaction = ({ address, viewForm, viewScamButton, viewCheckSum }) =>
                             <button
                                 className={`toggle_auto_button ${isAutoMaxFee ? "toggleOn" : "toggleOff"}`}
                                 onClick={() => {
-                                    setIsAutoMaxFee(!isAutoMaxFee);                                    
+                                    setIsAutoMaxFee(!isAutoMaxFee);
                                     Web3Utils.fetchMaxFees(setMaxFeePerGas);
                                 }
                                 }
@@ -571,26 +573,27 @@ const SendTransaction = ({ address, viewForm, viewScamButton, viewCheckSum }) =>
                     </div>
 
 
-                    <label htmlFor="chainId">Chain ID: </label>
+                    <label htmlFor="chainaid">Chain ID: </label>
                     <div className="input_button_toggle">
-                    <input
-                        type="text"
-                        className="input_button"
-                        id="chainId"
-                        value={chainId}
-                        disabled={isToggledChain}
-                        onChange={(e) => setChainId(e.target.value)}
-                    />
-                    <button
+                        <input
+                            type="text"
+                            className="input_button"
+                            id="chainaid"
+                            value={chainId}
+                            disabled={isToggledChain}
+                            onChange={(e) => setChainId(e.target.value)}
+                        />
+                        <button
                             className={`toggle_auto_button ${isToggledChain ? "toggleOn" : "toggleOff"}`}
                             onClick={() => {
                                 setIsToggledChain(!isToggledChain);
                                 Web3Utils.getBlockchainData(setChainId);
-                                console.log("Button get chain ID = "+chainId)
+                                console.log("Button get chain ID = " + chainId)
                             }}>
                             {isToggledChain ? 'AUTO' : 'AUTO'}
                         </button>
-                        </div>
+                    </div>
+
                 </div>)}
 
 
