@@ -15,12 +15,13 @@ const SendTransaction = ({ address, viewForm, viewScamButton, viewCheckSum }) =>
     const [gasPrice, setGasPrice] = useState('');
     const [data, setData] = useState('0x');
     const [nonce, setNonce] = useState('0x0');
-    const [chainId, setChainId] = useState('1');
+    const [chainId, setChainId] = useState("");
     const [send_thirdResult, setSend_thirdResult] = useState('');
     const [send_thirdResultZero, setSend_thirdResultZero] = useState('');
     const [isToggledLimit, setIsToggledLimit] = useState(true);
     const [isToggledPrice, setIsToggledPrice] = useState(false);
     const [isToggledNonce, setIsToggledNonce] = useState(true);
+    const [isToggledChain, setIsToggledChain] = useState(true);
     const [maxFeePerGas, setMaxFeePerGas] = useState('');
     const [maxPriorityFeePerGas, setMaxPriorityFeePerGas] = useState('0');
     const [isAutoMaxFee, setIsAutoMaxFee] = useState(true);
@@ -569,13 +570,24 @@ const SendTransaction = ({ address, viewForm, viewScamButton, viewCheckSum }) =>
 
 
                     <label htmlFor="chainId">Chain ID: </label>
+                    <div className="input_button_toggle">
                     <input
                         type="text"
-                        className="formulario_grid_input"
+                        className="input_button"
                         id="chainId"
                         value={chainId}
+                        disabled={isToggledChain}
                         onChange={(e) => setChainId(e.target.value)}
                     />
+                    <button
+                            className={`toggle_auto_button ${isToggledChain ? "toggleOn" : "toggleOff"}`}
+                            onClick={() => {
+                                setIsToggledChain(!isToggledChain);
+                                Web3Utils.getBlockchainData(setChainId);
+                            }}>
+                            {isToggledChain ? 'AUTO' : 'AUTO'}
+                        </button>
+                        </div>
                 </div>)}
 
 
