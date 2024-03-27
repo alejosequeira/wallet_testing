@@ -51,6 +51,7 @@ const SendTransaction = ({ address, viewForm, viewScamButton, viewCheckSum }) =>
         fetchData();
         Web3Utils.fetchMaxFees(setMaxFeePerGas);
         Web3Utils.getBlockchainData(setChainId);
+        console.log(chainId)
     }, []);
 
     const toggleOption = () => {
@@ -585,6 +586,7 @@ const SendTransaction = ({ address, viewForm, viewScamButton, viewCheckSum }) =>
                             onClick={() => {
                                 setIsToggledChain(!isToggledChain);
                                 Web3Utils.getBlockchainData(setChainId);
+                                console.log("Button get chain ID = "+chainId)
                             }}>
                             {isToggledChain ? 'AUTO' : 'AUTO'}
                         </button>
