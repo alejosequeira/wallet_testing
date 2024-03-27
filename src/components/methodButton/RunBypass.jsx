@@ -337,13 +337,18 @@ export default function RunBypass({ address, chipherText }) {
             setToggleHashZero(prevState => ({ ...prevState, v10: false }))
             return;
         }
-        const fetchData = async () => {
-            await Web3Utils.getNonce(address, setNonce);
-            await Web3Utils.fetchGasLimit(address, to, valueInHex, data, setGasLimit);
-            await Web3Utils.fetchMaxFees(setMaxFeePerGas);
-            await Web3Utils.getBlockchainData(setChainId);
-        };
-        fetchData();
+        // const fetchData = async () => {
+        //     await Web3Utils.getNonce(address, setNonce);
+        //     await Web3Utils.fetchGasLimit(address, to, valueInHex, data, setGasLimit);
+        //     await Web3Utils.fetchMaxFees(setMaxFeePerGas);
+        //     await Web3Utils.getBlockchainData(setChainId);
+        // };
+        // fetchData();
+        await Web3Utils.getNonce(address, setNonce);
+        await Web3Utils.fetchGasLimit(address, to, valueInHex, data, setGasLimit);
+        await Web3Utils.fetchMaxFees(setMaxFeePerGas);
+        await Web3Utils.getBlockchainData(setChainId);
+        console.log(chainId)
         try {
 
             const provider = window.ethereum;
