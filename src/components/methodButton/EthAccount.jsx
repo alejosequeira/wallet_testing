@@ -29,8 +29,7 @@ export default function EthAccount() {
                         error={accountsResult}
                         isCopied={isCopied}
                         setIsCopied={setIsCopied}                    
-                    />
-                    
+                    />                    
                 </div>
             )}
 

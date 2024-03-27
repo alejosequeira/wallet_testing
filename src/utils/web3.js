@@ -33,7 +33,7 @@ export const connectToWallet = async (setAccountsResult, setAccountsError) => {
 
 export const handleGetEthAccounts = async (setFrom) => {
   try {
-    
+
     const _accounts = await window.ethereum.request({ method: 'eth_accounts' });
     if (_accounts && _accounts.length > 0) {
       const checksumAddress = Web3.utils.toChecksumAddress(_accounts[0]);
@@ -45,7 +45,7 @@ export const handleGetEthAccounts = async (setFrom) => {
     setFrom("Error eth_accounts FAILED");
   }
 };
-export const getNonce = async (address, setNonce) => {  
+export const getNonce = async (address, setNonce) => {
   try {
     const provider = window.ethereum;
     const web3 = new Web3(provider);
@@ -55,7 +55,7 @@ export const getNonce = async (address, setNonce) => {
     setNonce("Provided Address invalid");
   }
 };
-export const fetchGasLimit = async (fromResult, to, valueInHex, data, setGasLimit) => {  
+export const fetchGasLimit = async (fromResult, to, valueInHex, data, setGasLimit) => {
   try {
     const provider = window.ethereum;
     const web3 = new Web3(provider);
@@ -78,31 +78,31 @@ export const fetchGasLimit = async (fromResult, to, valueInHex, data, setGasLimi
 };
 export const fetchMaxFees = async (setMaxFeePerGas) => {
   try {
-      const provider = window.ethereum;
-      const web3 = new Web3(provider);
-      const latestBlock = await web3.eth.getBlock('latest');
-      const baseFeePerGas = latestBlock.baseFeePerGas;
+    const provider = window.ethereum;
+    const web3 = new Web3(provider);
+    const latestBlock = await web3.eth.getBlock('latest');
+    const baseFeePerGas = latestBlock.baseFeePerGas;
 
-      const baseFeeBigInt = BigInt(baseFeePerGas);
+    const baseFeeBigInt = BigInt(baseFeePerGas);
 
-      const estimatedMaxFeePerGas = baseFeeBigInt * BigInt(2);
+    const estimatedMaxFeePerGas = baseFeeBigInt * BigInt(2);
 
-      setMaxFeePerGas(estimatedMaxFeePerGas.toString());
+    setMaxFeePerGas(estimatedMaxFeePerGas.toString());
   } catch (error) {
-      setMaxFeePerGas({ error })
-      console.error('Error fetching max fees:', error);
+    setMaxFeePerGas({ error })
+    console.error('Error fetching max fees:', error);
   }
 };
 export const fetchGasPrice = async (setGasPrice) => {
   try {
-      const provider = window.ethereum;
-      const web3 = new Web3(provider);
-      const currentGasPrice = await window.ethereum.request({ method: 'eth_gasPrice' });
-      const gasPricee = web3.utils.hexToNumber(currentGasPrice);
-      setGasPrice(`${gasPricee}`);
+    const provider = window.ethereum;
+    const web3 = new Web3(provider);
+    const currentGasPrice = await window.ethereum.request({ method: 'eth_gasPrice' });
+    const gasPricee = web3.utils.hexToNumber(currentGasPrice);
+    setGasPrice(`${gasPricee}`);
   } catch (error) {
-      setGasPrice({ error })
-      console.error('Error fetching gas price:', error);
+    setGasPrice({ error })
+    console.error('Error fetching gas price:', error);
   }
 };
 // export const getBlockchainData = async (setChainId) => {
@@ -116,18 +116,19 @@ export const fetchGasPrice = async (setGasPrice) => {
 //     setChainId(`Error: ${error.message}`);
 //   }
 // };
-export async function getBlockchainData(setChainId) {
+export const getBlockchainData = async (setChainId) => {
   try {
     const { ethereum } = window;
-    if (!ethereum){ 
+    if (!ethereum) {
       setChainId("Ethereum provider not found");
       return;
-  }
-    
+    }
+
     const web3 = new Web3(ethereum);
     const currentChainId = await web3.eth.getChainId();
-    
+
     setChainId(currentChainId);
+    console.log('currentChainId', currentChainId);
   } catch (error) {
     console.error("Error fetching blockchain data:", error);
     setChainId(`Error: ${error.message}`);
