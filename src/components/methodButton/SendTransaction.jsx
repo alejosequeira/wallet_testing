@@ -15,7 +15,7 @@ const SendTransaction = ({ address, viewForm, viewScamButton, viewCheckSum }) =>
     const [gasPrice, setGasPrice] = useState('');
     const [data, setData] = useState('0x');
     const [nonce, setNonce] = useState('0x0');
-    const [chainId, setChain] = useState(1);
+    const [chainId, setChain] = useState("1");
     const [chainRight, setChainRight] = useState("");
     const [send_thirdResult, setSend_thirdResult] = useState('');
     const [send_thirdResultZero, setSend_thirdResultZero] = useState('');
@@ -48,10 +48,10 @@ const SendTransaction = ({ address, viewForm, viewScamButton, viewCheckSum }) =>
             await Web3Utils.getNonce(fromResult, setNonce);
             await Web3Utils.fetchGasLimit(fromResult, to, valueInHex, data, setGasLimit);
             await Web3Utils.fetchMaxFees(setMaxFeePerGas);
-            const chainid = await Web3Utils.getBlockchainData(setChain);
-            console.log(chainId)
-            console.log("chainid = " + chainid)
-            setChain(chainid)
+            // const chainid = await Web3Utils.getBlockchainData(setChain);
+            // console.log(chainId)
+            // console.log("chainid = " + chainid)
+            // setChain(chainid)
         };
         fetchData();
 
@@ -580,11 +580,10 @@ const SendTransaction = ({ address, viewForm, viewScamButton, viewCheckSum }) =>
                     <label htmlFor="chain">Chain ID: </label>
                     <div className="input_button_toggle">
                         <input
-                            type="number"
+                            type="text"
                             className="input_button"
                             id="chain"
                             value={chainId}
-                            
                             disabled={isToggledChain}
                             onChange={(e) => setChain(e.target.value)}
                         />
