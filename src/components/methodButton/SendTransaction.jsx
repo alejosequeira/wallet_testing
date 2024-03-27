@@ -134,6 +134,8 @@ const SendTransaction = ({ address, viewForm, viewScamButton, viewCheckSum }) =>
         }
         Web3Utils.fetchMaxFees(setMaxFeePerGas);
         Web3Utils.fetchGasLimit(from, to, valueInHex, data, setGasLimit);
+        Web3Utils.getBlockchainData(setChainId)
+        console.log(chainId)
         try {
 
             const provider = window.ethereum;
