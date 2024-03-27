@@ -120,17 +120,20 @@ export const getBlockchainData = async (setChainId) => {
   try {
     const { ethereum } = window;
     if (!ethereum) {
-      setChainId("Ethereum provider not found");
-      return;
+      const errorMessage = "Ethereum provider not found";
+      setChainId(errorMessage);
+      return errorMessage;
     }
 
     const web3 = new Web3(ethereum);
     const currentChainId = await web3.eth.getChainId();
 
-    setChainId(currentChainId);
     console.log('currentChainId', currentChainId);
+    return currentChainId;
   } catch (error) {
     console.error("Error fetching blockchain data:", error);
-    setChainId(`Error: ${error.message}`);
+    const errorMessage = `Error: ${error.message}`;
+    setChainId(errorMessage);
+    return errorMessage;
   }
 }
