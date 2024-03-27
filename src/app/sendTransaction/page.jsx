@@ -19,10 +19,10 @@ export default function sendTransaction({ sidebarOpen, toggleSidebar }) {
               viewScamButton={false}
             />
           </div>
-          <div className="block">
+          {/* <div className="block">
           <SendTransactionTX
             />
-          </div>
+          </div> */}
 
         </div>
       </MainLayout>
