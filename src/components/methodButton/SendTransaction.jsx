@@ -46,10 +46,11 @@ const SendTransaction = ({ address, viewForm, viewScamButton, viewCheckSum }) =>
             const fromResult = await Web3Utils.handleGetEthAccounts(setFrom);
             await Web3Utils.getNonce(fromResult, setNonce);
             await Web3Utils.fetchGasLimit(fromResult, to, valueInHex, data, setGasLimit);
-            await Web3Utils.fetchMaxFees(setMaxFeePerGas);
-            await Web3Utils.getBlockchainData(setChainId)
+            
         };
         fetchData();
+        Web3Utils.fetchMaxFees(setMaxFeePerGas);
+        Web3Utils.getBlockchainData(setChainId);
     }, []);
 
     const toggleOption = () => {
@@ -135,7 +136,7 @@ const SendTransaction = ({ address, viewForm, viewScamButton, viewCheckSum }) =>
         }
         Web3Utils.fetchMaxFees(setMaxFeePerGas);
         Web3Utils.fetchGasLimit(from, to, valueInHex, data, setGasLimit);
-        Web3Utils.getBlockchainData(setChainId)
+        // Web3Utils.getBlockchainData(setChainId)
         console.log(chainId)
         try {
 
