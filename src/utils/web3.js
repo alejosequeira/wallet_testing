@@ -1,4 +1,6 @@
 import Web3 from 'web3';
+import { ethers } from 'ethers';
+
 export const connectToWallet = async (setAccountsResult, setAccountsError) => {
   try {
     let provider;
@@ -117,15 +119,30 @@ export const fetchGasPrice = async (setGasPrice) => {
 //   }
 // };
 export const getBlockchainData = async (setChainId) => {
+  // try {
+   
+  //   const provider = window.ethereum;
+  //       const web3 = new Web3(provider);
+  //   const currentChainId = await web3.eth.getChainId();
+  //   console.log(typeof currentChainId); 
+  //   setChainId(currentChainId)
+  //   console.log('currentChainId', currentChainId);
+  //   return currentChainId;
+  // } 
   try {
-    const provider = window.ethereum;
-    const web3 = new Web3(provider);
-    const currentChainId = await web3.eth.getChainId();
-    console.log(typeof currentChainId); 
-    setChainId(currentChainId)
-    console.log('currentChainId', currentChainId);
-    return currentChainId;
-  } catch (error) {
+    // Check if Web3 is injected by the browser (e.g., MetaMask)
+    if (window.ethereum) {
+      const provider = new ethers.providers.Web3Provider(window.ethereum);
+      const network = await provider.getNetwork();
+      setChainId(network.chainId);
+    } else {
+      // Fallback to a provider if Web3 is not injected
+      const provider = new ethers.providers.JsonRpcProvider('https://mainnet.infura.io/v3/YOUR_INFURA_PROJECT_ID');
+      const network = await provider.getNetwork();
+      setChainId(network.chainId);
+    }
+  }
+  catch (error) {
     console.error("Error fetching blockchain data:", error);
     const errorMessage = `Error: ${error.message}`;
     setChainId(errorMessage);
