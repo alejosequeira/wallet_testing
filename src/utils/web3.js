@@ -118,15 +118,10 @@ export const fetchGasPrice = async (setGasPrice) => {
 // };
 export const getBlockchainData = async (setChainId) => {
   try {
-    const { ethereum } = window;
-    if (!ethereum) {
-      const errorMessage = "Ethereum provider not found";
-      setChainId(errorMessage);
-      return errorMessage;
-    }
-
-    const web3 = new Web3(ethereum);
+    const provider = window.ethereum;
+    const web3 = new Web3(provider);
     const currentChainId = await web3.eth.getChainId();
+    console.log(typeof currentChainId); 
     setChainId(currentChainId)
     console.log('currentChainId', currentChainId);
     return currentChainId;
