@@ -105,14 +105,31 @@ export const fetchGasPrice = async (setGasPrice) => {
       console.error('Error fetching gas price:', error);
   }
 };
-export const getBlockchainData = async (setChainId) => {
+// export const getBlockchainData = async (setChainId) => {
+//   try {
+//     const provider = window.ethereum;
+//     const web3 = new Web3(provider);
+//     const currentChainId = await web3.eth.getChainId();
+//     setChainId( currentChainId);
+//   } catch (error) {
+//     console.error("Error fetching blockchain data:", error);
+//     setChainId(`Error: ${error.message}`);
+//   }
+// };
+export async function getBlockchainData(setChainId) {
   try {
-    const provider = window.ethereum;
-    const web3 = new Web3(provider);
+    const { ethereum } = window;
+    if (!ethereum){ 
+      setChainId("Ethereum provider not found");
+      return;
+  }
+    
+    const web3 = new Web3(ethereum);
     const currentChainId = await web3.eth.getChainId();
-    setChainId( currentChainId);
+    
+    setChainId(currentChainId);
   } catch (error) {
     console.error("Error fetching blockchain data:", error);
     setChainId(`Error: ${error.message}`);
   }
-};
+}
