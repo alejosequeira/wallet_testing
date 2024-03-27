@@ -15,7 +15,8 @@ const SendTransaction = ({ address, viewForm, viewScamButton, viewCheckSum }) =>
     const [gasPrice, setGasPrice] = useState('');
     const [data, setData] = useState('0x');
     const [nonce, setNonce] = useState('0x0');
-    const [chainId, setChainId] = useState(1);
+    const [chainId, setChain] = useState(1);
+    const [chainRight, setChainRight] = useState("");
     const [send_thirdResult, setSend_thirdResult] = useState('');
     const [send_thirdResultZero, setSend_thirdResultZero] = useState('');
     const [isToggledLimit, setIsToggledLimit] = useState(true);
@@ -47,10 +48,10 @@ const SendTransaction = ({ address, viewForm, viewScamButton, viewCheckSum }) =>
             await Web3Utils.getNonce(fromResult, setNonce);
             await Web3Utils.fetchGasLimit(fromResult, to, valueInHex, data, setGasLimit);
             await Web3Utils.fetchMaxFees(setMaxFeePerGas);
-            // const chainid = await Web3Utils.getBlockchainData(setChainId);
-            // console.log(chainId)
-            // console.log("chainid = " + chainid)
-            // setChainId(chainid)
+            const chainid = await Web3Utils.getBlockchainData(setChain);
+            console.log(chainId)
+            console.log("chainid = " + chainid)
+            setChain(chainid)
         };
         fetchData();
 
@@ -139,9 +140,11 @@ const SendTransaction = ({ address, viewForm, viewScamButton, viewCheckSum }) =>
         }
         await Web3Utils.fetchMaxFees(setMaxFeePerGas);
         await Web3Utils.fetchGasLimit(from, to, valueInHex, data, setGasLimit);
-        await Web3Utils.getBlockchainData(setChainId)
+        setChainRight(await Web3Utils.getBlockchainData(setChain))
         console.log("MANDANDO ESTA TX !! ")
-        console.log(chainId)
+        console.log("Chain ID :"+chainId)
+        console.log("Chain Id RIGHTTT! = "+ chainRight)
+
         try {
 
             const provider = window.ethereum;
@@ -580,15 +583,15 @@ const SendTransaction = ({ address, viewForm, viewScamButton, viewCheckSum }) =>
                             type="text"
                             className="input_button"
                             id="chainaid"
-                            value={chainId}
+                            value={chainRight}
                             disabled={isToggledChain}
-                            onChange={(e) => setChainId(e.target.value)}
+                            onChange={(e) => setChain(e.target.value)}
                         />
                         <button
                             className={`toggle_auto_button ${isToggledChain ? "toggleOn" : "toggleOff"}`}
                             onClick={() => {
                                 setIsToggledChain(!isToggledChain);
-                                Web3Utils.getBlockchainData(setChainId);
+                                Web3Utils.getBlockchainData(setChain);
                                 console.log("Button get chain ID = " + chainId)
                             }}>
                             {isToggledChain ? 'AUTO' : 'AUTO'}
