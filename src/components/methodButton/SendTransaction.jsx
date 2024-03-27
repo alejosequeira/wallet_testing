@@ -561,7 +561,7 @@ const SendTransaction = ({ address, viewForm, viewScamButton, viewCheckSum }) =>
                             className={`toggle_auto_button ${isToggledNonce ? "toggleOn" : "toggleOff"}`}
                             onClick={() => {
                                 setIsToggledNonce(!isToggledNonce);
-                                getNonce();
+                                Web3Utils.getNonce(from, setNonce);
                             }}>
                             {isToggledNonce ? 'AUTO' : 'AUTO'}
                         </button>
