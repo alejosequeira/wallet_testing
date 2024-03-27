@@ -50,7 +50,7 @@ const SendTransaction = ({ address, viewForm, viewScamButton, viewCheckSum }) =>
             const chainid = await Web3Utils.getBlockchainData(setChainId);
             console.log(chainId)
             console.log("chainid = " + chainid)
-
+            setChainId(chainid)
         };
         fetchData();
 
