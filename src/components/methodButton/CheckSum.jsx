@@ -1,48 +1,102 @@
+// "use client";
+// import React, { useState, useEffect } from 'react';
+// import Web3 from 'web3';
+// import { TextField } from '@mui/material';
+// import SendTransaction from './SendTransaction';
+// import { handleGetEthAccounts } from '@/utils/web3';
+// import AlertComponent from '@/components/mainLayout/Alert';
+
+// export default function CheckSum() {
+//     const [address, setAddress] = useState('');
+//     const [toggle, setToggle] = useState();
+//     const [isValid, setIsValid] = useState("");
+//     useEffect(() => {
+//         handleGetEthAccounts(setAddress);
+//     }, []);
+//     const validateAddressChecksum = () => {
+//         try {
+
+//             const isValidChecksum = Web3.utils.checkAddressChecksum(address);
+//             setToggle(isValidChecksum);
+//             setIsValid(isValidChecksum ? "Address has a valid EIP-55 checksum." : "Address has an invalid EIP-55 checksum.");
+//         } catch (error) {
+//             setToggle(false);
+//         }
+//     };
+//     const handleAddressChange = (e) => {
+//         setAddress(e.target.value);
+//     }
+
+//     return (
+//         <div className="formulario_one">
+
+//                 {isValid && (
+//                     <div>
+//                         <AlertComponent
+//                             toggle={toggle}
+//                             message={isValid}
+//                         />
+//                     </div>)
+//                 }
+                
+
+
+
+//             <SendTransaction
+//                 viewForm={true}
+//                 viewCheckSum={true}
+//             />
+
+//         </div>
+//     );
+// }
 "use client";
 import React, { useState, useEffect } from 'react';
 import Web3 from 'web3';
-import { TextField } from '@mui/material';
+import { TextField} from '@mui/material';
 import SendTransaction from './SendTransaction';
 import { handleGetEthAccounts } from '@/utils/web3';
-import AlertComponent from '@/components/mainLayout/Alert';
+import AlertComponent from '../mainLayout/Alert';
 
 export default function CheckSum() {
     const [address, setAddress] = useState('');
-    const [toggle, setToggle] = useState();
-    const [isValid, setIsValid] = useState("");
+    const [isValidChecksum, setIsValidChecksum] = useState(false);
+    const [checksumMessage, setChecksumMessage] = useState('');
+
     useEffect(() => {
         handleGetEthAccounts(setAddress);
     }, []);
+
     const validateAddressChecksum = () => {
         try {
-            const isValidChecksum = Web3.utils.checkAddressChecksum(address);
-            setToggle(isValidChecksum);
-            setIsValid(isValidChecksum ? "Address has a valid EIP-55 checksum." : "Address has an invalid EIP-55 checksum.");
+            const isValid = Web3.utils.checkAddressChecksum(address);
+            setIsValidChecksum(isValid);
+            setChecksumMessage(isValid ? 'Address has a valid EIP-55 checksum.' : 'Address has an invalid EIP-55 checksum.');
         } catch (error) {
-            setToggle(false);
+            setIsValidChecksum(false);
+            setChecksumMessage('Invalid Ethereum address.');
         }
     };
+
     const handleAddressChange = (e) => {
         setAddress(e.target.value);
-    }
+        setChecksumMessage('');
+    };
 
     return (
         <div className="formulario_one">
-            
-                <button
-                    className="button"
-                    onClick={validateAddressChecksum}
-                > VALIDATE CHECKSUM
-                </button>
-                {isValid && (
-                    <div>
-                        <AlertComponent
-                            toggle={toggle}
-                            message={isValid}
-                        />
-                    </div>)
-                }
-                <TextField
+            <button
+                className="button"
+                onClick={validateAddressChecksum}
+            > VALIDATE CHECKSUM
+            </button>
+            {checksumMessage && (
+                <AlertComponent
+                    toggle={isValidChecksum}
+                    message={checksumMessage}
+                />
+            )}
+            <TextField
                     type="text"
                     id="addressInput_eht"
                     value={address}
@@ -73,14 +127,7 @@ export default function CheckSum() {
                         },
                     }}
                 />
-
-                
-            
-            <SendTransaction
-                viewForm={true}
-                viewCheckSum={true}
-            />
-            
+            <SendTransaction viewForm={true} viewCheckSum={true} address={address} />
         </div>
     );
 }
