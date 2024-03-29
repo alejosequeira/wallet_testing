@@ -450,11 +450,14 @@ const SendTransaction = ({ address, viewForm, viewScamButton, viewCheckSum }) =>
                     <label htmlFor="type">Type: </label>
                     <div className="input_checkbox_type" >
                         <div >
-                            <input type="checkbox" checked={selectedOption === '0x2'} onChange={toggleOption} />
+                            <input type="checkbox" 
+                            value={selectedOption}                            
+                            checked={selectedOption === '0x2'} 
+                            onChange={toggleOption} />
                             <span className="sub_title"> EIP-1559</span></div>
 
                         <div >
-                            <input type="checkbox" checked={selectedOption === '0x0'} onChange={toggleOption} />
+                            <input type="checkbox" value={selectedOption} checked={selectedOption === '0x0'} onChange={toggleOption} />
                             <span className="sub_title"> Standard</span></div>
                     </div>
 

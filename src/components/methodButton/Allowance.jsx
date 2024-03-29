@@ -257,6 +257,7 @@ const PermitAllowance = ({ contract }) => {
                         className="formulario_grid_input"
                         id="rInput"
                         value={r1}
+                        readOnly
                     />
                     <label htmlFor="sInput">s :</label>
                     <textarea
@@ -265,6 +266,7 @@ const PermitAllowance = ({ contract }) => {
                         className="formulario_grid_input"
                         id="sInput"
                         value={s1}
+                        readOnly
                     />
                     <label htmlFor="vInput">v :</label>
                     <textarea
@@ -273,6 +275,7 @@ const PermitAllowance = ({ contract }) => {
                         className="formulario_grid_input"
                         id="vInput"
                         value={v1}
+                        readOnly
                     />
 
                 </div>) : ""}
