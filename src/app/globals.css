@@ -451,7 +451,7 @@ a {
   }
 }
 @media (max-width: 1200px) {
-  .formulario {
+  /* .formulario {
       display: grid;
       grid-template-columns: 0.1fr 1fr;
       row-gap: 15px;
@@ -459,7 +459,7 @@ a {
       margin-left: 10px;
       margin-right: 10px;
       align-items: stretch;
-  }
+  } */
 
   .formulario label {
       display: block;
