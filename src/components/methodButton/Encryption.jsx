@@ -28,7 +28,6 @@ const Encryption = ({ address, chipherText }) => {
 
     try {
       console.log('address', address);
-      // const provider = window.ethereum;
 
       const decryptedMessage = await window.ethereum.request({
         method: 'eth_decrypt',
