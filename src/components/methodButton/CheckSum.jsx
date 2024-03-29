@@ -13,25 +13,31 @@ export default function CheckSum() {
     const [checksumMessage, setChecksumMessage] = useState('');
 
     useEffect(() => {
-        const fetchData = async () => {
-            await handleGetEthAccounts(setAddress);
-        };
-        fetchData();
+        handleGetEthAccounts(setAddress);
     }, []);
 
     const validateAddressChecksum = () => {
         try {
-            const isValid = Web3.utils.checkAddressChecksum(address);
-            setIsValidChecksum(isValid);
-            setChecksumMessage(isValid ? 'Address has a valid EIP-55 checksum.' : 'Address has an invalid EIP-55 checksum.');
-            console.log('isValid= ', isValid)
-            console.log('isValidChecksum= ', isValidChecksum)
-            console.log('checksumMessage =', checksumMessage)
-        } catch (error) {
+          const isValid = Web3.utils.isAddress(address);
+          if (!isValid) {
             setIsValidChecksum(false);
             setChecksumMessage('Invalid Ethereum address.');
+            return;
+          }
+      
+          const isValidChecksum = Web3.utils.checkAddressChecksum(address);
+          setIsValidChecksum(isValidChecksum);
+          setChecksumMessage(
+            isValidChecksum
+              ? 'Address has a valid EIP-55 checksum.'
+              : 'Address has an invalid EIP-55 checksum.'
+          );
+        } catch (error) {
+          console.error('Error validating address checksum:', error);
+          setIsValidChecksum(false);
+          setChecksumMessage('Error validating address checksum.');
         }
-    };
+      };
 
     const handleAddressChange = (e) => {
         setAddress(e.target.value);
