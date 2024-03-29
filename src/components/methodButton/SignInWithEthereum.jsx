@@ -4,11 +4,8 @@ import Web3 from 'web3';
 import AlertComponent from '../mainLayout/Alert';
 import { handleGetEthAccounts } from '@/utils/web3';
 
-export default function SignInWithEthereum (){
-    
-    
+export default function SignInWithEthereum (){   
     const [from, setFrom] = useState('');
-    const [message, setMessage] = useState();
     const [messages, setMessages] = useState();
     const [signatureCopy, setSignatureCopy] = useState('');
     const [toggleHashZero, setToggleHashZero] = useState(false);
@@ -27,23 +24,23 @@ export default function SignInWithEthereum (){
             console.error('Please install MetaMask to use this feature.');
             return;
         }
+        console.log("signing 1")
         try {
             const web3 = new Web3(window.ethereum);
             if (from.length === 0) {
                 console.error('No Ethereum accounts found.');
                 return;
             }
-
+            console.log("signing 2")
             const signature = await web3.eth.personal.sign(messages, from);
             setSignatureCopy(signature);
             const { r, s, v } = extractSignatureParts(signature);
-
-            setMessage(`\n${signature}\n\nr:\n${r}\ns:\n${s}\nv:${v}`);
             setToggleHashZero(true);
         } catch (error) {
             console.error('Error signing in with Ethereum:', error);
-            setMessage('Error signing in');
+            setSignatureCopy('Error signing in', error);
             setToggleHashZero(false);
+            console.log("signing 3")
         }
     };
 
@@ -59,7 +56,7 @@ export default function SignInWithEthereum (){
     return (
         <div className="formu">
             <button className="button" onClick={signInWithEthereum}>EIP-4361</button>
-            {message && (
+            {signatureCopy && (
                 <>
                     <AlertComponent
                         toggle={toggleHashZero}
@@ -69,6 +66,7 @@ export default function SignInWithEthereum (){
                     />
                 </>
             )}
+           
             <div className="formulario_grid">
                 <label htmlFor="fromInput">From:</label>
                 <textarea
