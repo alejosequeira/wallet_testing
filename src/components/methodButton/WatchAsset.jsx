@@ -11,11 +11,6 @@ function WatchAsset({ tokenAddress }) {
  
   const handleWatchAsset = async () => {
     try {
-      // const ethereum = window.ethereum;
-      // if (!ethereum) {
-      //   setExecutionMessage('No Ethereum provider found');
-      //   return;
-      // }
 
       const watchAssetResult = await window.ethereum.request({
         method: 'wallet_watchAsset',
