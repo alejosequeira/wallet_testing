@@ -1,5 +1,5 @@
 'use client'
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, use } from 'react';
 import Web3 from 'web3';
 import AlertComponent from '../mainLayout/Alert';
 import { handleGetEthAccounts } from '@/utils/web3';
@@ -10,16 +10,17 @@ export default function SignInWithEthereum (){
     const [signatureCopy, setSignatureCopy] = useState('');
     const [toggleHashZero, setToggleHashZero] = useState(false);
     const [isCopied, setIsCopied] = useState(false)
-
+useEffect(() => {
+        handleGetEthAccounts(setFrom);
+    }, []);
    
     const signInWithEthereum = async () => {
 
         if (!window.ethereum) {
             console.error('Please install MetaMask to use this feature.');
             return;
-        }
-        const fromResult = await handleGetEthAccounts(setFrom);         
-        setMessages(`https://opensea.io wants you to sign in with your Ethereum account:\n${fromResult}\n\nSign in with Ethereum to the app.\n\nURI: https://opensea.io\nVersion: 1\nChain ID: 137\nNonce: 12345678\nIssued At: 2024-03-10T01:08:50.113Z`)
+        }      
+        setMessages(`https://opensea.io wants you to sign in with your Ethereum account:\n${from}\n\nSign in with Ethereum to the app.\n\nURI: https://opensea.io\nVersion: 1\nChain ID: 137\nNonce: 12345678\nIssued At: 2024-03-10T01:08:50.113Z`)
 
         console.log("signing 1")
         try {

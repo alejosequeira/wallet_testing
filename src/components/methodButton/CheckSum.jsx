@@ -19,13 +19,13 @@ export default function CheckSum() {
     const validateAddressChecksum = () => {
         try {
           const isValid = Web3.utils.isAddress(address);
+          
           if (!isValid) {
             setIsValidChecksum(false);
             setChecksumMessage('Invalid Ethereum address.');
             return;
           }
-      
-          const isValidChecksum = Web3.utils.checkAddressChecksum(address);
+          const isValidChecksum = Web3.utils.toChecksumAddress(address);
           setIsValidChecksum(isValidChecksum);
           setChecksumMessage(
             isValidChecksum
