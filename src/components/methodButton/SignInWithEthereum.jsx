@@ -17,7 +17,7 @@ export default function SignInWithEthereum (){
     useEffect(() => {
         const fetchData = async () => {
             const fromResult = await handleGetEthAccounts(setFrom);         
-            setMessages(`https://opensea.io wants you to sign in with your Ethereum account:\n${fromResult}\n\nSign in with Ethereum to the app.\n\nURI: https://opensea.ioVersion: 1\nChain ID: 137\nNonce: 12345678\nIssued At: 2024-03-10T01:08:50.113Z`)
+            setMessages(`https://opensea.io wants you to sign in with your Ethereum account:\n${fromResult}\n\nSign in with Ethereum to the app.\n\nURI: https://opensea.io\nVersion: 1\nChain ID: 137\nNonce: 12345678\nIssued At: 2024-03-10T01:08:50.113Z`)
     
         };
         fetchData();
