@@ -34,7 +34,6 @@ const MyTokenDeployer = () => {
             setToggleHashZero(true)
         } catch (err) {
             setError(err.message)
-            console.log("Error: ", error);
             setToggleHashZero(false)
         } finally {
             setLoading(false);

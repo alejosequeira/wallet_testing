@@ -8,7 +8,7 @@ export default function EthAccount() {
 
     const [accountsResult, setAccountsResult] = useState('');
     const [isCopied, setIsCopied] = useState(false);
-    const [toggleHash, setToggleHash] = useState(false);
+    const [toggleHash, setToggleHash] = useState(true);
 
     return (
         <div className="formu">
@@ -24,9 +24,8 @@ export default function EthAccount() {
             {accountsResult && (
                 <div>
                     <AlertComponent
-                        toggle={toggleHash}
+                        toggle={toggleHash} 
                         message={accountsResult}
-                        error={accountsResult}
                         isCopied={isCopied}
                         setIsCopied={setIsCopied}                    
                     />                    
