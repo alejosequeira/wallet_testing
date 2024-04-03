@@ -14,7 +14,7 @@ const PermitAllowance = ({ contract }) => {
     const [tokenContractAddress, setTokenContractAddress] = useState(contract);
     const [owner, setOwner] = useState('');
     const [spender, setSpender] = useState('0x3b539558C6465968ccfDe3A731bF63d6d4D8B85D');
-    const [value1, setValue] = useState('1000000000000000000');
+    const [value1, setValue] = useState("1000000000000000000");
     const [deadline, setDeadline] = useState(9999999999);
     const [signature, setSignature] = useState('0xfcf6af9335fa6b0a63ef0f2128fb923a810e1f575cf6565fe0e474352763e1287eb0750cd9755b59ed9ad301b6489d591736c071494ad2cef9629a6fd41f0dcf1b');
     const [r1, setR] = useState('');
@@ -47,59 +47,18 @@ const PermitAllowance = ({ contract }) => {
         setTokenContractAddress(contract);
     }, [contract]);
 
-    const setERC20Allowance = async () => {
-        const web3 = new Web3(window.ethereum);
-        const tokenContract = new web3.eth.Contract(erc20Abi, tokenContractAddress);
-        const value = web3.utils.toBN(value1);
-        const r = "0x" + signature.slice(2, 66);
-        setR(r);
-        const s = "0x" + signature.slice(66, 130);
-        setS(s);
-        const v = parseInt(signature.slice(130, 132), 16);
-        setV(v);
-        if (!web3.utils.isHexStrict(r) || !web3.utils.isHexStrict(s) || isNaN(v)) {
-            console.error("Invalid signature format.");
-            return;
-        }
-
-        try {
-            const estimatedGas = await tokenContract.methods.permit(owner, spender, value, deadline, v, r, s).estimateGas({ from: owner });
-            const tx = await tokenContract.methods.permit(owner, spender, value, deadline, v, r, s)
-                .send({
-                    from: owner,
-                    gas: estimatedGas
-                });
-            setERC20Allow(tx);
-            setToggleHash(true)
-            console.log("owner:", owner);
-            console.log("spender:", spender);
-            console.log("value:", value);
-            console.log("deadline:", deadline);
-            console.log("v:", v);
-            console.log("r:", r);
-            console.log("s:", s);
-            console.log("estimatedGas:", estimatedGas);
-            console.log("Permit succeeded", tx);
-        } catch (error) {
-            setERC20Allow("Permit failed, view console for more details.");
-            setToggleHash(false);
-        }
-    };
     const approveERC20Token = async () => {
-        const web3 = new Web3(window.ethereum);
-        const tokenContract = new web3.eth.Contract(erc20Abi, tokenContractAddress);
-
-        const value = web3.utils.toBN(value1);
-
         try {
-            const estimatedGas = await tokenContract.methods
-                .approve(spender, value)
-                .estimateGas({ from: owner });
-
-            const tx = await tokenContract.methods
-                .approve(spender, value)
-                .send({ from: owner, gas: estimatedGas });
-
+            const web3 = new Web3(window.ethereum);
+            const tokenContract = new web3.eth.Contract(erc20Abi, tokenContractAddress);
+    
+            // const value = web3.utils.toBN(value1);
+            const value = value1;
+    
+            const estimatedGas = await tokenContract.methods.approve(spender, value).estimateGas({ from: owner });
+    
+            const tx = await tokenContract.methods.approve(spender, value).send({ from: owner, gas: estimatedGas });
+    
             setERC20Approve(tx);
             setToggleHashApprove(true);
             console.log("Approval succeeded", tx);
@@ -109,29 +68,74 @@ const PermitAllowance = ({ contract }) => {
             console.error("Approval failed:", error);
         }
     };
+    const permitERC20Token = async () => {
+        try {
+            const web3 = new Web3(window.ethereum);
+            const tokenContract = new web3.eth.Contract(erc20Abi, tokenContractAddress);
+            // const value = web3.utils.toBN(value1);
+            const value= value1;
+    
+            const r = "0x" + signature.slice(2, 66);
+            const s = "0x" + signature.slice(66, 130);
+            const v = parseInt(signature.slice(130, 132), 16);
+            
+            setR(r);
+            setS(s);
+            setV(v);
+    
+            if (!web3.utils.isHexStrict(r) || !web3.utils.isHexStrict(s) || isNaN(v)) {
+                console.error("Invalid signature format.");
+                return;
+            }
+    
+            const estimatedGas = await tokenContract.methods.permit(owner, spender, value, deadline, v, r, s).estimateGas({ from: owner });
+    
+            const tx = await tokenContract.methods.permit(owner, spender, value, deadline, v, r, s).send({ from: owner, gas: estimatedGas });
+    
+            setERC20Allow(tx);
+            setToggleHash(true);
+    
+            console.log("Transaction details:", {
+                owner: owner,
+                spender: spender,
+                value: value,
+                deadline: deadline,
+                v: v,
+                r: r,
+                s: s,
+                estimatedGas: estimatedGas,
+                txHash: tx.transactionHash
+            });
+            console.log("Permit succeeded", tx);
+        } catch (error) {
+            setERC20Allow("Permit failed, view console for more details.");
+            setToggleHash(false);
+            console.error("Permit failed:", error);
+        }
+    };   
+    
 
     const checkERC20Allowance = async () => {
-        const web3 = new Web3(window.ethereum);
-        const tokenContract = new web3.eth.Contract(erc20Abi, tokenContractAddress);
-
         try {
-            // Fetch the current allowance
+            const web3 = new Web3(window.ethereum);
+            const tokenContract = new web3.eth.Contract(erc20Abi, tokenContractAddress);
+    
             const currentAllowance = await tokenContract.methods.allowance(owner, spender).call();
             console.log(`Current allowance for spender is: ${currentAllowance}`);
-            setERC20Check(`allowance for spender is: ${currentAllowance}`);
-            setToggleCheck(true);
-            // Optionally, convert the allowance to a more readable format
+    
             const readableAllowance = web3.utils.fromWei(currentAllowance, 'ether');
             console.log(`Readable allowance for spender is: ${readableAllowance} tokens`);
+    
+            setERC20Check(`Allowance for spender is: ${readableAllowance} tokens`);
+            setToggleCheck(true);
         } catch (error) {
             console.error("Error checking allowance:", error);
             setERC20Check("Failed to check allowance. See console for more details.");
             setToggleCheck(false);
         }
-    };
+    };    
 
     async function setERC721Allowance() {
-
         try {
             const web3 = new Web3(window.ethereum);
             const contract = new web3.eth.Contract(contractABI, contractAddress);
@@ -170,7 +174,7 @@ const PermitAllowance = ({ contract }) => {
         <div className="formulario1">
             <button className="button" onClick={approveERC20Token}>ERC20 APPROVE</button>
             {erc20Approve && (
-                <div className="formulario_grid">
+                <div>
                     <AlertComponent
                         toggle={toggleHashApprove}
                         message={erc20Approve}
@@ -179,9 +183,9 @@ const PermitAllowance = ({ contract }) => {
                     />
                 </div>
             )}
-                <button className="button" onClick={setERC20Allowance}>ERC20 PERMIT</button>
+                <button className="button" onClick={permitERC20Token}>ERC20 PERMIT</button>
                 {erc20Allow && (
-                    <div className="formulario">
+                    <div>
                         <AlertComponent
                             toggle={toggleHash}
                             message={erc20Allow}
@@ -281,7 +285,7 @@ const PermitAllowance = ({ contract }) => {
                 </div>) : ""}
                 <button className="button" onClick={checkERC20Allowance}>ERC20 ALLOWANCE</button>
                 {erc20Check && (
-                    <div className="formulario_grid">
+                    <div>
                         <AlertComponent
                             toggle={toggleCheck}
                             message={erc20Check}
@@ -326,7 +330,7 @@ const PermitAllowance = ({ contract }) => {
 
                 <button className="button" onClick={setERC721Allowance}>ERC721 PERMIT</button>
                 {erc721Allow && (
-                    <div className="formulario_grid">
+                    <div>
                         <AlertComponent
                             toggle={toggleHash721}
                             message={erc721Allow}

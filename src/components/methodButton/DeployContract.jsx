@@ -6,7 +6,7 @@ import MyTokenBytecode from '../.././api/bytecodeDeployContract.json';
 import PermitAllowance from './Allowance';
 import AlertComponent from '@/components/mainLayout/Alert';
 
-const MyTokenDeployer = () => {
+const DeployContract = () => {
     const [contract, setContract] = useState("0xBf7F7560063b38b7ffE972C9401AC7a6aBaA7659");
     const [error, setError] = useState(false);
     const [loading, setLoading] = useState(false);
@@ -34,7 +34,6 @@ const MyTokenDeployer = () => {
             setToggleHashZero(true)
         } catch (err) {
             setError(err.message)
-            console.log("Error: ", error);
             setToggleHashZero(false)
         } finally {
             setLoading(false);
@@ -61,4 +60,4 @@ const MyTokenDeployer = () => {
     );
 };
 
-export default MyTokenDeployer;
+export default DeployContract;
