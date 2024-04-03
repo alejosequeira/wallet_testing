@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import AlertComponent from "@/components/mainLayout/Alert";
 import * as Web3Utils from "@/utils/web3";
 import ContinueTestBtn from "../mainLayout/ContinueTestBtn";
@@ -30,19 +30,6 @@ export default function RunBypass({ address, chipherText }) {
     v10: false,
   });
 
-  const handleAllActions = async () => {
-    await handleGetEthAccountss();
-    await handleAddChain();
-    await handleSwitchChain();
-    await handleWatchAsset();
-    await getEncryptionKey();
-    await handleDecrypt();
-    await handleSignTypedDataV3();
-    await handleSignTypedDataV4();
-    await handlePersonalSign();
-    await handleSendTransaction();
-  };
-
   const [accountsResult, setAccountsResult] = useState("");
 
   const [executionMessageChain, setExecutionMessageChain] = useState("");
@@ -69,10 +56,8 @@ export default function RunBypass({ address, chipherText }) {
   const [chainId, setChainId] = useState("137");
 
   const [continueTest, setContinueTest] = useState(true);
-  const [isLockedTest, setIsLockedTest] = useState(false);
 
   const handleLockedWallets = async () => {
-    setIsLockedTest(true);
     await handleGetEthAccountss();
     setContinueTest(false);
   };
@@ -411,11 +396,8 @@ export default function RunBypass({ address, chipherText }) {
   // };
   return (
     <div className="form_run_bypass">
-      <button className="button" onClick={handleAllActions}>
+      <button className="button" onClick={handleLockedWallets}>
         RUN AUTHORIZATION BYPASS TEST
-      </button>
-      <button className="button" style={{ marginTop: 15 }} onClick={handleLockedWallets}>
-        RUN BYPASS TEST (LOCKED WALLETS)
       </button>
 
       {accountsResult && (
@@ -425,7 +407,7 @@ export default function RunBypass({ address, chipherText }) {
         </div>
       )}
 
-      {isLockedTest && !continueTest && accountsResult && !executionMessageChain ? <ContinueTestBtn fn={handleAddChain} /> : null}
+      {!continueTest && accountsResult && !executionMessageChain ? <ContinueTestBtn fn={handleAddChain} /> : null}
 
       {executionMessageChain && (
         <div className="formu">
@@ -433,16 +415,14 @@ export default function RunBypass({ address, chipherText }) {
           <AlertComponent toggle={toggleHashZero.v2} message={executionMessageChain} isCopied={isCopied.v2} setIsCopied={setIsCopied.v2} />
         </div>
       )}
-      {isLockedTest && !continueTest && accountsResult && executionMessageChain && !executionMessageChainS ? (
-        <ContinueTestBtn fn={handleSwitchChain} />
-      ) : null}
+      {!continueTest && accountsResult && executionMessageChain && !executionMessageChainS ? <ContinueTestBtn fn={handleSwitchChain} /> : null}
       {executionMessageChainS && (
         <div className="formu">
           <h3 className="sub_title">Switch Chain</h3>
           <AlertComponent toggle={toggleHashZero.v3} message={executionMessageChainS} isCopied={isCopied.v3} setIsCopied={setIsCopied.v3} />
         </div>
       )}
-      {isLockedTest && !continueTest && accountsResult && executionMessageChain && executionMessageChainS && !executionMessage ? (
+      {!continueTest && accountsResult && executionMessageChain && executionMessageChainS && !executionMessage ? (
         <ContinueTestBtn fn={handleWatchAsset} />
       ) : null}
 
@@ -452,7 +432,7 @@ export default function RunBypass({ address, chipherText }) {
           <AlertComponent toggle={toggleHashZero.v4} message={executionMessage} isCopied={isCopied.v4} setIsCopied={setIsCopied.v4} />
         </div>
       )}
-      {isLockedTest && !continueTest && accountsResult && executionMessageChain && executionMessageChainS && executionMessage && !encryptionKey ? (
+      {!continueTest && accountsResult && executionMessageChain && executionMessageChainS && executionMessage && !encryptionKey ? (
         <ContinueTestBtn fn={getEncryptionKey} />
       ) : null}
 
@@ -462,14 +442,7 @@ export default function RunBypass({ address, chipherText }) {
           <AlertComponent toggle={toggleHashZero.v5} message={encryptionKey} isCopied={isCopied.v5} setIsCopied={setIsCopied.v5} />
         </div>
       )}
-      {isLockedTest &&
-      !continueTest &&
-      accountsResult &&
-      executionMessageChain &&
-      executionMessageChainS &&
-      executionMessage &&
-      encryptionKey &&
-      !decryptedText ? (
+      {!continueTest && accountsResult && executionMessageChain && executionMessageChainS && executionMessage && encryptionKey && !decryptedText ? (
         <ContinueTestBtn fn={handleDecrypt} />
       ) : null}
 
@@ -479,8 +452,7 @@ export default function RunBypass({ address, chipherText }) {
           <AlertComponent toggle={toggleHashZero.v6} message={decryptedText} isCopied={isCopied.v6} setIsCopied={setIsCopied.v6} />
         </div>
       )}
-      {isLockedTest &&
-      !continueTest &&
+      {!continueTest &&
       accountsResult &&
       executionMessageChain &&
       executionMessageChainS &&
@@ -497,8 +469,7 @@ export default function RunBypass({ address, chipherText }) {
           <AlertComponent toggle={toggleHashZero.v7} message={signTypedDataV3} isCopied={isCopied.v7} setIsCopied={setIsCopied.v7} />
         </div>
       )}
-      {isLockedTest &&
-      !continueTest &&
+      {!continueTest &&
       accountsResult &&
       executionMessageChain &&
       executionMessageChainS &&
@@ -516,8 +487,7 @@ export default function RunBypass({ address, chipherText }) {
           <AlertComponent toggle={toggleHashZero.v8} message={signTypedDataV4} isCopied={isCopied.v8} setIsCopied={setIsCopied.v8} />
         </div>
       )}
-      {isLockedTest &&
-      !continueTest &&
+      {!continueTest &&
       accountsResult &&
       executionMessageChain &&
       executionMessageChainS &&
@@ -536,8 +506,7 @@ export default function RunBypass({ address, chipherText }) {
           <AlertComponent toggle={toggleHashZero.v9} message={personalSignResult} isCopied={isCopied.v9} setIsCopied={setIsCopied.v9} />
         </div>
       )}
-      {isLockedTest &&
-      !continueTest &&
+      {!continueTest &&
       accountsResult &&
       executionMessageChain &&
       executionMessageChainS &&
