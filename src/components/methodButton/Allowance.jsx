@@ -14,7 +14,7 @@ const PermitAllowance = ({ contract }) => {
     const [tokenContractAddress, setTokenContractAddress] = useState(contract);
     const [owner, setOwner] = useState('');
     const [spender, setSpender] = useState('0x3b539558C6465968ccfDe3A731bF63d6d4D8B85D');
-    const [value1, setValue] = useState('1000000000000000000');
+    const [value1, setValue] = useState("1000000000000000000");
     const [deadline, setDeadline] = useState(9999999999);
     const [signature, setSignature] = useState('0xfcf6af9335fa6b0a63ef0f2128fb923a810e1f575cf6565fe0e474352763e1287eb0750cd9755b59ed9ad301b6489d591736c071494ad2cef9629a6fd41f0dcf1b');
     const [r1, setR] = useState('');
@@ -52,7 +52,8 @@ const PermitAllowance = ({ contract }) => {
             const web3 = new Web3(window.ethereum);
             const tokenContract = new web3.eth.Contract(erc20Abi, tokenContractAddress);
     
-            const value = web3.utils.toBN(value1);
+            // const value = web3.utils.toBN(value1);
+            const value = value1;
     
             const estimatedGas = await tokenContract.methods.approve(spender, value).estimateGas({ from: owner });
     
@@ -67,11 +68,12 @@ const PermitAllowance = ({ contract }) => {
             console.error("Approval failed:", error);
         }
     };
-    const setERC20Allowance = async () => {
+    const permitERC20Token = async () => {
         try {
             const web3 = new Web3(window.ethereum);
             const tokenContract = new web3.eth.Contract(erc20Abi, tokenContractAddress);
-            const value = web3.utils.toBN(value1);
+            // const value = web3.utils.toBN(value1);
+            const value= value1;
     
             const r = "0x" + signature.slice(2, 66);
             const s = "0x" + signature.slice(66, 130);
@@ -181,7 +183,7 @@ const PermitAllowance = ({ contract }) => {
                     />
                 </div>
             )}
-                <button className="button" onClick={setERC20Allowance}>ERC20 PERMIT</button>
+                <button className="button" onClick={permitERC20Token}>ERC20 PERMIT</button>
                 {erc20Allow && (
                     <div>
                         <AlertComponent
