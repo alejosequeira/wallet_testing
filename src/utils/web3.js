@@ -28,6 +28,7 @@ export const connectToWallet = async (setAccountsResult, setAccountsError) => {
   } catch (error) {
     console.error('Error connecting to wallet:', error);
     setAccountsError('Error connecting to wallet');
+    
   }
 };
 
@@ -42,7 +43,6 @@ export const handleGetEthAccounts = async (setFrom) => {
     }
   } catch (err) {
     console.error("Error executing eth_accounts FAILED: " + err);
-    setFrom("Error eth_accounts FAILED");
   }
 };
 export const getNonce = async (address, setNonce) => {
@@ -70,7 +70,7 @@ export const fetchGasLimit = async (fromResult, to, valueInHex, data, setGasLimi
       params: [transaction],
     });
     const estimatedGasNumber = web3.utils.hexToNumber(estimatedGas);
-    setGasLimit(`${estimatedGasNumber}`);
+    setGasLimit(estimatedGasNumber.toString());
   } catch (error) {
     setGasLimit('Error estimating gas:');
     console.log(error)
@@ -111,7 +111,7 @@ export const getBlockchainData = async (setChainId) => {
     const provider = window.ethereum;
     const web3 = new Web3(provider);
     const currentChainId = await web3.eth.getChainId();
-    
+
     setChainId(Number(currentChainId))
     return currentChainId;
   }

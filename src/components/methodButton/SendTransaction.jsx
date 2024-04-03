@@ -19,7 +19,7 @@ const SendTransaction = ({ address, viewForm, viewScamButton, viewCheckSum }) =>
     const [chainId, setChainId] = useState("1");
     const [send_thirdResult, setSend_thirdResult] = useState('');
     const [send_thirdResultZero, setSend_thirdResultZero] = useState('');
-    const [isToggledLimit, setIsToggledLimit] = useState(true);
+    const [isToggledLimit, setIsToggledLimit] = useState(false);
     const [isToggledPrice, setIsToggledPrice] = useState(false);
     const [isToggledNonce, setIsToggledNonce] = useState(true);
     const [isToggledChain, setIsToggledChain] = useState(true);
@@ -46,7 +46,6 @@ const SendTransaction = ({ address, viewForm, viewScamButton, viewCheckSum }) =>
         const fetchData = async () => {
             const fromResult = await Web3Utils.handleGetEthAccounts(setFrom);
             await Web3Utils.getNonce(fromResult, setNonce);
-            await Web3Utils.fetchGasLimit(fromResult, to, valueInHex, data, setGasLimit);
             await Web3Utils.fetchMaxFees(setMaxFeePerGas);
             await Web3Utils.getBlockchainData(setChainId);
         };
@@ -135,13 +134,10 @@ const SendTransaction = ({ address, viewForm, viewScamButton, viewCheckSum }) =>
         if (from == null) {
             setFrom(address);
         }
-        await Web3Utils.fetchMaxFees(setMaxFeePerGas);
-        await Web3Utils.fetchGasLimit(from, to, valueInHex, data, setGasLimit);
-        console.log("Chain2 ID :"+chainId)
+        Web3Utils.fetchMaxFees(setMaxFeePerGas);
+        Web3Utils.fetchGasLimit(from, to, valueInHex, data, setGasLimit);
         getBlockchainData(setChainId);
-        console.log("Chain3 ID :"+chainId)
         try {
-
             const provider = window.ethereum;
             const result = await provider.request({
                 method: 'eth_sendTransaction',
@@ -590,7 +586,6 @@ const SendTransaction = ({ address, viewForm, viewScamButton, viewCheckSum }) =>
                             onClick={() => {
                                 setIsToggledChain(!isToggledChain);
                                 getBlockchainData(setChainId);
-                                console.log("Button get chain ID = " + chainId)
                             }}>
                             {isToggledChain ? 'AUTO' : 'AUTO'}
                         </button>
