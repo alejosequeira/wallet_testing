@@ -45,9 +45,7 @@ const SendTransaction = ({ address, viewForm, viewScamButton, viewCheckSum }) =>
     useEffect(() => {
         const fetchData = async () => {
             const fromResult = await Web3Utils.handleGetEthAccounts(setFrom);
-            await Web3Utils.getNonce(fromResult, setNonce);
-            await Web3Utils.fetchMaxFees(setMaxFeePerGas);
-            await Web3Utils.getBlockchainData(setChainId);
+
         };
         fetchData();
 
@@ -88,81 +86,104 @@ const SendTransaction = ({ address, viewForm, viewScamButton, viewCheckSum }) =>
             }
         }
     };
-
     const handleSendStandardTransacction = async () => {
         if (!window.ethereum) {
             setSend_thirdResult("No Ethereum Wallet Found");
             setToggleHash(false);
             return;
         }
-        Web3Utils.fetchGasPrice(setGasPrice);
-        Web3Utils.fetchGasLimit(from, to, valueInHex, data, setGasLimit);
+        console.log(selectedOption)
         try {
-            const provider = window.ethereum;
-            const result = await provider.request({
-                method: 'eth_sendTransaction',
-                params: [
-                    {
-                        from: from,
-                        to: to,
-                        value: valueInHex,
-                        gasLimit: gasLimit,
-                        gasPrice: gasPrice,
-                        type: selectedOption,
-                        data: data,
-                        nonce: nonce,
-                        chainId: chainId,
-                    },
-                ],
-            });
+            const web3 = new Web3(window.ethereum);
+            const accounts = await web3.eth.requestAccounts();
+            const gasPricee = await web3.eth.getGasPrice();
+            setGasPrice(gasPricee)
+
+            if (accounts.length === 0) {
+                setSend_thirdResult("No Ethereum accounts found.");
+                setToggleHash(false);
+                return;
+            }
+
+            const fromm = from || address || accounts[0];
+            await Web3Utils.fetchMaxFees(setMaxFeePerGas);
+            await Web3Utils.fetchGasLimit(from, to, valueInHex, data, setGasLimit);
+            const chainIdd = await Web3Utils.getBlockchainData(setChainId);
+            await Web3Utils.getNonce(fromm, setNonce)
+
+            const transactionParams = {
+                from: fromm,
+                to: viewCheckSum ? toSUM : to,
+                gas: gasLimit,
+                nonce: nonce,
+                value: valueInWei,
+                type: selectedOption,
+                data: data,
+                // chainId: chainIdd,
+                gasPrice: gasPrice,
+            };
+            // const result = await window.ethereum.request({
+            //     method: 'eth_sendTransaction',
+            //     params: [transactionParams],
+            // });
+            const result = await web3.eth.sendTransaction(transactionParams);
             setSend_thirdResult(`0x${result}`);
-            console.log(result);
-            setToggleHash(true)
+            setToggleHash(true);
         } catch (error) {
-            setSend_thirdResult(`${error.message}`);
+            console.error('Error sending Standard transaction:', error);
+            setSend_thirdResult(error.message);
             setToggleHash(false);
-            console.error(error);
         }
     };
-
     const handleSendEIP1559Transacction = async () => {
         if (!window.ethereum) {
             setSend_thirdResult("No Ethereum Wallet Found");
             setToggleHash(false);
             return;
         }
-        if (from == null) {
-            setFrom(address);
-        }
-        Web3Utils.fetchMaxFees(setMaxFeePerGas);
-        Web3Utils.fetchGasLimit(from, to, valueInHex, data, setGasLimit);
-        getBlockchainData(setChainId);
         try {
-            const provider = window.ethereum;
-            const result = await provider.request({
-                method: 'eth_sendTransaction',
-                params: [
-                    {
-                        from: from || address,
-                        to: viewCheckSum ? toSUM : to,
-                        value: valueInHex,
-                        gasLimit: gasLimit,
-                        type: selectedOption,
-                        data: data,
-                        nonce: nonce,
-                        chainId: chainId,
-                        maxFeePerGas: maxFeePerGas,
-                        maxPriorityFeePerGas: maxPriorityFeePerGas,
-                    },
-                ],
-            });
+            const web3 = new Web3(window.ethereum);
+            const accounts = await web3.eth.requestAccounts();
+            //         const accounts = await web3.eth.getAccounts();
+            //         const nonce = await web3.eth.getTransactionCount(accounts[0]);
+            if (accounts.length === 0) {
+                setSend_thirdResult("No Ethereum accounts found.");
+                setToggleHash(false);
+                return;
+            }
+            const fromm = from || address || accounts[0];
+            const maxFee = await Web3Utils.fetchMaxFees(setMaxFeePerGas);
+            const gasLimitt= await Web3Utils.fetchGasLimit(from, to, valueInHex, data, setGasLimit);
+            const chainIdd = await Web3Utils.getBlockchainData(setChainId);
+            // await Web3Utils.getNonce(fromm, setNonce)
+            const noncee = await web3.eth.getTransactionCount(accounts[0]);
+            setNonce(nonce)
+            const transactionParams = {
+                from: fromm,
+                to: viewCheckSum ? toSUM : to,
+                gas: gasLimitt,
+                maxFeePerGas: maxFee,
+                maxPriorityFeePerGas: maxPriorityFeePerGas,
+                nonce: noncee,
+                value: valueInWei,
+                type: selectedOption,
+                data: data,
+                // chainId: chainIdd,
+            };
+            console.log(from, to, valueInWei, selectedOption, maxFeePerGas, gasLimit, gasPrice, selectedOption, data, nonce, chainIdd)
+            console.log(typeof from, typeof to, typeof selectedOption, typeof maxFeePerGas, typeof valueInWei, typeof gasLimit, typeof gasPrice, typeof selectedOption, typeof data, typeof nonce, typeof chainIdd)
+
+            // const result = await window.ethereum.request({
+            //     method: 'eth_sendTransaction',
+            //     params: [transactionParams],
+            // });
+            const result = await web3.eth.sendTransaction(transactionParams);
             setSend_thirdResult(`0x${result}`);
-            console.log(result);
-            setToggleHash(true)
+            setToggleHash(true);
         } catch (error) {
+            console.error('Error sending EIP-1559 transaction:', error);
             setSend_thirdResult(error.message);
-            setToggleHash(false)
-            console.error(error);
+            setToggleHash(false);
         }
     };
     const handleSendStandardTxUnknow = async () => {
@@ -171,33 +192,47 @@ const SendTransaction = ({ address, viewForm, viewScamButton, viewCheckSum }) =>
             setToggleHashZero(false);
             return;
         }
-        Web3Utils.fetchGasPrice(setGasPrice);
-        Web3Utils.fetchGasLimit(from, to, valueInHex, data, setGasLimit);
+        console.log(selectedOption)
         try {
-            const provider = window.ethereum;
-            const result = await provider.request({
-                method: 'eth_sendTransaction',
-                params: [
-                    {
-                        from: from,
-                        to: toggleScam ? (toScan) : (toScamAddress),
-                        value: valueInHex,
-                        gasLimit: gasLimit,
-                        gasPrice: gasPrice,
-                        type: selectedOption,
-                        data: data,
-                        nonce: nonce,
-                        chainId: chainId,
-                    },
-                ],
-            });
+            const web3 = new Web3(window.ethereum);
+            const accounts = await web3.eth.requestAccounts();
+            const gasPricee = await web3.eth.getGasPrice();
+            setGasPrice(gasPricee)
+
+            if (accounts.length === 0) {
+                setSend_thirdResult("No Ethereum accounts found.");
+                setToggleHashZero(false);
+                return;
+            }
+
+            const fromm = from || address || accounts[0];
+            await Web3Utils.fetchMaxFees(setMaxFeePerGas);
+            await Web3Utils.fetchGasLimit(from, to, valueInHex, data, setGasLimit);
+            const chainIdd = await Web3Utils.getBlockchainData(setChainId);
+            await Web3Utils.getNonce(fromm, setNonce)
+
+            const transactionParams = {
+                from: fromm,
+                to: toggleScam ? (toScan) : (toScamAddress),
+                gas: gasLimit,
+                nonce: nonce,
+                value: valueInWei,
+                type: selectedOption,
+                data: data,
+                // chainId: chainIdd,
+                gasPrice: gasPrice,
+            };
+            // const result = await window.ethereum.request({
+            //     method: 'eth_sendTransaction',
+            //     params: [transactionParams],
+            // });
+            const result = await web3.eth.sendTransaction(transactionParams);
             setSend_thirdResultZero(`0x${result}`);
-            console.log(result);
-            setToggleHashZero(true)
+            setToggleHashZero(true);
         } catch (error) {
-            setSend_thirdResultZero(`${error.message}`);
-            console.error(error);
-            setToggleHashZero(false)
+            console.error('Error sending Standard transaction:', error);
+            setSend_thirdResultZero(error.message);
+            setToggleHashZero(false);
         }
     };
     const handleSendTxEIP1559Unknow = async () => {
@@ -206,37 +241,51 @@ const SendTransaction = ({ address, viewForm, viewScamButton, viewCheckSum }) =>
             setToggleHashZero(false);
             return;
         }
-        Web3Utils.fetchMaxFees(setMaxFeePerGas);
-        Web3Utils.fetchGasLimit(from, to, valueInHex, data, setGasLimit);
         try {
-            const provider = window.ethereum;
-            const result = await provider.request({
-                method: 'eth_sendTransaction',
-                params: [
-                    {
-                        from: from,
-                        to: toggleScam ? (toScan) : (toScamAddress),
-                        value: valueInHex,
-                        gasLimit: gasLimit,
-                        type: selectedOption,
-                        data: data,
-                        nonce: nonce,
-                        chainId: chainId,
-                        maxFeePerGas: maxFeePerGas,
-                        maxPriorityFeePerGas: maxPriorityFeePerGas,
-                    },
-                ],
-            });
+            const web3 = new Web3(window.ethereum);
+            const accounts = await web3.eth.requestAccounts();
+            //         const accounts = await web3.eth.getAccounts();
+            //         const nonce = await web3.eth.getTransactionCount(accounts[0]);
+            if (accounts.length === 0) {
+                setSend_thirdResultZero("No Ethereum accounts found.");
+                setToggleHashZero(false);
+                return;
+            }
+            const fromm = from || address || accounts[0];
+            await Web3Utils.fetchMaxFees(setMaxFeePerGas);
+            await Web3Utils.fetchGasLimit(from, to, valueInHex, data, setGasLimit);
+            const chainIdd = await Web3Utils.getBlockchainData(setChainId);
+            await Web3Utils.getNonce(fromm, setNonce)
 
+            const transactionParams = {
+                from: fromm,
+                to: toggleScam ? (toScan) : (toScamAddress),
+                gas: gasLimit,
+                maxFeePerGas: maxFeePerGas,
+                maxPriorityFeePerGas: maxPriorityFeePerGas,
+                nonce: nonce,
+                value: valueInWei,
+                type: selectedOption,
+                data: data,
+                // chainId: chainIdd,
+            };
+            console.log(from, to, valueInWei, selectedOption, maxFeePerGas, gasLimit, gasPrice, selectedOption, data, nonce, chainIdd)
+            console.log(typeof from, typeof to, typeof selectedOption, typeof maxFeePerGas, typeof valueInWei, typeof gasLimit, typeof gasPrice, typeof selectedOption, typeof data, typeof nonce, typeof chainIdd)
+
+            // const result = await window.ethereum.request({
+            //     method: 'eth_sendTransaction',
+            //     params: [transactionParams],
+            // });
+            const result = await web3.eth.sendTransaction(transactionParams);
             setSend_thirdResultZero(`0x${result}`);
-            console.log(result);
-            setToggleHashZero(true)
+            setToggleHashZero(true);
         } catch (error) {
-            setSend_thirdResultZero(`${error.message}`);
-            console.error(error);
-            setToggleHashZero(false)
+            console.error('Error sending EIP-1559 transaction:', error);
+            setSend_thirdResultZero(error.message);
+            setToggleHashZero(false);
         }
     };
+
     return (
         <div className="formulario1">
             {showScamButton && (
@@ -358,7 +407,7 @@ const SendTransaction = ({ address, viewForm, viewScamButton, viewCheckSum }) =>
                             )}
                         </div>
                     )}
-                    {send_thirdResult && (
+                    {(send_thirdResult && toggleScam) && (
                         <div className="formu">
                             <AlertComponent
                                 toggle={toggleHash}
@@ -446,14 +495,16 @@ const SendTransaction = ({ address, viewForm, viewScamButton, viewCheckSum }) =>
                     <label htmlFor="type">Type: </label>
                     <div className="input_checkbox_type" >
                         <div >
-                            <input type="checkbox" 
-                            value={selectedOption}                            
-                            checked={selectedOption === '0x2'} 
-                            onChange={toggleOption} />
+                            <input type="checkbox"
+                                // value={selectedOption}                            
+                                checked={selectedOption === '0x2'}
+                                onChange={toggleOption} />
                             <span className="sub_title"> EIP-1559</span></div>
 
                         <div >
-                            <input type="checkbox" value={selectedOption} checked={selectedOption === '0x0'} onChange={toggleOption} />
+                            <input type="checkbox"
+                                // value={selectedOption} 
+                                checked={selectedOption === '0x0'} onChange={toggleOption} />
                             <span className="sub_title"> Standard</span></div>
                     </div>
 

@@ -10,9 +10,9 @@
 	},
 	"dependencies": {
 		"@emotion/react": "^11.11.4",
-		"@emotion/styled": "^11.11.0",
-		"@mui/icons-material": "^5.15.14",
-		"@mui/material": "^5.15.14",
+		"@emotion/styled": "^11.11.5",
+		"@mui/icons-material": "^5.15.15",
+		"@mui/material": "^5.15.15",
 		"axios": "^1.6.8",
 		"eth-crypto": "^2.6.0",
 		"ethers": "^6.11.1",
@@ -20,7 +20,7 @@
 		"react": "^18.2.0",
 		"react-dom": "^18.2.0",
 		"solc": "^0.8.25",
-		"web3": "^4.6.0"
+		"web3": "^4.7.0"
 	},
 	"devDependencies": {
 		"eslint": "^8.57.0",

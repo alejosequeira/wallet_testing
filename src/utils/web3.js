@@ -45,16 +45,17 @@ export const handleGetEthAccounts = async (setFrom) => {
     setFrom("Error eth_accounts FAILED");
   }
 };
-export const getNonce = async (address, setNonce) => {
+export const getNonce = async (from, setNonce) => {
   try {
     const provider = window.ethereum;
     const web3 = new Web3(provider);
-    const nonce = await web3.eth.getTransactionCount(address, 'latest');
+    const nonce = await web3.eth.getTransactionCount(from, 'latest');
     setNonce(`${nonce.toString()}`);
   } catch (error) {
     setNonce("Provided Address invalid");
   }
 };
+
 export const fetchGasLimit = async (fromResult, to, valueInHex, data, setGasLimit) => {
   try {
     const provider = window.ethereum;
@@ -70,7 +71,8 @@ export const fetchGasLimit = async (fromResult, to, valueInHex, data, setGasLimi
       params: [transaction],
     });
     const estimatedGasNumber = web3.utils.hexToNumber(estimatedGas);
-    setGasLimit(`${estimatedGasNumber}`);
+    setGasLimit(String(estimatedGasNumber));
+    return String(estimatedGasNumber)
   } catch (error) {
     setGasLimit('Error estimating gas:');
     console.log(error)
@@ -88,6 +90,7 @@ export const fetchMaxFees = async (setMaxFeePerGas) => {
     const estimatedMaxFeePerGas = baseFeeBigInt * BigInt(2);
 
     setMaxFeePerGas(estimatedMaxFeePerGas.toString());
+    return estimatedMaxFeePerGas.toString();
   } catch (error) {
     setMaxFeePerGas({ error })
     console.error('Error fetching max fees:', error);
@@ -99,7 +102,7 @@ export const fetchGasPrice = async (setGasPrice) => {
     const web3 = new Web3(provider);
     const currentGasPrice = await window.ethereum.request({ method: 'eth_gasPrice' });
     const gasPricee = web3.utils.hexToNumber(currentGasPrice);
-    setGasPrice(`${gasPricee}`);
+    setGasPrice(String(gasPricee));
   } catch (error) {
     setGasPrice({ error })
     console.error('Error fetching gas price:', error);
@@ -112,8 +115,8 @@ export const getBlockchainData = async (setChainId) => {
     const web3 = new Web3(provider);
     const currentChainId = await web3.eth.getChainId();
     
-    setChainId(Number(currentChainId))
-    return currentChainId;
+    setChainId(String(currentChainId))
+    return String(currentChainId);
   }
   catch (error) {
     console.error("Error fetching blockchain data:", error);
