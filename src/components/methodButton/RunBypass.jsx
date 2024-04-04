@@ -1,10 +1,12 @@
 "use client";
 import React from "react";
 import { useState } from "react";
-import Web3 from 'web3';
 import AlertComponent from "@/components/mainLayout/Alert";
 import * as Web3Utils from "@/utils/web3";
 import ContinueTestBtn from "../mainLayout/ContinueTestBtn";
+import ChangeCircleIcon from "@mui/icons-material/ChangeCircle";
+import { Tooltip } from "@mui/material";
+
 export default function RunBypass({ address, chipherText }) {
   const [toggleHashZero, setToggleHashZero] = useState({
     v1: false,
@@ -57,10 +59,24 @@ export default function RunBypass({ address, chipherText }) {
   const [chainId, setChainId] = useState("137");
 
   const [continueTest, setContinueTest] = useState(true);
+  const [toggleButton, setToggleButton] = useState(false);
 
   const handleLockedWallets = async () => {
     await handleGetEthAccountss();
     setContinueTest(false);
+  };
+
+  const handleRunAll = async () => {
+    await handleGetEthAccountss();
+    await handleAddChain();
+    await handleSwitchChain();
+    await handleWatchAsset();
+    await getEncryptionKey();
+    await handleDecrypt();
+    await handleSignTypedDataV3();
+    await handleSignTypedDataV4();
+    await handlePersonalSign();
+    await handleSendTransaction();
   };
 
   const handleGetEthAccountss = async () => {
@@ -325,110 +341,99 @@ export default function RunBypass({ address, chipherText }) {
       setToggleHashZero((prevState) => ({ ...prevState, v9: false }));
     }
   };
-//   const handleSendTransaction = async () => {
-//     if (!window.ethereum) {
-//       setSendTransactionResult("No Ethereum Wallet Found");
-//       setToggleHashZero((prevState) => ({ ...prevState, v10: false }));
-//       return;
-//     }
-//     await Web3Utils.getNonce(address, setNonce);
-//     await Web3Utils.fetchGasLimit(address, to, valueInHex, data, setGasLimit);
-//     await Web3Utils.fetchMaxFees(setMaxFeePerGas);
-//     await Web3Utils.getBlockchainData(setChainId);
-//     console.log(chainId);
-//     try {
-//       const provider = window.ethereum;
-//       const result = await provider.request({
-//         method: "eth_sendTransaction",
-//         params: [
-//           {
-//             from: address,
-//             to: to,
-//             value: valueInHex,
-//             gasLimit: gasLimit,
-//             type: selectedOption,
-//             data: data,
-//             nonce: nonce,
-//             chainId: chainId,
-//             maxFeePerGas: maxFeePerGas,
-//             maxPriorityFeePerGas: maxPriorityFeePerGas,
-//           },
-//         ],
-//       });
-//       setSendTransactionResult(`0x${result}`);
-//       console.log(result);
-//       setToggleHashZero((prevState) => ({ ...prevState, v10: true }));
-//       setContinueTest(false);
-//     } catch (error) {
-//       setSendTransactionResult(error.message);
-//       setToggleHashZero((prevState) => ({ ...prevState, v10: false }));
-//       console.error(error);
-//     }
-//   };
   const handleSendTransaction = async () => {
     if (!window.ethereum) {
-        setSendTransactionResult("No Ethereum Wallet Found");
-        setToggleHashZero((prevState) => ({ ...prevState, v10: false }));
-        return;
+      setSendTransactionResult("No Ethereum Wallet Found");
+      setToggleHashZero((prevState) => ({ ...prevState, v10: false }));
+      return;
     }
+    await Web3Utils.getNonce(address, setNonce);
+    await Web3Utils.fetchGasLimit(address, to, valueInHex, data, setGasLimit);
+    await Web3Utils.fetchMaxFees(setMaxFeePerGas);
+    await Web3Utils.getBlockchainData(setChainId);
+    console.log(chainId);
     try {
-        const web3 = new Web3(window.ethereum);
-        const accounts = await web3.eth.requestAccounts();
-        //         const accounts = await web3.eth.getAccounts();
-        //         const nonce = await web3.eth.getTransactionCount(accounts[0]);
-        if (accounts.length === 0) {
-            setSendTransactionResult("No Ethereum accounts found.");
-            setToggleHashZero((prevState) => ({ ...prevState, v10: false }));
-            return;
-        }
-        const fromm = address || accounts[0];
-        const maxFee = await Web3Utils.fetchMaxFees(setMaxFeePerGas);
-        const gasLimitt = await Web3Utils.fetchGasLimit(address, to, valueInHex, data, setGasLimit);
-        const chainIdd = await Web3Utils.getBlockchainData(setChainId);
-        // await Web3Utils.getNonce(fromm, setNonce)
-        const noncee = await web3.eth.getTransactionCount(accounts[0]);
-        setNonce(nonce)
-        const transactionParams = {
-            from: fromm,
+      const provider = window.ethereum;
+      const result = await provider.request({
+        method: "eth_sendTransaction",
+        params: [
+          {
+            from: address,
             to: to,
-            gas: gasLimitt,
-            maxFeePerGas: maxFee,
-            maxPriorityFeePerGas: maxPriorityFeePerGas,
-            nonce: noncee,
             value: valueInHex,
+            gasLimit: gasLimit,
             type: selectedOption,
             data: data,
-            // chainId: chainIdd,
-        };
-        // const result = await window.ethereum.request({
-        //     method: 'eth_sendTransaction',
-        //     params: [transactionParams],
-        // });
-        const result = await web3.eth.sendTransaction(transactionParams);
-        setSendTransactionResult(result.transactionHash);
-        setToggleHashZero((prevState) => ({ ...prevState, v10: true }));
-        setContinueTest(false);
+            nonce: nonce,
+            chainId: chainId,
+            maxFeePerGas: maxFeePerGas,
+            maxPriorityFeePerGas: maxPriorityFeePerGas,
+          },
+        ],
+      });
+      setSendTransactionResult(`0x${result}`);
+      console.log(result);
+      setToggleHashZero((prevState) => ({ ...prevState, v10: true }));
+      setContinueTest(false);
     } catch (error) {
-        console.error('Error sending EIP-1559 transaction:', error);
-        setSendTransactionResult(error.message);
-        setToggleHashZero((prevState) => ({ ...prevState, v10: false }));
+      setSendTransactionResult(error.message);
+      setToggleHashZero((prevState) => ({ ...prevState, v10: false }));
+      console.error(error);
     }
-};
+  };
+  // const handleSendTransaction = async () => {
+
+  // Web3Utils.fetchMaxFees(setMaxFeePerGas);
+  // Web3Utils.fetchGasLimit(address, to, "0x0", "0x", setGasLimit);
+  // try {
+
+  // const result = await window.ethereum.request({
+  // method: 'eth_sendTransaction',
+  // params: [
+  // {
+  // from: address,
+  // to: '0x873050043AF661fe9d5633369B10139eb7b4Da54',
+  // value: '0',
+  // gasLimit: gasLimit,
+  // maxFeePerGas: maxFeePerGas,
+  // type: '0x2',
+  // chainId: chainId,
+  // nonce: nonce,
+  // },
+  // ],
+  // });
+  // setSendTransactionResult(result);
+  // setToggleHashZero(prevState => ({ ...prevState, v10: true }))
+  // console.log(result);
+  // } catch (error) {
+  // setSendTransactionResult(` ${error.message}`);
+  // console.error(error);
+  // setToggleHashZero(prevState => ({ ...prevState, v10: false }))
+  // }
+  // };
   return (
     <div className="form_run_bypass">
-      <button className="button" onClick={handleLockedWallets}>
-        RUN AUTHORIZATION BYPASS TEST
-      </button>
-
+      <div className="runTest_buttons_wrapper">
+        {toggleButton ? (
+          <button className="button" onClick={handleLockedWallets}>
+            RUN AUTHORIZATION BYPASS TEST (MANUAL)
+          </button>
+        ) : (
+          <button className="button" onClick={handleRunAll}>
+            RUN AUTHORIZATION BYPASS TEST (AUTO)
+          </button>
+        )}
+        <Tooltip title={toggleButton ? "Change to auto test" : "Change to manual test"}>
+          <ChangeCircleIcon className="toggle_material_icon" onClick={() => setToggleButton(!toggleButton)} />
+        </Tooltip>
+      </div>
       {accountsResult && (
         <div className="formu">
           <h3 className="sub_title">Get Eth Account</h3>
           <AlertComponent toggle={toggleHashZero.v1} message={accountsResult} isCopied={isCopied.v1} setIsCopied={setIsCopied.v1} />
         </div>
       )}
-
       {!continueTest && accountsResult && !executionMessageChain ? <ContinueTestBtn fn={handleAddChain} /> : null}
-
       {executionMessageChain && (
         <div className="formu">
           <h3 className="sub_title">Add Chain</h3>
@@ -445,7 +450,6 @@ export default function RunBypass({ address, chipherText }) {
       {!continueTest && accountsResult && executionMessageChain && executionMessageChainS && !executionMessage ? (
         <ContinueTestBtn fn={handleWatchAsset} />
       ) : null}
-
       {executionMessage && (
         <div className="formu">
           <h3 className="sub_title">Watch Asset</h3>
@@ -455,7 +459,6 @@ export default function RunBypass({ address, chipherText }) {
       {!continueTest && accountsResult && executionMessageChain && executionMessageChainS && executionMessage && !encryptionKey ? (
         <ContinueTestBtn fn={getEncryptionKey} />
       ) : null}
-
       {encryptionKey && (
         <div className="formu">
           <h3 className="sub_title">Get Encryption Key</h3>
@@ -465,7 +468,6 @@ export default function RunBypass({ address, chipherText }) {
       {!continueTest && accountsResult && executionMessageChain && executionMessageChainS && executionMessage && encryptionKey && !decryptedText ? (
         <ContinueTestBtn fn={handleDecrypt} />
       ) : null}
-
       {decryptedText && (
         <div className="formu">
           <h3 className="sub_title">Decrypt</h3>
@@ -482,7 +484,6 @@ export default function RunBypass({ address, chipherText }) {
       !signTypedDataV3 ? (
         <ContinueTestBtn fn={handleSignTypedDataV3} />
       ) : null}
-
       {signTypedDataV3 && (
         <div className="formu">
           <h3 className="sub_title">Sign Typed Data v3</h3>
@@ -500,7 +501,6 @@ export default function RunBypass({ address, chipherText }) {
       !signTypedDataV4 ? (
         <ContinueTestBtn fn={handleSignTypedDataV4} />
       ) : null}
-
       {signTypedDataV4 && (
         <div className="formu">
           <h3 className="sub_title">Sign Typed Data v4</h3>
@@ -519,7 +519,6 @@ export default function RunBypass({ address, chipherText }) {
       !personalSignResult ? (
         <ContinueTestBtn fn={handlePersonalSign} />
       ) : null}
-
       {personalSignResult && (
         <div className="formu">
           <h3 className="sub_title">Personal Sign</h3>
@@ -539,7 +538,6 @@ export default function RunBypass({ address, chipherText }) {
       !sendTransactionResult ? (
         <ContinueTestBtn fn={handleSendTransaction} />
       ) : null}
-
       {sendTransactionResult && (
         <div className="formu">
           <h3 className="sub_title">Send Transaction</h3>
