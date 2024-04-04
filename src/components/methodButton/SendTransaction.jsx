@@ -125,8 +125,8 @@ const SendTransaction = ({ address, viewForm, viewScamButton, viewCheckSum }) =>
             //     method: 'eth_sendTransaction',
             //     params: [transactionParams],
             // });
-            const result = await web3.eth.sendTransaction(transactionParams);
-            setSend_thirdResult(`0x${result}`);
+            const result = await web3.eth.sendTransaction(transactionParams);       
+            setSend_thirdResult(result.transactionHash);
             setToggleHash(true);
         } catch (error) {
             console.error('Error sending Standard transaction:', error);
@@ -152,7 +152,7 @@ const SendTransaction = ({ address, viewForm, viewScamButton, viewCheckSum }) =>
             }
             const fromm = from || address || accounts[0];
             const maxFee = await Web3Utils.fetchMaxFees(setMaxFeePerGas);
-            const gasLimitt= await Web3Utils.fetchGasLimit(from, to, valueInHex, data, setGasLimit);
+            const gasLimitt = await Web3Utils.fetchGasLimit(from, to, valueInHex, data, setGasLimit);
             const chainIdd = await Web3Utils.getBlockchainData(setChainId);
             // await Web3Utils.getNonce(fromm, setNonce)
             const noncee = await web3.eth.getTransactionCount(accounts[0]);
@@ -177,7 +177,7 @@ const SendTransaction = ({ address, viewForm, viewScamButton, viewCheckSum }) =>
             //     params: [transactionParams],
             // });
             const result = await web3.eth.sendTransaction(transactionParams);
-            setSend_thirdResult(`0x${result}`);
+            setSend_thirdResult(result.transactionHash);
             setToggleHash(true);
         } catch (error) {
             console.error('Error sending EIP-1559 transaction:', error);
@@ -226,7 +226,7 @@ const SendTransaction = ({ address, viewForm, viewScamButton, viewCheckSum }) =>
             //     params: [transactionParams],
             // });
             const result = await web3.eth.sendTransaction(transactionParams);
-            setSend_thirdResultZero(`0x${result}`);
+            setSend_thirdResultZero(result.transactionHash);
             setToggleHashZero(true);
         } catch (error) {
             console.error('Error sending Standard transaction:', error);
@@ -276,7 +276,7 @@ const SendTransaction = ({ address, viewForm, viewScamButton, viewCheckSum }) =>
             //     params: [transactionParams],
             // });
             const result = await web3.eth.sendTransaction(transactionParams);
-            setSend_thirdResultZero(`0x${result}`);
+            setSend_thirdResultZero(result.transactionHash);
             setToggleHashZero(true);
         } catch (error) {
             console.error('Error sending EIP-1559 transaction:', error);
