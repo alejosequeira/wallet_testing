@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
 import { useState } from "react";
+import Web3 from 'web3';
 import AlertComponent from "@/components/mainLayout/Alert";
 import * as Web3Utils from "@/utils/web3";
 import ContinueTestBtn from "../mainLayout/ContinueTestBtn";
@@ -324,76 +325,95 @@ export default function RunBypass({ address, chipherText }) {
       setToggleHashZero((prevState) => ({ ...prevState, v9: false }));
     }
   };
+//   const handleSendTransaction = async () => {
+//     if (!window.ethereum) {
+//       setSendTransactionResult("No Ethereum Wallet Found");
+//       setToggleHashZero((prevState) => ({ ...prevState, v10: false }));
+//       return;
+//     }
+//     await Web3Utils.getNonce(address, setNonce);
+//     await Web3Utils.fetchGasLimit(address, to, valueInHex, data, setGasLimit);
+//     await Web3Utils.fetchMaxFees(setMaxFeePerGas);
+//     await Web3Utils.getBlockchainData(setChainId);
+//     console.log(chainId);
+//     try {
+//       const provider = window.ethereum;
+//       const result = await provider.request({
+//         method: "eth_sendTransaction",
+//         params: [
+//           {
+//             from: address,
+//             to: to,
+//             value: valueInHex,
+//             gasLimit: gasLimit,
+//             type: selectedOption,
+//             data: data,
+//             nonce: nonce,
+//             chainId: chainId,
+//             maxFeePerGas: maxFeePerGas,
+//             maxPriorityFeePerGas: maxPriorityFeePerGas,
+//           },
+//         ],
+//       });
+//       setSendTransactionResult(`0x${result}`);
+//       console.log(result);
+//       setToggleHashZero((prevState) => ({ ...prevState, v10: true }));
+//       setContinueTest(false);
+//     } catch (error) {
+//       setSendTransactionResult(error.message);
+//       setToggleHashZero((prevState) => ({ ...prevState, v10: false }));
+//       console.error(error);
+//     }
+//   };
   const handleSendTransaction = async () => {
     if (!window.ethereum) {
-      setSendTransactionResult("No Ethereum Wallet Found");
-      setToggleHashZero((prevState) => ({ ...prevState, v10: false }));
-      return;
+        setSendTransactionResult("No Ethereum Wallet Found");
+        setToggleHashZero((prevState) => ({ ...prevState, v10: false }));
+        return;
     }
-    await Web3Utils.getNonce(address, setNonce);
-    await Web3Utils.fetchGasLimit(address, to, valueInHex, data, setGasLimit);
-    await Web3Utils.fetchMaxFees(setMaxFeePerGas);
-    await Web3Utils.getBlockchainData(setChainId);
-    console.log(chainId);
     try {
-      const provider = window.ethereum;
-      const result = await provider.request({
-        method: "eth_sendTransaction",
-        params: [
-          {
-            from: address,
+        const web3 = new Web3(window.ethereum);
+        const accounts = await web3.eth.requestAccounts();
+        //         const accounts = await web3.eth.getAccounts();
+        //         const nonce = await web3.eth.getTransactionCount(accounts[0]);
+        if (accounts.length === 0) {
+            setSendTransactionResult("No Ethereum accounts found.");
+            setToggleHashZero((prevState) => ({ ...prevState, v10: false }));
+            return;
+        }
+        const fromm = address || accounts[0];
+        const maxFee = await Web3Utils.fetchMaxFees(setMaxFeePerGas);
+        const gasLimitt = await Web3Utils.fetchGasLimit(address, to, valueInHex, data, setGasLimit);
+        const chainIdd = await Web3Utils.getBlockchainData(setChainId);
+        // await Web3Utils.getNonce(fromm, setNonce)
+        const noncee = await web3.eth.getTransactionCount(accounts[0]);
+        setNonce(nonce)
+        const transactionParams = {
+            from: fromm,
             to: to,
+            gas: gasLimitt,
+            maxFeePerGas: maxFee,
+            maxPriorityFeePerGas: maxPriorityFeePerGas,
+            nonce: noncee,
             value: valueInHex,
-            gasLimit: gasLimit,
             type: selectedOption,
             data: data,
-            nonce: nonce,
-            chainId: chainId,
-            maxFeePerGas: maxFeePerGas,
-            maxPriorityFeePerGas: maxPriorityFeePerGas,
-          },
-        ],
-      });
-      setSendTransactionResult(`0x${result}`);
-      console.log(result);
-      setToggleHashZero((prevState) => ({ ...prevState, v10: true }));
-      setContinueTest(false);
+            // chainId: chainIdd,
+        };
+        // const result = await window.ethereum.request({
+        //     method: 'eth_sendTransaction',
+        //     params: [transactionParams],
+        // });
+        const result = await web3.eth.sendTransaction(transactionParams);
+        setSendTransactionResult(result.transactionHash);
+        setToggleHashZero((prevState) => ({ ...prevState, v10: true }));
+        setContinueTest(false);
     } catch (error) {
-      setSendTransactionResult(error.message);
-      setToggleHashZero((prevState) => ({ ...prevState, v10: false }));
-      console.error(error);
+        console.error('Error sending EIP-1559 transaction:', error);
+        setSendTransactionResult(error.message);
+        setToggleHashZero((prevState) => ({ ...prevState, v10: false }));
     }
-  };
-  // const handleSendTransaction = async () => {
-
-  //     Web3Utils.fetchMaxFees(setMaxFeePerGas);
-  //     Web3Utils.fetchGasLimit(address, to, "0x0", "0x", setGasLimit);
-  //     try {
-
-  //         const result = await window.ethereum.request({
-  //             method: 'eth_sendTransaction',
-  //             params: [
-  //                 {
-  //                     from: address,
-  //                     to: '0x873050043AF661fe9d5633369B10139eb7b4Da54',
-  //                     value: '0',
-  //                     gasLimit: gasLimit,
-  //                     maxFeePerGas: maxFeePerGas,
-  //                     type: '0x2',
-  //                     chainId: chainId,
-  //                     nonce: nonce,
-  //                 },
-  //             ],
-  //         });
-  //         setSendTransactionResult(result);
-  //         setToggleHashZero(prevState => ({ ...prevState, v10: true }))
-  //         console.log(result);
-  //     } catch (error) {
-  //         setSendTransactionResult(` ${error.message}`);
-  //         console.error(error);
-  //         setToggleHashZero(prevState => ({ ...prevState, v10: false }))
-  //     }
-  // };
+};
   return (
     <div className="form_run_bypass">
       <button className="button" onClick={handleLockedWallets}>
