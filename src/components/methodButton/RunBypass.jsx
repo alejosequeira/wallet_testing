@@ -341,7 +341,6 @@ export default function RunBypass({ address, chipherText }) {
         await Web3Utils.fetchGasLimit(address, to, valueInHex, data, setGasLimit);
         await Web3Utils.fetchMaxFees(setMaxFeePerGas);
         await Web3Utils.getBlockchainData(setChainId);
-        console.log(chainId)
         try {
 
             const provider = window.ethereum;
@@ -353,7 +352,7 @@ export default function RunBypass({ address, chipherText }) {
                         to: to,
                         value: valueInHex,
                         gasLimit: gasLimit,
-                        type: selectedOption,
+                        type: "0x2",
                         data: data,
                         nonce: nonce,
                         chainId: chainId,
