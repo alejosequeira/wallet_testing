@@ -5,16 +5,13 @@ import MainLayout from "@/components/mainLayout/MainLayout";
 import Sign from "@/components/methodButton/Sign";
 import Personal_custom from "@/components/methodButton/PersonalSign";
 import Sign_typedData from "@/components/methodButton/SignTypedData";
-import { handleGetEthAccounts } from "@/utils/web3";
 import Params from "@/components/mainLayout/Params";
 import { largeInput } from "@/utils/largeInput";
+import { useAddress } from "@/components/context/AddressContext";
 
 export default function Signing({ sidebarOpen, toggleSidebar }) {
-  const [address, setAddress] = useState("");
+  const { address, setAddress } = useAddress();
   const [challenge, setChallenge] = useState("Example `personal_sign` message");
-  useEffect(() => {
-    handleGetEthAccounts(setAddress);
-  }, []);
 
   const handleAddressChange = (event) => {
     setAddress(event.target.value);
