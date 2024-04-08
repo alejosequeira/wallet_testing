@@ -156,7 +156,7 @@ const SendTransaction = ({ address, viewForm, viewScamButton, viewCheckSum }) =>
             const chainIdd = await Web3Utils.getBlockchainData(setChainId);
             // await Web3Utils.getNonce(fromm, setNonce)
             const noncee = await web3.eth.getTransactionCount(accounts[0]);
-            setNonce(nonce)
+            setNonce(noncee)
             const transactionParams = {
                 from: fromm,
                 to: viewCheckSum ? toSUM : to,
@@ -229,7 +229,7 @@ const SendTransaction = ({ address, viewForm, viewScamButton, viewCheckSum }) =>
             setSend_thirdResultZero(result.transactionHash);
             setToggleHashZero(true);
         } catch (error) {
-            console.error('Error sending Standard transaction:', error);
+            console.error('Error sending Standard Scam Transaction:', error);
             setSend_thirdResultZero(error.message);
             setToggleHashZero(false);
         }
@@ -279,7 +279,7 @@ const SendTransaction = ({ address, viewForm, viewScamButton, viewCheckSum }) =>
             setSend_thirdResultZero(result.transactionHash);
             setToggleHashZero(true);
         } catch (error) {
-            console.error('Error sending EIP-1559 transaction:', error);
+            console.error('Error sending EIP-1559 Scam Transaction:', error);
             setSend_thirdResultZero(error.message);
             setToggleHashZero(false);
         }
