@@ -68,7 +68,7 @@ function WatchAsset() {
     };
 
     return (
-        <div className="formu">
+        <div className="formulario1">
             <button className="button" onClick={handleWatchAsset}>
                 WATCH ASSET
             </button>
