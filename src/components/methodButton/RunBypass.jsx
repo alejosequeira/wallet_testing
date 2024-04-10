@@ -364,22 +364,23 @@ export default function RunBypass({ address, chipherText }) {
             }
             const fromm = address || accounts[0];
             const maxFee = await Web3Utils.fetchMaxFees(setMaxFeePerGas);
-            const gasLimitt = await Web3Utils.fetchGasLimit(fromm, to, valueInHex, data, setGasLimit);
-            const chainIdd = await Web3Utils.getBlockchainData(setChainId);
+
+            const gasLimitFunctionJs = await Web3Utils.fetchGasLimit(fromm, to, valueInHex, data, setGasLimit);
+            const chainIdFunctionJs = await Web3Utils.getBlockchainData(setChainId);
             // await Web3Utils.getNonce(fromm, setNonce)
-            const noncee = await web3.eth.getTransactionCount(accounts[0]);
-            setNonce(noncee);
+            const nonceFunctionJS = await web3.eth.getTransactionCount(accounts[0]);
+            setNonce(nonceFunctionJS);
             const transactionParams = {
                 from: fromm,
                 to: to,
-                gas: gasLimitt,
+                gas: gasLimitFunctionJs,
                 maxFeePerGas: maxFee,
                 maxPriorityFeePerGas: maxPriorityFeePerGas,
-                nonce: noncee,
+                nonce: nonceFunctionJS,
                 value: valueInHex,
                 type: selectedOption,
                 data: data,
-                // chainId: chainIdd,
+                // chainId: chainIdFunctionJs,          
             };
             // const result = await window.ethereum.request({
             //     method: 'eth_sendTransaction',

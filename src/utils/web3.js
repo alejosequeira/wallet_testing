@@ -50,7 +50,8 @@ export const getNonce = async (from, setNonce) => {
     const provider = window.ethereum;
     const web3 = new Web3(provider);
     const nonce = await web3.eth.getTransactionCount(from, 'latest');
-    setNonce(`${nonce.toString()}`);
+    setNonce(nonce.toString());
+    return nonce.toString();
   } catch (error) {
     setNonce("Provided Address invalid");
   }

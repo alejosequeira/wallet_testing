@@ -152,25 +152,25 @@ const SendTransaction = ({ address, viewForm, viewScamButton, viewCheckSum }) =>
             }
             const fromm = from || address || accounts[0];
             const maxFee = await Web3Utils.fetchMaxFees(setMaxFeePerGas);
-            const gasLimitt = await Web3Utils.fetchGasLimit(from, to, valueInHex, data, setGasLimit);
-            const chainIdd = await Web3Utils.getBlockchainData(setChainId);
-            // await Web3Utils.getNonce(fromm, setNonce)
-            const noncee = await web3.eth.getTransactionCount(accounts[0]);
-            setNonce(noncee)
+            const gasLimitFunctionJs = await Web3Utils.fetchGasLimit(from, to, valueInHex, data, setGasLimit);
+            const chainIdFunctionJs = await Web3Utils.getBlockchainData(setChainId);
+            // await web3.eth.getTransactionCount(accounts[0]);
+            const nonceFunctionJS =await Web3Utils.getNonce(fromm, setNonce)            
+         
             const transactionParams = {
                 from: fromm,
                 to: viewCheckSum ? toSUM : to,
-                gas: gasLimitt,
+                gas: gasLimitFunctionJs,
                 maxFeePerGas: maxFee,
                 maxPriorityFeePerGas: maxPriorityFeePerGas,
-                nonce: noncee,
+                nonce: nonceFunctionJS,
                 value: valueInWei,
                 type: selectedOption,
                 data: data,
-                // chainId: chainIdd,
+                // chainId: chainIdFunctionJs,
             };
-            console.log(from, to, valueInWei, selectedOption, maxFeePerGas, gasLimit, gasPrice, selectedOption, data, nonce, chainIdd)
-            console.log(typeof from, typeof to, typeof selectedOption, typeof maxFeePerGas, typeof valueInWei, typeof gasLimit, typeof gasPrice, typeof selectedOption, typeof data, typeof nonce, typeof chainIdd)
+            console.log(from, to, valueInWei, selectedOption, maxFeePerGas, gasLimitFunctionJs, gasPrice, selectedOption, data, nonceFunctionJS, chainIdFunctionJs)
+            console.log(typeof from, typeof to, typeof selectedOption, typeof maxFeePerGas, typeof valueInWei, typeof gasLimitFunctionJs, typeof gasPrice, typeof selectedOption, typeof data, typeof nonceFunctionJS, typeof chainIdFunctionJs)
 
             // const result = await window.ethereum.request({
             //     method: 'eth_sendTransaction',
